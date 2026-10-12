@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flights</title>
+
+    <link rel="stylesheet" href="/css/main.css">
+    <script src="/js/api.js" defer></script>
+    <script src="/js/flights.js" defer></script>
+</head>
+<body>
+<header>
+    <h1>Airline Reservation System</h1>
+    <nav>
+        <a href="/pages/flights.html">Flights</a>
+    </nav>
+</header>
+
+<main>
+    <h2>Flights</h2>
+
+    <p id="status">Loading flights...</p>
+
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Flight Number</th>
+            <th>Date</th>
+            <th>Aircraft ID</th>
+            <th>Departure</th>
+            <th>Arrival</th>
+            <th>Status</th>
+        </tr>
+        </thead>
+        <tbody id="flight-table-body"></tbody>
+    </table>
+</main>
+</body>
+</html>

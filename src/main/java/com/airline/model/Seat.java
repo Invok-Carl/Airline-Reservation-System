@@ -1,17 +1,23 @@
 package com.airline.model;
 
-public class Seat {
+import java.util.Comparator;
+
+public class Seat implements Comparable<Seat> {
     private long seat_id;
     private long aircraft_id;
     private String seat_number;
     private String seat_class;
     private String seat_type;
 
-    public Seat(long seat_id, long aircraft_id, String seat_class, String seat_number, String seat_type) {
+
+    public Seat(
+            long seat_id, long aircraft_id, String seat_number, String seat_class,
+             String seat_type
+    ) {
         this.seat_id = seat_id;
         this.aircraft_id = aircraft_id;
-        this.seat_class = seat_class;
         this.seat_number = seat_number;
+        this.seat_class = seat_class;
         this.seat_type = seat_type;
     }
 
@@ -61,5 +67,10 @@ public class Seat {
     public void setSeat_class(String seat_class) {
         this.seat_class = seat_class;
     }
+
+    public int compareTo(Seat other){
+        return Long.compare(this.seat_id, other.seat_id);
+    }
+
 }
 

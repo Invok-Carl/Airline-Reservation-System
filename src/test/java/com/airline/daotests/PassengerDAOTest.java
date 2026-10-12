@@ -1,4 +1,4 @@
-package com.airline.daotests.passengerdaotest;
+package com.airline.daotests;
 
 import com.airline.dao.PassengerDAO;
 import com.airline.model.Passenger;

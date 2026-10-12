@@ -33,25 +33,30 @@ public class AirlineHttpServer {
         // Serve HTML, CSS, JavaScript, and other static files.
         server.createContext("/", exchange -> {
             try {
+                //returns the path from the http request
                 String requestPath = exchange.getRequestURI().getPath();
 
+                //returns http request method
                 if (!exchange.getRequestMethod().equals("GET")
                         && !exchange.getRequestMethod().equals("HEAD")) {
+                    //lets set response headers
                     exchange.getResponseHeaders()
                             .set("Allow", "GET, HEAD");
+                    //sends the http status
                     exchange.sendResponseHeaders(405, -1);
                     return;
                 }
 
                 // Default page.
                 if (requestPath.equals("/")) {
-                    requestPath = "/flights.html";
+                    requestPath = "/pages/flights.html";
                 }
 
                 // Resolve the requested path safely within frontend/.
                 Path file = FRONTEND_DIR
                         .resolve(requestPath.substring(1))
                         .normalize();
+
 
                 if (!file.startsWith(FRONTEND_DIR)
                         || !Files.isRegularFile(file)) {
@@ -78,6 +83,8 @@ public class AirlineHttpServer {
                 }
 
                 exchange.sendResponseHeaders(200, content.length);
+
+                // lets you write the response body
                 exchange.getResponseBody().write(content);
 
             } catch (IOException e) {
@@ -86,6 +93,7 @@ public class AirlineHttpServer {
                     exchange.sendResponseHeaders(500, -1);
                 }
             } finally {
+                //closes HttpExchange service & sends the response.
                 exchange.close();
             }
         });
@@ -108,7 +116,7 @@ public class AirlineHttpServer {
                 "Airline server running at http://localhost:" + PORT
         );
         System.out.println(
-                "Flight page: http://localhost:" + PORT + "/flights.html"
+                "Flight page: http://localhost:" + PORT + "pages/flights.html"
         );
     }
 

@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.function.Supplier;
 
 public class FlightService {
-
+    //instance fields / static fields
     private final FlightDAO flightDAO;
     private final ConnectionProvider connectionProvider;
 

@@ -45,7 +45,7 @@ public class FlightDAO {
                     return resultSet.getLong(1);
                 }
             }
-            throw new SQLException("Flight Inserted, but Flight_id was not returned");
+            throw new SQLException("Flight Inserted, but flight_id was not returned");
         }
     }
 

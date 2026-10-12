@@ -1,8 +1,7 @@
-package com.airline.daotests.flightdoartest;
+package com.airline.daotests;
 
 import com.airline.dao.FlightDAO;
 import com.airline.model.Flight;
-import com.airline.model.Passenger;
 import com.airline.util.connection.DatabaseConnection;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,7 +15,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class FlightDAOTest {
+class FlightDAOTest {
     private Connection connection;
     private FlightDAO flightDAO;
     private Flight flight;
