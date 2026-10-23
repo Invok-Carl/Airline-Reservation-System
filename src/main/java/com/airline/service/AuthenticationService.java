@@ -42,6 +42,5 @@ public class AuthenticationService {
 
             return employee;
         }
-
     }
 }

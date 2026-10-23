@@ -1,62 +1,141 @@
+
 package com.airline.service;
 
 import com.airline.dao.FlightDAO;
+import com.airline.dao.FlightScheduleDAO;
+import com.airline.model.Employee;
 import com.airline.model.Flight;
-import com.airline.util.connection.ConnectionProvider;
+import com.airline.model.FlightSchedule;
+import com.airline.util.connection.DatabaseConnection;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
-import java.util.function.Supplier;
+import java.util.Map;
 
 public class FlightService {
-    //instance fields / static fields
+
     private final FlightDAO flightDAO;
-    private final ConnectionProvider connectionProvider;
+    private final FlightScheduleDAO flightScheduleDAO;
+    private final AuthorizationService authorizationService;
 
-    public FlightService(FlightDAO flightDAO,
-                         ConnectionProvider connectionProvider) {
-        this.flightDAO = flightDAO;
-        this.connectionProvider = connectionProvider;
-    }
-
-    public List<Flight> getAllFlights() throws SQLException {
-        try (Connection connection = connectionProvider.getConnection()) {
-            return flightDAO.getAllFlights(connection);
-        }
+    public FlightService() {
+        this.flightDAO = new FlightDAO();
+        this.flightScheduleDAO = new FlightScheduleDAO();
+        this.authorizationService = new AuthorizationService();
     }
 
     public Flight findFlightById(long flightId) throws SQLException {
-        if (flightId <= 0) {
-            throw new IllegalArgumentException(
-                    "Flight ID must be positive."
-            );
-        }
-
-        try (Connection connection = connectionProvider.getConnection()) {
+        try (Connection connection = DatabaseConnection.getConnection()) {
             return flightDAO.findFlightById(connection, flightId);
         }
     }
 
-    public long addFlight(Flight flight) throws SQLException {
-        validateFlight(flight);
+    public List<Flight> getAllFlights() throws SQLException {
+        try (Connection connection = DatabaseConnection.getConnection()) {
+            return flightDAO.getAllFlightsList(connection);
+        }
+    }
 
-        try (Connection connection = connectionProvider.getConnection()) {
+    public Map<Long, Flight> getAllFlightsMap() throws SQLException {
+        try (Connection connection = DatabaseConnection.getConnection()) {
+            return flightDAO.getAllFlightsMap(connection);
+        }
+    }
+
+    public Map<Long, Flight> findFlightsByPassengerId(long passengerId)
+            throws SQLException {
+        try (Connection connection = DatabaseConnection.getConnection()) {
+            return flightDAO.findFlightsByPassengerId(
+                    connection,
+                    passengerId
+            );
+        }
+    }
+
+
+
+    public List<Flight> getFlightsByDepAndArrCountries(
+            String departureCountry, String arrivalCountry
+            ) throws SQLException{
+        try(Connection connection = DatabaseConnection.getConnection()){
+            return flightDAO.getFlightsByDepAndArrivalCountry(
+                    connection,
+                    departureCountry,
+                    arrivalCountry);
+        }
+    }
+
+    public boolean updateFlightActualDeparture(
+            Employee employee, long flight_id, LocalTime actualDeparture)
+    throws SQLException{
+        if(!authorizationService.canAddFlight(employee)){
+            throw new SecurityException("Only administrator can update departure time");
+        }
+        try(Connection connection = DatabaseConnection.getConnection()){
+            return flightDAO.updateActualDeparture(connection, flight_id, actualDeparture);
+        }
+    }
+
+
+    public boolean updateFlightActualArrival(
+            Employee employee, long flight_id, LocalTime actualarrival)
+            throws SQLException{
+        if(!authorizationService.canAddFlight(employee)){
+            throw new SecurityException("Only administrator can update arrival time");
+        }
+        try(Connection connection = DatabaseConnection.getConnection()){
+            return flightDAO.updateActualDeparture(connection, flight_id, actualarrival);
+        }
+    }
+
+    public long addFlight(Employee employee, Flight flight)
+            throws SQLException {
+
+        if (!authorizationService.canAddFlight(employee)) {
+            throw new SecurityException(
+                    "Only an administrator can add a flight."
+            );
+        }
+
+        validateNewFlight(flight);
+
+        try (Connection connection = DatabaseConnection.getConnection()) {
+
+            // Verify that the referenced schedule exists.
+            FlightSchedule schedule = flightScheduleDAO.getScheduleById(
+                    connection,
+                    flight.getSchedule_id()
+            );
+
+            if (schedule == null) {
+                throw new IllegalArgumentException(
+                        "The specified flight schedule does not exist."
+                );
+            }
+
+            // The flight date must be within the schedule's date range.
+            LocalDate flightDate = flight.getFlight_date();
+
+            if (flightDate.isBefore(schedule.getStart_date())
+                    || flightDate.isAfter(schedule.getEnd_date())) {
+                throw new IllegalArgumentException(
+                        "The flight date must fall within the schedule's "
+                                + "start and end dates."
+                );
+            }
+
+            // Insert the flight using the same connection.
             return flightDAO.addFlight(connection, flight);
         }
     }
 
-    private void validateFlight(Flight flight) {
+    private void validateNewFlight(Flight flight) {
         if (flight == null) {
             throw new IllegalArgumentException(
-                    "Flight cannot be null."
-            );
-        }
-
-        if (flight.getFlight_number() == null
-                || flight.getFlight_number().isBlank()) {
-            throw new IllegalArgumentException(
-                    "Flight number is required."
+                    "Flight must not be null."
             );
         }
 
@@ -66,35 +145,23 @@ public class FlightService {
             );
         }
 
-        if (flight.getAircraft_id() <= 0) {
-            throw new IllegalArgumentException(
-                    "A valid aircraft ID is required."
-            );
-        }
-
-        if (flight.getRoute_id() <= 0) {
-            throw new IllegalArgumentException(
-                    "A valid route ID is required."
-            );
-        }
-
         if (flight.getSchedule_id() <= 0) {
             throw new IllegalArgumentException(
                     "A valid schedule ID is required."
             );
         }
 
-        if (flight.getSched_departure() == null
-                || flight.getSched_arrival() == null) {
+        if (flight.getFlight_status() == null
+                || flight.getFlight_status().isBlank()) {
             throw new IllegalArgumentException(
-                    "Scheduled departure and arrival are required."
+                    "Flight status is required."
             );
         }
 
-        if (!flight.getSched_arrival()
-                .isAfter(flight.getSched_departure())) {
+        if (flight.getActual_arrival() != null
+                && flight.getActual_departure() == null) {
             throw new IllegalArgumentException(
-                    "Scheduled arrival must be after departure."
+                    "Actual arrival cannot be set without actual departure."
             );
         }
 
@@ -103,7 +170,7 @@ public class FlightService {
                 && !flight.getActual_arrival()
                 .isAfter(flight.getActual_departure())) {
             throw new IllegalArgumentException(
-                    "Actual arrival must be after actual departure."
+                    "Actual arrival must be later than actual departure."
             );
         }
     }

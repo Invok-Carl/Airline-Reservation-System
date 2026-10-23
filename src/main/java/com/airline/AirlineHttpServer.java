@@ -1,9 +1,8 @@
+
 package com.airline;
 
 import com.airline.controller.FlightController;
-import com.airline.dao.FlightDAO;
 import com.airline.service.FlightService;
-import com.airline.util.connection.DatabaseConnection;
 import com.sun.net.httpserver.HttpServer;
 
 import java.io.IOException;
@@ -26,37 +25,45 @@ public class AirlineHttpServer {
                 new InetSocketAddress(PORT), 0
         );
 
-        // API endpoints will be registered here.
-        // Example:
-        // server.createContext("/api/flights", new FlightController());
+        FlightService flightService = new FlightService();
+
+        /*
+         * Register the API endpoint.
+         *
+         * The employee resolver currently returns null because
+         * authentication/session handling has not been connected yet.
+         * Consequently, GET requests work, but POST requests return 401.
+         */
+        server.createContext(
+                "/api/flights",
+                new FlightController(flightService, exchange -> null)
+        );
 
         // Serve HTML, CSS, JavaScript, and other static files.
         server.createContext("/", exchange -> {
             try {
-                //returns the path from the http request
-                String requestPath = exchange.getRequestURI().getPath();
+                String requestPath =
+                        exchange.getRequestURI().getPath();
 
-                //returns http request method
-                if (!exchange.getRequestMethod().equals("GET")
-                        && !exchange.getRequestMethod().equals("HEAD")) {
-                    //lets set response headers
-                    exchange.getResponseHeaders()
-                            .set("Allow", "GET, HEAD");
-                    //sends the http status
+                String method = exchange.getRequestMethod();
+
+                if (!method.equals("GET") && !method.equals("HEAD")) {
+                    exchange.getResponseHeaders().set(
+                            "Allow", "GET, HEAD"
+                    );
                     exchange.sendResponseHeaders(405, -1);
                     return;
                 }
 
                 // Default page.
                 if (requestPath.equals("/")) {
-                    requestPath = "/pages/flights.html";
+                    requestPath = "/index.html";
                 }
 
                 // Resolve the requested path safely within frontend/.
                 Path file = FRONTEND_DIR
                         .resolve(requestPath.substring(1))
                         .normalize();
-
 
                 if (!file.startsWith(FRONTEND_DIR)
                         || !Files.isRegularFile(file)) {
@@ -73,7 +80,7 @@ public class AirlineHttpServer {
                         "X-Content-Type-Options", "nosniff"
                 );
 
-                if (exchange.getRequestMethod().equals("HEAD")) {
+                if (method.equals("HEAD")) {
                     exchange.getResponseHeaders().set(
                             "Content-Length",
                             String.valueOf(content.length)
@@ -83,32 +90,24 @@ public class AirlineHttpServer {
                 }
 
                 exchange.sendResponseHeaders(200, content.length);
-
-                // lets you write the response body
                 exchange.getResponseBody().write(content);
 
             } catch (IOException e) {
                 e.printStackTrace();
+
                 if (exchange.getResponseCode() == -1) {
-                    exchange.sendResponseHeaders(500, -1);
+                    try {
+                        exchange.sendResponseHeaders(500, -1);
+                    } catch (IOException ignored) {
+                        // The connection may already be closed.
+                    }
                 }
             } finally {
-                //closes HttpExchange service & sends the response.
                 exchange.close();
             }
         });
 
         server.setExecutor(Executors.newFixedThreadPool(10));
-
-        FlightService flightService = new FlightService(
-                new FlightDAO(),
-                DatabaseConnection::getConnection
-        );
-
-        server.createContext(
-                "/api/flights",
-                new FlightController(flightService)
-        );
 
         server.start();
 
@@ -116,12 +115,19 @@ public class AirlineHttpServer {
                 "Airline server running at http://localhost:" + PORT
         );
         System.out.println(
-                "Flight page: http://localhost:" + PORT + "pages/flights.html"
+                "Flight page: http://localhost:" + PORT
+                        + "/index.html"
+        );
+        System.out.println(
+                "Flights API: http://localhost:" + PORT
+                        + "/api/flights"
         );
     }
 
     private static String getContentType(Path file) {
-        String name = file.getFileName().toString().toLowerCase();
+        String name = file.getFileName()
+                .toString()
+                .toLowerCase();
 
         if (name.endsWith(".html")) {
             return "text/html; charset=UTF-8";

@@ -1,24 +1,37 @@
 package com.airline.model;
 
 import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Set;
 
 public class FlightSchedule {
+
+
     private long shcedule_id;
     private String flight_number;
     private long route_id;
-    private String departure_time;
-    private String arrival_time;
-    private Set<DayOfWeek> days_of_operation;
-    private LocalDateTime start_date;
-    private LocalDateTime end_date;
+    private String days_of_operation;
+    private LocalDate start_date;
+    private LocalDate end_date;
     private String schedule_status;
+    private LocalTime departure_time;
+    private LocalTime arrival_time;
+
+
+
 
     public FlightSchedule(
-            long shcedule_id, String flight_number, long route_id, String departure_time,
-            String arrival_time, Set<DayOfWeek> days_of_operation, LocalDateTime start_date,
-            String schedule_status, LocalDateTime end_date
+            long shcedule_id,
+            String flight_number,
+            long route_id,
+            String days_of_operation,
+            LocalDate start_date,
+            LocalDate end_date,
+            String schedule_status,
+            LocalTime departure_time,
+            LocalTime arrival_time
     ) {
         this.shcedule_id = shcedule_id;
         this.flight_number = flight_number;
@@ -31,9 +44,14 @@ public class FlightSchedule {
         this.end_date = end_date;
     }
     public FlightSchedule(
-            String flight_number, long route_id, String departure_time,
-            String arrival_time, Set<DayOfWeek> days_of_operation, LocalDateTime start_date,
-            String schedule_status, LocalDateTime end_date
+            String flight_number,
+            long route_id,
+            String days_of_operation,
+            LocalDate start_date,
+            LocalDate end_date,
+            String schedule_status,
+            LocalTime departure_time,
+            LocalTime arrival_time
     ) {
         this.flight_number = flight_number;
         this.route_id = route_id;
@@ -57,23 +75,23 @@ public class FlightSchedule {
         return route_id;
     }
 
-    public String getDeparture_time() {
+    public LocalTime getDeparture_time() {
         return departure_time;
     }
 
-    public String getArrival_time() {
+    public LocalTime getArrival_time() {
         return arrival_time;
     }
 
-    public Set<DayOfWeek> getDays_of_operation() {
+    public String getDays_of_operation() {
         return days_of_operation;
     }
 
-    public LocalDateTime getStart_date() {
+    public LocalDate getStart_date() {
         return start_date;
     }
 
-    public LocalDateTime getEnd_date() {
+    public LocalDate getEnd_date() {
         return end_date;
     }
 
@@ -93,23 +111,23 @@ public class FlightSchedule {
         this.route_id = route_id;
     }
 
-    public void setDeparture_time(String departure_time) {
+    public void setDeparture_time(LocalTime departure_time) {
         this.departure_time = departure_time;
     }
 
-    public void setArrival_time(String arrival_time) {
+    public void setArrival_time(LocalTime arrival_time) {
         this.arrival_time = arrival_time;
     }
 
-    public void setDays_of_operation(Set<DayOfWeek> days_of_operation) {
+    public void setDays_of_operation(String days_of_operation) {
         this.days_of_operation = days_of_operation;
     }
 
-    public void setStart_date(LocalDateTime start_date) {
+    public void setStart_date(LocalDate start_date) {
         this.start_date = start_date;
     }
 
-    public void setEnd_date(LocalDateTime end_date) {
+    public void setEnd_date(LocalDate end_date) {
         this.end_date = end_date;
     }
 

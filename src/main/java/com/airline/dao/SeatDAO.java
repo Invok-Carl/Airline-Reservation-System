@@ -29,8 +29,8 @@ public class SeatDAO {
         ){
             statement.setLong(1, seat.getAircraft_id());
             statement.setString(2, seat.getSeat_number());
-            statement.setString(3, seat.getSeat_class());
-            statement.setString(4, seat.getSeat_type());
+            statement.setString(3, seat.getSeat_class().toUpperCase());
+            statement.setString(4, seat.getSeat_type().toUpperCase());
             int result = statement.executeUpdate();
             if(result == 0) throw new SQLException("No rows affected");
             try(ResultSet resultSet = statement.getGeneratedKeys()){
@@ -57,27 +57,27 @@ public class SeatDAO {
 
     public Map<Long, Seat> getSeatsByFlight(Connection connection, long flight_id) throws SQLException {
         String sql = """
-                SELECT 
-                s.SEAT_ID,
-                s.AIRCRAFT_ID,
-                s.SEAT_NUMBER,
-                s.SEAT_CLASS,
-                s.SEAT_TYPE
-                FROM FLIGHT
-                JOIN SEAT s 
-                ON FLIGHT.AIRCRAFT_ID = s.AIRCRAFT_ID
-                WHERE FLIGHT_ID = ? AND SEAT_ID NOT IN 
-                    (SELECT
-                         SEAT_ID 
-                     FROM BOOKING_SEGMENT JOIN RESERVATION 
-                        ON BOOKING_SEGMENT.RESERVATION_ID = RESERVATION.RESERVATION_ID
-                     WHERE 
-                        FLIGHT_ID = ? AND SEAT_ID IS NOT NULL AND STATUS <> 'CANCELLED')
+                SELECT
+                    S.SEAT_ID,
+                    S.AIRCRAFT_ID,
+                    S.SEAT_NUMBER,
+                    S.SEAT_CLASS,
+                    S.SEAT_TYPE
+                FROM FLIGHT F JOIN SEAT S
+                    ON F.AIRCRAFT_ID = S.AIRCRAFT_ID
+                    AND F.FLIGHT_ID = ?
+                    AND NOT EXISTS (
+                      SELECT 1
+                      FROM BOOKING_SEGMENT BS
+                      JOIN RESERVATION R ON BS.RESERVATION_ID = R.RESERVATION_ID
+                      WHERE BS.FLIGHT_ID = F.FLIGHT_ID
+                        AND BS.SEAT_ID = S.SEAT_ID
+                        AND R.STATUS <> ('CANCELLED')
+                  )
                 """;
         Map<Long, Seat> seats = new HashMap<>();
         try(PreparedStatement statement = connection.prepareStatement(sql)){
             statement.setLong(1, flight_id);
-            statement.setLong(2, flight_id);
             try(ResultSet resultSet = statement.executeQuery()){
                 while(resultSet.next()){
                     seats.put( resultSet.getLong("SEAT_ID") , mapResultSetToSeat(resultSet));
@@ -85,6 +85,43 @@ public class SeatDAO {
             }
         }
         return seats;
+    }
+
+    public boolean isSeatAvailable(
+            Connection connection,
+            long flightId,
+            long seatId
+    ) throws SQLException {
+
+        String sql = """
+            SELECT 1
+            FROM FLIGHT F
+            JOIN SEAT S
+                ON S.AIRCRAFT_ID = F.AIRCRAFT_ID
+            WHERE F.FLIGHT_ID = ?
+              AND S.SEAT_ID = ?
+              AND NOT EXISTS (
+                  SELECT 1
+                  FROM BOOKING_SEGMENT BS
+                  JOIN RESERVATION R
+                      ON R.RESERVATION_ID = BS.RESERVATION_ID
+                  WHERE BS.FLIGHT_ID = F.FLIGHT_ID
+                    AND BS.SEAT_ID = S.SEAT_ID
+                    AND R.STATUS <> 'CANCELLED'
+              )
+            FETCH FIRST 1 ROW ONLY
+            """;
+
+        try (PreparedStatement statement =
+                     connection.prepareStatement(sql)) {
+
+            statement.setLong(1, flightId);
+            statement.setLong(2, seatId);
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                return resultSet.next();
+            }
+        }
     }
 
     public Map<Long, Seat> getAllSeats(Connection connection) throws SQLException {
@@ -130,6 +167,12 @@ public class SeatDAO {
         return null;
     }
 
+
+    public String getSeatClassBySeatId(Connection connection, long seatId
+    )throws SQLException {
+        Seat seat = getSeatById(connection, seatId);
+        return seat.getSeat_class();
+    }
 
     private Seat mapResultSetToSeat(ResultSet resultSet) throws SQLException {
         return new Seat(

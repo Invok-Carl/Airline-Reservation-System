@@ -18,10 +18,9 @@ public class BookingSegmentDAO {
                     PASSENGER_ID,
                     FLIGHT_ID,
                     SEAT_ID,
-                    FARE_ID,
-                    AIRCRAFT_ID
+                    FARE_ID
                 )
-                VALUES (?, ?, ?, ?, ?, ?)
+                VALUES (?, ?, ?, ?, ?)
                 """;
         try (PreparedStatement statement = connection.prepareStatement(sql,
              new String[] {"SEGMENT_ID"}   )
@@ -31,8 +30,6 @@ public class BookingSegmentDAO {
             statement.setLong(3, bookingSegment.getFlight_id());
             statement.setLong(4, bookingSegment.getSeat_id());
             statement.setLong(5, bookingSegment.getFare_id());
-            statement.setLong(6, bookingSegment.getAircraft_id());
-
             long result = statement.executeUpdate();
             if (result == 0) throw new SQLException("Adding Segment did not Affect Any rows");
             try(ResultSet resultSet = statement.getGeneratedKeys()){
@@ -53,8 +50,7 @@ public class BookingSegmentDAO {
                     PASSENGER_ID,
                     FLIGHT_ID,
                     SEAT_ID,
-                    FARE_ID,
-                    AIRCRAFT_ID
+                    FARE_ID
                 FROM BOOKING_SEGMENT
                 """;
         Map<Long, BookingSegment> segs = new HashMap<>();
@@ -69,6 +65,34 @@ public class BookingSegmentDAO {
         }
     }
 
+    public boolean hasActiveBookingForPassengerAndFlight(
+            Connection connection,
+            long passengerId,
+            long flightId
+    ) throws SQLException {
+
+        String sql = """
+            SELECT 1
+            FROM BOOKING_SEGMENT BS
+            JOIN RESERVATION R
+                ON R.RESERVATION_ID = BS.RESERVATION_ID
+            WHERE BS.PASSENGER_ID = ?
+              AND BS.FLIGHT_ID = ?
+              AND R.STATUS <> 'CANCELLED'
+            FETCH FIRST 1 ROW ONLY
+            """;
+
+        try (PreparedStatement statement =
+                     connection.prepareStatement(sql)) {
+
+            statement.setLong(1, passengerId);
+            statement.setLong(2, flightId);
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                return resultSet.next();
+            }
+        }
+    }
 
 
 
@@ -82,15 +106,17 @@ public class BookingSegmentDAO {
                     PASSENGER_ID,
                     FLIGHT_ID,
                     SEAT_ID,
-                    FARE_ID,
-                    AIRCRAFT_ID
+                    FARE_ID
                 FROM BOOKING_SEGMENT
                 WHERE SEGMENT_ID = ?
                 """;
         try(PreparedStatement statement = connection.prepareStatement(sql)){
             statement.setLong(1, segmentId);
             try(ResultSet resultSet = statement.executeQuery()){
-                return mapResultSetToBookingSegment(resultSet);
+                if(resultSet.next()) {
+                    return mapResultSetToBookingSegment(resultSet);
+                }
+                return null;
             }
         }
 
@@ -105,8 +131,7 @@ public class BookingSegmentDAO {
                     PASSENGER_ID,
                     FLIGHT_ID,
                     SEAT_ID,
-                    FARE_ID,
-                    AIRCRAFT_ID
+                    FARE_ID
                 FROM BOOKING_SEGMENT
                 WHERE PASSENGER_ID = ?
                 """;
@@ -133,8 +158,7 @@ public class BookingSegmentDAO {
                     PASSENGER_ID,
                     FLIGHT_ID,
                     SEAT_ID,
-                    FARE_ID,
-                    AIRCRAFT_ID
+                    FARE_ID
                 FROM BOOKING_SEGMENT
                 WHERE RESERVATION_ID = ?
                 """;
@@ -162,8 +186,7 @@ public class BookingSegmentDAO {
                     b.PASSENGER_ID,
                     b.FLIGHT_ID,
                     b.SEAT_ID,
-                    b.FARE_ID,
-                    b.AIRCRAFT_ID
+                    b.FARE_ID
                 FROM BOOKING_SEGMENT b JOIN RESERVATION r
                 ON r.RESERVATION_ID = b.RESERVATION_ID
                 WHERE r.BOOKING_REFERENCE = ?
@@ -208,8 +231,7 @@ public class BookingSegmentDAO {
                 resultSet.getLong("PASSENGER_ID"),
                 resultSet.getLong("FLIGHT_ID"),
                 resultSet.getLong("SEAT_ID"),
-                resultSet.getLong("FARE_ID"),
-                resultSet.getLong("AIRCRAFT_ID")
+                resultSet.getLong("FARE_ID")
         );
     }
 }

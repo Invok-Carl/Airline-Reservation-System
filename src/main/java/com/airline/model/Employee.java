@@ -24,6 +24,18 @@ public class Employee {
         this.userName = userName;
         this.passwordHash = passwordHash;
     }
+    public Employee(String firstName, String lastName, String position,
+            String phone, String email, String employmentStatus, String userName, String passwordHash
+    ) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.position = position;
+        this.phone = phone;
+        this.email = email;
+        this.employmentStatus = employmentStatus;
+        this.userName = userName;
+        this.passwordHash = passwordHash;
+    }
 
     public long getEmployeeId() {
         return employeeId;

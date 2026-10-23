@@ -1,0 +1,231 @@
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f4f7fb;
+    color: #263238;
+}
+
+header {
+    background-color: #173b57;
+    color: white;
+    padding: 20px 40px;
+}
+
+header h1 {
+    margin: 0;
+}
+
+nav {
+    margin-top: 15px;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    margin-right: 20px;
+}
+
+nav a:hover,
+nav a.active {
+    text-decoration: underline;
+}
+
+main {
+    max-width: 1100px;
+    margin: 35px auto;
+    padding: 0 20px;
+}
+
+.page-heading {
+    margin-bottom: 25px;
+}
+
+.page-heading h2 {
+    margin-bottom: 8px;
+    color: #173b57;
+}
+
+.page-heading p {
+    color: #607d8b;
+}
+
+.search-panel,
+.results-section {
+    background-color: white;
+    padding: 25px;
+    border-radius: 8px;
+    margin-bottom: 25px;
+}
+
+#search-form {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: end;
+    gap: 18px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 200px;
+    gap: 8px;
+}
+
+.form-group label {
+    font-weight: bold;
+}
+
+.form-group input {
+    padding: 11px;
+    border: 1px solid #cbd5df;
+    border-radius: 5px;
+    font-size: 15px;
+}
+
+.form-group input:focus {
+    outline: 2px solid #1769aa;
+    outline-offset: 1px;
+}
+
+.form-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+button {
+    padding: 11px 16px;
+    border: none;
+    border-radius: 5px;
+    background-color: #1769aa;
+    color: white;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+button:hover {
+    background-color: #125487;
+}
+
+button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+button.secondary {
+    background-color: #607d8b;
+}
+
+button.secondary:hover {
+    background-color: #455a64;
+}
+
+.results-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.results-heading h3 {
+    color: #173b57;
+    margin-top: 0;
+}
+
+#result-count {
+    color: #607d8b;
+    font-size: 14px;
+}
+
+#status-message {
+    color: #607d8b;
+}
+
+#status-message.error {
+    color: #b42318;
+}
+
+.flight-results {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 18px;
+    margin-top: 20px;
+}
+
+.flight-card {
+    border: 1px solid #dce3ea;
+    border-radius: 7px;
+    padding: 18px;
+}
+
+.flight-card h4 {
+    margin: 0 0 15px;
+    color: #1769aa;
+    font-size: 19px;
+}
+
+.flight-card p {
+    margin: 9px 0;
+    line-height: 1.4;
+    overflow-wrap: anywhere;
+}
+
+.flight-card strong {
+    color: #37474f;
+}
+
+.flight-status {
+    display: inline-block;
+    padding: 5px 9px;
+    border-radius: 4px;
+    background-color: #e8f2fb;
+    color: #174c75;
+    font-size: 13px;
+}
+
+.empty-results {
+    padding: 20px 0;
+    color: #607d8b;
+}
+
+footer {
+    text-align: center;
+    padding: 20px;
+    color: #607d8b;
+}
+
+@media (max-width: 600px) {
+    header {
+        padding: 20px;
+    }
+
+    nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
+    nav a {
+        margin-right: 0;
+    }
+
+    #search-form {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .form-group {
+        min-width: 0;
+    }
+
+    .form-actions {
+        flex-direction: column;
+    }
+}

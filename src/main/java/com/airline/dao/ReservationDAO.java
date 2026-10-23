@@ -28,8 +28,8 @@ public class ReservationDAO {
                 statement.setString(1, reservation.getBooking_reference());
                 statement.setTimestamp(2,
                         Timestamp.valueOf(reservation.getReservation_date()));
-                statement.setString(3, reservation.getStatus());
-                statement.setLong(4, reservation.getTotal_amount());
+                statement.setString(3, reservation.getStatus().toUpperCase());
+                statement.setBigDecimal(4, reservation.getTotal_amount());
                 statement.setLong(5, reservation.getCreated_by());
                 long result = statement.executeUpdate();
                 if (result == 0) {
@@ -182,7 +182,7 @@ public class ReservationDAO {
                 resultSet.getString("BOOKING_REFERENCE"),
                 (resultSet.getTimestamp("RESERVATION_DATE")).toLocalDateTime(),
                 resultSet.getString("STATUS"),
-                resultSet.getLong("TOTAL_AMOUNT"),
+                resultSet.getBigDecimal("TOTAL_AMOUNT"),
                 resultSet.getLong("CREATED_BY")
         );
     }

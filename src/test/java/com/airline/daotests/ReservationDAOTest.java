@@ -7,8 +7,8 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
-import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -17,7 +17,7 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class TestReservationDAO {
+class ReservationDAOTest {
 
     Reservation reservation;
     ReservationDAO reservationDAO;
@@ -33,7 +33,7 @@ class TestReservationDAO {
                     LocalTime.of(8, 30)
                 ),
                 "PENDING",
-                290,
+                new BigDecimal("240"),
                 22);
         connection = DatabaseConnection.getConnection();
         connection.setAutoCommit(false);
@@ -61,7 +61,9 @@ class TestReservationDAO {
         assertEquals(reservation.getCreated_by(), actual.getCreated_by());
         assertEquals(reservation.getBooking_reference(), actual.getBooking_reference());
         assertEquals(reservation.getClass(), actual.getClass());
-        assertEquals(reservation.getTotal_amount(), actual.getTotal_amount());
+
+        assertEquals(0,
+                reservation.getTotal_amount().compareTo( actual.getTotal_amount()));
 
 
         actual = reservationDAO.getReservationByBookingReference(connection,
@@ -71,7 +73,8 @@ class TestReservationDAO {
         assertEquals(reservation.getCreated_by(), actual.getCreated_by());
         assertEquals(reservation.getBooking_reference(), actual.getBooking_reference());
         assertEquals(reservation.getClass(), actual.getClass());
-        assertEquals(reservation.getTotal_amount(), actual.getTotal_amount());
+        assertEquals(0,
+                reservation.getTotal_amount().compareTo( actual.getTotal_amount()));
     }
 
     @Test

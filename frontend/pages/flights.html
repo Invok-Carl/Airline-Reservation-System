@@ -1,41 +1,78 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flights</title>
-
-    <link rel="stylesheet" href="/css/main.css">
-    <script src="/js/api.js" defer></script>
+    <title>Flights | Airline Reservation System</title>
+    <link rel="stylesheet" href="/css/flights.css">
     <script src="/js/flights.js" defer></script>
 </head>
 <body>
 <header>
     <h1>Airline Reservation System</h1>
+
     <nav>
-        <a href="/pages/flights.html">Flights</a>
+        <a href="/">Home</a>
+        <a href="/pages/flights.html" class="active">Flights</a>
+        <a href="/pages/make-reservation.html">Reservations</a>
+        <a href="/pages/add-flight.html">Staff</a>
     </nav>
 </header>
 
 <main>
-    <h2>Flights</h2>
+    <section class="page-heading">
+        <h2>Available Flights</h2>
+        <p>Search for flights by departure and arrival country.</p>
+    </section>
 
-    <p id="status">Loading flights...</p>
+    <section class="search-panel">
+        <form id="search-form">
+            <div class="form-group">
+                <label for="departure-country">Departure Country</label>
+                <input
+                        type="text"
+                        id="departure-country"
+                        name="departureCountry"
+                        placeholder="e.g. Afghanistan"
+                >
+            </div>
 
-    <table>
-        <thead>
-        <tr>
-            <th>ID</th>
-            <th>Flight Number</th>
-            <th>Date</th>
-            <th>Aircraft ID</th>
-            <th>Departure</th>
-            <th>Arrival</th>
-            <th>Status</th>
-        </tr>
-        </thead>
-        <tbody id="flight-table-body"></tbody>
-    </table>
+            <div class="form-group">
+                <label for="arrival-country">Arrival Country</label>
+                <input
+                        type="text"
+                        id="arrival-country"
+                        name="arrivalCountry"
+                        placeholder="e.g. Turkey"
+                >
+            </div>
+
+            <div class="form-actions">
+                <button type="submit">Search Flights</button>
+                <button type="button" id="show-all-button" class="secondary">
+                    Show All
+                </button>
+            </div>
+        </form>
+    </section>
+
+    <section class="results-section">
+        <div class="results-heading">
+            <h3>Flight Results</h3>
+            <span id="result-count">Loading...</span>
+        </div>
+
+        <p id="status-message" role="status" aria-live="polite">
+            Loading flights...
+        </p>
+
+        <div id="flight-results" class="flight-results"></div>
+    </section>
 </main>
+
+<footer>
+    <p>&copy; 2026 Airline Reservation System</p>
+</footer>
 </body>
 </html>

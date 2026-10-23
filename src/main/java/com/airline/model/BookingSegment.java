@@ -7,28 +7,23 @@ public class BookingSegment {
     private long flight_id;
     private long seat_id;
     private long fare_id;
-    private long aircraft_id;
-
     public BookingSegment(long segment_id, long reservation_id,
                               long passenger_id, long flight_id,
-                              long seat_id, long fare_id, long aircraft_id) {
+                              long seat_id, long fare_id) {
         this.segment_id = segment_id;
         this.reservation_id = reservation_id;
         this.passenger_id = passenger_id;
         this.flight_id = flight_id;
         this.seat_id = seat_id;
-        this.fare_id = fare_id;
-        this.aircraft_id = aircraft_id;
-    }
+        this.fare_id = fare_id;}
     public BookingSegment(long reservation_id,
                               long passenger_id, long flight_id,
-                              long seat_id, long fare_id, long aircraft_id) {
+                              long seat_id, long fare_id) {
         this.reservation_id = reservation_id;
         this.passenger_id = passenger_id;
         this.flight_id = flight_id;
         this.seat_id = seat_id;
         this.fare_id = fare_id;
-        this.aircraft_id = aircraft_id;
     }
 
     public long getSegment_id() {
@@ -79,11 +74,4 @@ public class BookingSegment {
         this.seat_id = seat_id;
     }
 
-    public long getAircraft_id() {
-        return aircraft_id;
-    }
-
-    public void setAircraft_id(long aircraft_id) {
-        this.aircraft_id = aircraft_id;
-    }
 }

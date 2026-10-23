@@ -31,6 +31,10 @@ public class AuthorizationService {
         return isAdministrator(employee)
                 || isReservationAgent(employee);
     }
+    public boolean canAddFlight(Employee employee){ return isAdministrator(employee); }
+    public boolean canDeleteFlight(Employee employee){ return  isAdministrator(employee); }
+    public boolean canAddFlightSeg(Employee employee){ return  isAdministrator(employee);}
+
 
     public boolean canCheckInPassenger(Employee employee) {
         return isAdministrator(employee)

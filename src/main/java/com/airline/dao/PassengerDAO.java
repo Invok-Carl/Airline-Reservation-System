@@ -49,12 +49,12 @@ public class PassengerDAO {
                 statement.setNull(4, Types.DATE);
             }
 
-            statement.setString(5, passenger.getGender());
+            statement.setString(5, passenger.getGender().toUpperCase());
             statement.setString(6, passenger.getNationality());
             statement.setString(7, passenger.getPhone());
             statement.setString(8, passenger.getEmail());
             statement.setString(9, passenger.getAddress());
-            statement.setString(10, passenger.getPassportNumber());
+            statement.setString(10, passenger.getPassportNumber().toUpperCase());
 
             if (passenger.getPassportExpiry() != null) {
                 statement.setDate(

@@ -1,5 +1,6 @@
 package com.airline.model;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 public class Reservation {
@@ -7,13 +8,15 @@ public class Reservation {
     private String booking_reference;
     private LocalDateTime  reservation_date;
     private String status;
-    private long total_amount;
+    private BigDecimal total_amount;
     private long created_by;
 
+
+    public Reservation(){}
     public Reservation(
             long reservation_id, String booking_reference,
             LocalDateTime reservation_date, String status,
-            long total_amount, long created_by
+            BigDecimal total_amount, long created_by
     ) {
         this.reservation_id = reservation_id;
         this.booking_reference = booking_reference;
@@ -25,7 +28,7 @@ public class Reservation {
     public Reservation(
             String booking_reference,
             LocalDateTime reservation_date, String status,
-            long total_amount, long created_by
+            BigDecimal total_amount, long created_by
     ) {
         this.booking_reference = booking_reference;
         this.reservation_date = reservation_date;
@@ -66,11 +69,11 @@ public class Reservation {
         this.status = status;
     }
 
-    public long getTotal_amount() {
+    public BigDecimal getTotal_amount() {
         return total_amount;
     }
 
-    public void setTotal_amount(long total_amount) {
+    public void setTotal_amount(BigDecimal total_amount) {
         this.total_amount = total_amount;
     }
 

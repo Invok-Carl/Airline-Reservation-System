@@ -1,0 +1,457 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="theme-color" content="#14213d">
+    <meta name="description"
+          content="Airline Reservation System administration dashboard">
+
+    <title>Dashboard | Airline Reservation System</title>
+
+    <link rel="stylesheet" href="css/index.css">
+    <script src="js/index.js" defer></script>
+</head>
+
+<body>
+<div class="app-shell">
+
+    <aside id="sidebar" class="sidebar">
+        <a class="brand" href="index.html" aria-label="Airline dashboard">
+            <span class="brand-icon" aria-hidden="true">A</span>
+            <span class="brand-copy">
+                <strong>Airline System</strong>
+                <small>Management Portal</small>
+            </span>
+        </a>
+
+        <div class="sidebar-label">WORKSPACE</div>
+
+        <nav class="navigation" aria-label="Main navigation">
+            <a class="nav-link active" href="index.html"
+               aria-current="page">
+                <span class="nav-icon" aria-hidden="true">⌂</span>
+                <span>Dashboard</span>
+            </a>
+
+            <div class="nav-group">
+                <button class="nav-group-toggle" type="button"
+                        aria-expanded="true"
+                        aria-controls="flight-nav">
+                    <span class="nav-icon" aria-hidden="true">✈</span>
+                    <span>Flight Operations</span>
+                    <span class="nav-chevron" aria-hidden="true">⌄</span>
+                </button>
+
+                <div id="flight-nav" class="nav-children">
+                    <a href="manage-airports.html" class="nav-child">Airports</a>
+                    <a href="manage-routes.html" class="nav-child">Routes</a>
+                    <a href="manage-aircraft.html" class="nav-child">Aircraft</a>
+                    <a href="manage-seats.html" class="nav-child">Seats</a>
+                    <a href="manage-flight-schedules.html" class="nav-child">Flight Schedules</a>
+                    <a href="manage-flight.html" class="nav-child">Flights</a>
+                    <a href="manage-fares.html" class="nav-child">Fares</a>
+                </div>
+            </div>
+
+            <div class="nav-group">
+                <button class="nav-group-toggle" type="button"
+                        aria-expanded="true"
+                        aria-controls="reservation-nav">
+                    <span class="nav-icon" aria-hidden="true">▤</span>
+                    <span>Reservations</span>
+                    <span class="nav-chevron" aria-hidden="true">⌄</span>
+                </button>
+
+                <div id="reservation-nav" class="nav-children">
+                    <a href="manage-passengers.html" class="nav-child">Passengers</a>
+                    <a href="manage-reservations.html" class="nav-child">Reservations</a>
+                    <a href="manage-booking-segments.html" class="nav-child">Booking Segments</a>
+                    <a href="manage-tickets.html" class="nav-child">Tickets</a>
+                    <a href="manage-payments.html" class="nav-child">Payments</a>
+                    <a href="manage-cancellations.html" class="nav-child">Cancellations</a>
+                </div>
+            </div>
+
+            <div class="nav-group">
+                <button class="nav-group-toggle" type="button"
+                        aria-expanded="true"
+                        aria-controls="airport-ops-nav">
+                    <span class="nav-icon" aria-hidden="true">◎</span>
+                    <span>Airport Operations</span>
+                    <span class="nav-chevron" aria-hidden="true">⌄</span>
+                </button>
+
+                <div id="airport-ops-nav" class="nav-children">
+                    <a href="manage-check-in.html" class="nav-child">Check-in</a>
+                    <a href="manage-baggage.html" class="nav-child">Baggage</a>
+                </div>
+            </div>
+
+            <div class="nav-group">
+                <button class="nav-group-toggle" type="button"
+                        aria-expanded="true"
+                        aria-controls="admin-nav">
+                    <span class="nav-icon" aria-hidden="true">⚙</span>
+                    <span>Administration</span>
+                    <span class="nav-chevron" aria-hidden="true">⌄</span>
+                </button>
+
+                <div id="admin-nav" class="nav-children">
+                    <a href="manage-airlines.html" class="nav-child">Airlines</a>
+                    <a href="manage-employees.html" class="nav-child">Employees</a>
+                </div>
+            </div>
+        </nav>
+
+        <div class="sidebar-bottom">
+            <div class="system-indicator">
+                <span class="indicator-dot"></span>
+                <div>
+                    <strong>Application</strong>
+                    <small id="application-status">Checking status...</small>
+                </div>
+            </div>
+            <small class="sidebar-version">Airline System · v1.0</small>
+        </div>
+    </aside>
+
+    <div class="main-area">
+        <header class="topbar">
+            <div class="topbar-left">
+                <button id="sidebar-toggle" class="icon-button"
+                        type="button" aria-label="Toggle navigation"
+                        aria-controls="sidebar" aria-expanded="true">
+                    <span aria-hidden="true">☰</span>
+                </button>
+
+                <div class="breadcrumb">
+                    <span>Workspace</span>
+                    <span aria-hidden="true">/</span>
+                    <strong>Dashboard</strong>
+                </div>
+            </div>
+
+            <div class="topbar-right">
+                <span class="current-date" id="current-date">—</span>
+                <a class="user-menu" href="profile.html"
+                   title="Employee profile">
+                    <span class="avatar" aria-hidden="true">E</span>
+                    <span class="user-copy">
+                        <strong id="employee-name">Employee</strong>
+                        <small id="employee-role">Staff portal</small>
+                    </span>
+                </a>
+            </div>
+        </header>
+
+        <main class="content">
+            <section class="welcome-section">
+                <div>
+                    <p class="eyebrow">OVERVIEW</p>
+                    <h1>Dashboard</h1>
+                    <p class="welcome-description">
+                        Monitor your airline operations and access
+                        the system's management modules.
+                    </p>
+                </div>
+
+                <button id="dashboard-refresh" class="button button-secondary"
+                        type="button">
+                    <span aria-hidden="true">↻</span>
+                    Refresh data
+                </button>
+            </section>
+
+            <div id="dashboard-message" class="alert hidden"
+                 role="status" aria-live="polite"></div>
+
+            <section class="metrics-grid" aria-label="Operational summary">
+                <article class="metric-card">
+                    <div class="metric-top">
+                        <span class="metric-label">Total Flights</span>
+                        <span class="metric-icon icon-blue"
+                              aria-hidden="true">✈</span>
+                    </div>
+                    <div id="metric-flights" class="metric-value">—</div>
+                    <p class="metric-caption">Registered flight records</p>
+                </article>
+
+                <article class="metric-card">
+                    <div class="metric-top">
+                        <span class="metric-label">Reservations</span>
+                        <span class="metric-icon icon-purple"
+                              aria-hidden="true">▤</span>
+                    </div>
+                    <div id="metric-reservations" class="metric-value">—</div>
+                    <p class="metric-caption">Total reservations</p>
+                </article>
+
+                <article class="metric-card">
+                    <div class="metric-top">
+                        <span class="metric-label">Passengers</span>
+                        <span class="metric-icon icon-green"
+                              aria-hidden="true">♙</span>
+                    </div>
+                    <div id="metric-passengers" class="metric-value">—</div>
+                    <p class="metric-caption">Registered passengers</p>
+                </article>
+
+                <article class="metric-card">
+                    <div class="metric-top">
+                        <span class="metric-label">Aircraft</span>
+                        <span class="metric-icon icon-orange"
+                              aria-hidden="true">▱</span>
+                    </div>
+                    <div id="metric-aircraft" class="metric-value">—</div>
+                    <p class="metric-caption">Registered aircraft</p>
+                </article>
+            </section>
+
+            <section class="dashboard-grid">
+                <div class="panel quick-actions-panel">
+                    <div class="panel-heading">
+                        <div>
+                            <h2>Quick Actions</h2>
+                            <p>Frequently used operations</p>
+                        </div>
+                    </div>
+
+                    <div class="quick-actions">
+                        <a class="action-card" href="manage-flight.html">
+                            <span class="action-icon icon-blue"
+                                  aria-hidden="true">✈</span>
+                            <span>
+                                <strong>Manage Flights</strong>
+                                <small>Create flights and update statuses</small>
+                            </span>
+                            <span class="action-arrow" aria-hidden="true">→</span>
+                        </a>
+
+                        <a class="action-card" href="manage-reservations.html">
+                            <span class="action-icon icon-purple"
+                                  aria-hidden="true">▤</span>
+                            <span>
+                                <strong>Reservations</strong>
+                                <small>Review and manage bookings</small>
+                            </span>
+                            <span class="action-arrow" aria-hidden="true">→</span>
+                        </a>
+
+                        <a class="action-card" href="manage-passengers.html">
+                            <span class="action-icon icon-green"
+                                  aria-hidden="true">♙</span>
+                            <span>
+                                <strong>Passengers</strong>
+                                <small>View passenger records</small>
+                            </span>
+                            <span class="action-arrow" aria-hidden="true">→</span>
+                        </a>
+
+                        <a class="action-card" href="manage-check-in.html">
+                            <span class="action-icon icon-orange"
+                                  aria-hidden="true">✓</span>
+                            <span>
+                                <strong>Check-in</strong>
+                                <small>Access passenger check-in records</small>
+                            </span>
+                            <span class="action-arrow" aria-hidden="true">→</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="panel system-panel">
+                    <div class="panel-heading">
+                        <div>
+                            <h2>System Status</h2>
+                            <p>Application connectivity</p>
+                        </div>
+                    </div>
+
+                    <div class="status-row">
+                        <span class="status-indicator" id="api-indicator"></span>
+                        <div class="status-copy">
+                            <strong>Backend API</strong>
+                            <small id="api-status">Not checked</small>
+                        </div>
+                        <span id="api-badge" class="status-badge">Unknown</span>
+                    </div>
+
+                    <div class="status-row">
+                        <span class="status-indicator status-neutral"
+                              id="data-indicator"></span>
+                        <div class="status-copy">
+                            <strong>Dashboard data</strong>
+                            <small id="data-status">Waiting for API</small>
+                        </div>
+                        <span id="data-badge" class="status-badge">Pending</span>
+                    </div>
+
+                    <div class="system-note">
+                        <strong>Note</strong>
+                        <p>
+                            Dashboard statistics require the backend summary
+                            endpoint. Individual modules use their own APIs.
+                        </p>
+                    </div>
+
+                    <button id="check-status" class="button button-secondary button-full"
+                            type="button">
+                        Check connection
+                    </button>
+                </div>
+            </section>
+
+            <section class="panel modules-panel">
+                <div class="panel-heading modules-heading">
+                    <div>
+                        <h2>System Modules</h2>
+                        <p>Access all areas of the airline system</p>
+                    </div>
+
+                    <label class="module-search">
+                        <span class="visually-hidden">Search modules</span>
+                        <input id="module-search" type="search"
+                               placeholder="Find a module...">
+                    </label>
+                </div>
+
+                <div class="module-grid" id="module-grid">
+
+                    <a class="module-card" href="manage-airlines.html"
+                       data-module="airlines company administration">
+                        <span class="module-icon icon-blue">✈</span>
+                        <strong>Airlines</strong>
+                        <small>Airline records and details</small>
+                    </a>
+
+                    <a class="module-card" href="manage-employees.html"
+                       data-module="employees staff accounts">
+                        <span class="module-icon icon-purple">♙</span>
+                        <strong>Employees</strong>
+                        <small>Staff and employee records</small>
+                    </a>
+
+                    <a class="module-card" href="manage-airports.html"
+                       data-module="airports locations">
+                        <span class="module-icon icon-green">⌖</span>
+                        <strong>Airports</strong>
+                        <small>Airport information</small>
+                    </a>
+
+                    <a class="module-card" href="manage-routes.html"
+                       data-module="routes origin destination">
+                        <span class="module-icon icon-orange">⇄</span>
+                        <strong>Routes</strong>
+                        <small>Origins, destinations and routes</small>
+                    </a>
+
+                    <a class="module-card" href="manage-aircraft.html"
+                       data-module="aircraft fleet planes">
+                        <span class="module-icon icon-blue">▱</span>
+                        <strong>Aircraft</strong>
+                        <small>Fleet and aircraft records</small>
+                    </a>
+
+                    <a class="module-card" href="manage-seats.html"
+                       data-module="seats seat configuration">
+                        <span class="module-icon icon-purple">▦</span>
+                        <strong>Seats</strong>
+                        <small>Aircraft seat configurations</small>
+                    </a>
+
+                    <a class="module-card" href="manage-flight-schedules.html"
+                       data-module="flight schedules templates recurring">
+                        <span class="module-icon icon-green">◷</span>
+                        <strong>Flight Schedules</strong>
+                        <small>Recurring schedule templates</small>
+                    </a>
+
+                    <a class="module-card" href="manage-flight.html"
+                       data-module="flights operations status">
+                        <span class="module-icon icon-orange">✈</span>
+                        <strong>Flights</strong>
+                        <small>Flight instances and statuses</small>
+                    </a>
+
+                    <a class="module-card" href="manage-fares.html"
+                       data-module="fares pricing">
+                        <span class="module-icon icon-blue">$</span>
+                        <strong>Fares</strong>
+                        <small>Flight pricing and fare records</small>
+                    </a>
+
+                    <a class="module-card" href="manage-passengers.html"
+                       data-module="passengers travelers">
+                        <span class="module-icon icon-purple">♙</span>
+                        <strong>Passengers</strong>
+                        <small>Passenger profiles</small>
+                    </a>
+
+                    <a class="module-card" href="manage-reservations.html"
+                       data-module="reservations bookings">
+                        <span class="module-icon icon-green">▤</span>
+                        <strong>Reservations</strong>
+                        <small>Booking and reservation records</small>
+                    </a>
+
+                    <a class="module-card" href="manage-booking-segments.html"
+                       data-module="booking segments itineraries seats">
+                        <span class="module-icon icon-orange">⇢</span>
+                        <strong>Booking Segments</strong>
+                        <small>Individual flight legs in bookings</small>
+                    </a>
+
+                    <a class="module-card" href="manage-tickets.html"
+                       data-module="tickets ticketing">
+                        <span class="module-icon icon-blue">▧</span>
+                        <strong>Tickets</strong>
+                        <small>Ticket issuance and records</small>
+                    </a>
+
+                    <a class="module-card" href="manage-payments.html"
+                       data-module="payments transactions">
+                        <span class="module-icon icon-green">¤</span>
+                        <strong>Payments</strong>
+                        <small>Payment records and status</small>
+                    </a>
+
+                    <a class="module-card" href="manage-cancellations.html"
+                       data-module="cancellations refunds">
+                        <span class="module-icon icon-orange">↶</span>
+                        <strong>Cancellations</strong>
+                        <small>Cancellation and refund records</small>
+                    </a>
+
+                    <a class="module-card" href="manage-check-in.html"
+                       data-module="check-in checkin boarding">
+                        <span class="module-icon icon-purple">✓</span>
+                        <strong>Check-in</strong>
+                        <small>Passenger check-in operations</small>
+                    </a>
+
+                    <a class="module-card" href="manage-baggage.html"
+                       data-module="baggage luggage bags">
+                        <span class="module-icon icon-blue">▣</span>
+                        <strong>Baggage</strong>
+                        <small>Baggage tracking and records</small>
+                    </a>
+
+                </div>
+
+                <p id="no-modules" class="empty-state hidden">
+                    No modules match your search.
+                </p>
+            </section>
+
+            <footer class="page-footer">
+                <span>Airline Reservation System</span>
+                <span>Administrative workspace</span>
+            </footer>
+        </main>
+    </div>
+</div>
+</body>
+</html>

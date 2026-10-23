@@ -1,147 +1,269 @@
 
 package com.airline.controller;
 
+import com.airline.model.Employee;
 import com.airline.model.Flight;
 import com.airline.service.FlightService;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
 import java.io.IOException;
+import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
-import java.util.List;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Function;
 
 public class FlightController implements HttpHandler {
 
     private final FlightService flightService;
+    private final Function<HttpExchange, Employee> employeeResolver;
     private final ObjectMapper objectMapper;
 
-    public FlightController(FlightService flightService) {
+    public FlightController(
+            FlightService flightService,
+            Function<HttpExchange, Employee> employeeResolver
+    ) {
         this.flightService = flightService;
-        this.objectMapper = new ObjectMapper()
-                .findAndRegisterModules();
+        this.employeeResolver = employeeResolver;
+
+        this.objectMapper = new ObjectMapper();
+        this.objectMapper.registerModule(new JavaTimeModule());
+        this.objectMapper.disable(
+                SerializationFeature.WRITE_DATES_AS_TIMESTAMPS
+        );
+        this.objectMapper.configure(
+                DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,
+                true
+        );
     }
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
         try {
             String method = exchange.getRequestMethod();
-            String path = exchange.getRequestURI().getPath();
 
-            if (!method.equals("GET")) {
-                exchange.getResponseHeaders().set("Allow", "GET");
-                sendJson(exchange, 405,
-                        "{\"error\":\"Method not allowed\"}");
-                return;
-            }
+            switch (method) {
+                case "GET" -> handleGet(exchange);
+                case "POST" -> handlePost(exchange);
+                default -> {
+                    exchange.getResponseHeaders()
+                            .set("Allow", "GET, POST");
 
-            // GET /api/flights
-            if (path.equals("/api/flights")
-                    || path.equals("/api/flights/")) {
-
-                List<Flight> flights = flightService.getAllFlights();
-
-                sendJson(exchange, 200, flights);
-                return;
-            }
-
-            // GET /api/flights/{id}
-            String prefix = "/api/flights/";
-
-            if (path.startsWith(prefix)) {
-                String idText = path.substring(prefix.length());
-
-                long flightId;
-
-                try {
-                    flightId = Long.parseLong(idText);
-
-                    if (flightId <= 0) {
-                        throw new NumberFormatException();
-                    }
-                } catch (NumberFormatException e) {
-                    sendJson(exchange, 400,
-                            "{\"error\":\"Invalid flight ID\"}");
-                    return;
+                    sendJson(exchange, 405, Map.of(
+                            "error", "Method not allowed"
+                    ));
                 }
-
-                Flight flight = flightService.findFlightById(flightId);
-
-                if (flight == null) {
-                    sendJson(exchange, 404,
-                            "{\"error\":\"Flight not found\"}");
-                    return;
-                }
-
-                sendJson(exchange, 200, flight);
-                return;
             }
 
-            sendJson(exchange, 404,
-                    "{\"error\":\"Endpoint not found\"}");
+        } catch (SecurityException e) {
+            sendJson(exchange, 403, Map.of(
+                    "error", e.getMessage()
+            ));
 
         } catch (IllegalArgumentException e) {
-            sendJson(exchange, 400,
-                    new ErrorResponse(e.getMessage()));
+            sendJson(exchange, 400, Map.of(
+                    "error", e.getMessage()
+            ));
 
         } catch (SQLException e) {
             e.printStackTrace();
-            sendJson(exchange, 500,
-                    new ErrorResponse("Database operation failed"));
+
+            sendJson(exchange, 500, Map.of(
+                    "error", "A database error occurred."
+            ));
 
         } catch (Exception e) {
             e.printStackTrace();
-            sendJson(exchange, 500,
-                    new ErrorResponse("Internal server error"));
+
+            sendJson(exchange, 500, Map.of(
+                    "error", "An internal server error occurred."
+            ));
 
         } finally {
             exchange.close();
         }
     }
 
+    private void handleGet(HttpExchange exchange)
+            throws SQLException, IOException {
+
+        Map<String, String> params =
+                parseQuery(exchange.getRequestURI().getRawQuery());
+
+        // GET /api/flights?id=1
+        if (params.containsKey("id")) {
+            long flightId;
+
+            try {
+                flightId = Long.parseLong(params.get("id"));
+            } catch (NumberFormatException e) {
+                throw new IllegalArgumentException(
+                        "Flight ID must be a valid integer."
+                );
+            }
+
+            if (flightId <= 0) {
+
+                throw new IllegalArgumentException(
+                        "Flight ID must be positive."
+                );
+            }
+
+            Flight flight = flightService.findFlightById(flightId);
+
+            if (flight == null) {
+                sendJson(exchange, 404, Map.of(
+                        "error", "Flight not found."
+                ));
+                return;
+            }
+
+            sendJson(exchange, 200, flight);
+            return;
+        }
+
+        // GET /api/flights?departureCountry=...&arrivalCountry=...
+        boolean hasDeparture = params.containsKey("departureCountry");
+        boolean hasArrival = params.containsKey("arrivalCountry");
+
+        if (hasDeparture || hasArrival) {
+            if (!hasDeparture || !hasArrival
+                    || params.get("departureCountry").isBlank()
+                    || params.get("arrivalCountry").isBlank()) {
+                throw new IllegalArgumentException(
+                        "Both departureCountry and arrivalCountry "
+                                + "are required."
+                );
+            }
+
+            sendJson(
+                    exchange,
+                    200,
+                    flightService.getFlightsByDepAndArrCountries(
+                            params.get("departureCountry"),
+                            params.get("arrivalCountry")
+                    )
+            );
+            return;
+        }
+
+        // GET /api/flights
+        sendJson(exchange, 200, flightService.getAllFlights());
+    }
+
+    private void handlePost(HttpExchange exchange)
+            throws IOException, SQLException {
+
+        Employee employee = employeeResolver.apply(exchange);
+
+        // Do not accept an employee role directly from the request body.
+        if (employee == null) {
+            sendJson(exchange, 401, Map.of(
+                    "error", "Authentication is required."
+            ));
+            return;
+        }
+
+        AddFlightRequest request = objectMapper.readValue(
+                exchange.getRequestBody(),
+                AddFlightRequest.class
+        );
+
+        if (request.flight_date() == null
+                || request.schedule_id() <= 0
+                || request.flight_status() == null
+                || request.flight_status().isBlank()) {
+            throw new IllegalArgumentException(
+                    "Flight date, valid schedule ID, and status are required."
+            );
+        }
+
+        // Adapt the incoming request to your existing Flight model.
+        Flight flight = new Flight(
+                0L,
+                request.flight_date(),
+                null,
+                null,
+                request.aircraft_id(),
+                null,
+                null,
+                request.actual_departure(),
+                request.actual_arrival(),
+                request.flight_status(),
+                request.schedule_id()
+        );
+
+        long flightId = flightService.addFlight(employee, flight);
+
+        sendJson(exchange, 201, Map.of(
+                "message", "Flight created successfully.",
+                "flightId", flightId
+        ));
+    }
+
+    private Map<String, String> parseQuery(String query) {
+        Map<String, String> params = new HashMap<>();
+
+        if (query == null || query.isBlank()) {
+            return params;
+        }
+
+        for (String pair : query.split("&")) {
+            String[] parts = pair.split("=", 2);
+
+            String key = URLDecoder.decode(
+                    parts[0], StandardCharsets.UTF_8
+            );
+
+            String value = parts.length > 1
+                    ? URLDecoder.decode(
+                    parts[1], StandardCharsets.UTF_8
+            )
+                    : "";
+
+            params.put(key, value);
+        }
+
+        return params;
+    }
+
     private void sendJson(
             HttpExchange exchange,
             int status,
-            Object data
+            Object body
     ) throws IOException {
 
-        byte[] response = objectMapper.writeValueAsBytes(data);
+        byte[] json = objectMapper.writeValueAsBytes(body);
 
         exchange.getResponseHeaders().set(
-                "Content-Type", "application/json; charset=UTF-8");
+                "Content-Type",
+                "application/json; charset=UTF-8"
+        );
 
         exchange.getResponseHeaders().set(
-                "Cache-Control", "no-store");
+                "X-Content-Type-Options",
+                "nosniff"
+        );
 
-        exchange.sendResponseHeaders(status, response.length);
+        exchange.sendResponseHeaders(status, json.length);
 
-        exchange.getResponseBody().write(response);
+        exchange.getResponseBody().write(json);
     }
 
-    public static class ErrorResponse {
-        private final String error;
-
-        public ErrorResponse(String error) {
-            this.error = error;
-        }
-
-        public String getError() {
-            return error;
-        }
-    }
+    public record AddFlightRequest(
+            LocalDate flight_date,
+            Long aircraft_id,
+            LocalTime actual_departure,
+            LocalTime actual_arrival,
+            String flight_status,
+            long schedule_id
+    ) {}
 }
-
-
-/*
-The most useful methods
-Method	Purpose
-writeValueAsString(object)	         Convert a Java object to a JSON string
-writeValueAsBytes(object)	         Convert a Java object to UTF-8 JSON bytes
-readValue(json, Class)	             Convert JSON into a Java object
-readValue(inputStream, Class)	     Read JSON directly from a request body
-readTree(json)	                     Parse JSON into a tree you can inspect
-treeToValue(node, Class)	         Convert a JSON tree node to a Java object
-convertValue(object, Class)	         Convert between compatible Java representations
-writerWithDefaultPrettyPrinter()	 Produce formatted, readable JSON
-*/

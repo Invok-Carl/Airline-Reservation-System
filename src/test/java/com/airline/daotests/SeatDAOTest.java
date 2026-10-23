@@ -1,7 +1,9 @@
 package com.airline.daotests;
 
+import com.airline.dao.BookingSegmentDAO;
 import com.airline.dao.PassengerDAO;
 import com.airline.dao.SeatDAO;
+import com.airline.model.BookingSegment;
 import com.airline.model.Passenger;
 import com.airline.model.Seat;
 import com.airline.util.connection.DatabaseConnection;
@@ -21,13 +23,19 @@ class SeatDAOTest {
     private Connection connection;
     private SeatDAO seatDAO;
     private Seat seat;
+    private BookingSegmentDAO bookingSegmentDAO;
+    private BookingSegment bookingSegment;
 
     @BeforeEach
     void setup() throws Exception {
         connection = DatabaseConnection.getConnection();
+        bookingSegmentDAO = new BookingSegmentDAO();
         connection.setAutoCommit(false);
         seatDAO = new SeatDAO();
         seat = new Seat(1, "99C", "ECONOMY", "WINDOW");
+        bookingSegment = new BookingSegment(
+                26, 11111111111118L,
+                1, 0, 1, 1);
     }
     @AfterEach
     void cleanup() throws Exception {
@@ -56,11 +64,18 @@ class SeatDAOTest {
     @Test
     void testGetSeatsByFlightId() throws Exception {
         long seatId = seatDAO.insertSeat(connection, seat);
-        Map<Long, Seat> seats = seatDAO.getSeatsByFlight(connection, 1);
-        assertEquals(181, seats.size());
-        seat.setSeat_id(seatId);
-        assertNotNull(seats.get(seatId).getSeat_id());
-        assertEquals(seatId, seats.get(seatId).getSeat_id());
+
+        // Create a booking segment for this seat and flight.
+        bookingSegment.setSeat_id(seatId);
+        bookingSegment.setFlight_id(1);
+
+        bookingSegmentDAO.addBookingSegment(connection, bookingSegment);
+
+        Map<Long, Seat> seats =
+                seatDAO.getSeatsByFlight(connection, 1);
+
+        assertEquals(180, seats.size());
+        assertNull(seats.get(seatId));
     }
 
 
