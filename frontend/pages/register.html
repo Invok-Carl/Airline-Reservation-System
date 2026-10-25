@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Passenger Registration | Airline Reservation System</title>
+    <link rel="stylesheet" href="../css/register.css">
+    <script src="../js/register.js" defer></script>
+</head>
+<body>
+<header class="topbar">
+    <a class="brand" href="../index.html"><span class="mark">A</span> Airline Reservation System</a>
+    <nav><a href="flights.html">Find flights</a><a href="login.html">Sign in</a></nav>
+</header>
+<main class="wrap">
+    <section class="intro">
+        <p class="eyebrow">PASSENGER ACCOUNT</p>
+        <h1>Create your account</h1>
+        <p>Enter your personal, account, and passport information.</p>
+        <p class="notice">Successful registration signs you in automatically. The current backend requires a positive Passenger ID.</p>
+    </section>
+    <section class="panel">
+        <div id="form-message" class="message hidden" role="status" aria-live="polite"></div>
+        <form id="register-form" method="post">
+            <fieldset><legend>Account information</legend><div class="grid">
+                <label>Passenger ID *<input name="passengerId" type="number" min="1" step="1" required><small>Required by the current backend.</small></label>
+                <label>Email address *<input name="email" type="email" autocomplete="email" maxlength="254" required></label>
+                <label>Password *<input id="password" name="password" type="password" minlength="12" autocomplete="new-password" required><small>At least 12 characters.</small></label>
+                <label>Confirm password *<input id="confirm-password" type="password" minlength="12" autocomplete="new-password" required></label>
+            </div></fieldset>
+            <fieldset><legend>Personal information</legend><div class="grid">
+                <label>First name *<input name="firstName" type="text" autocomplete="given-name" required></label>
+                <label>Last name *<input name="lastName" type="text" autocomplete="family-name" required></label>
+                <label>Date of birth *<input id="date-of-birth" name="dateOfBirth" type="date" autocomplete="bday" required></label>
+                <label>Gender *<select name="gender" required><option value="">Select gender</option><option value="MALE">Male</option><option value="FEMALE">Female</option><option value="OTHER">Other</option><option value="PREFER_NOT_TO_SAY">Prefer not to say</option></select></label>
+                <label>Nationality<input name="nationality" autocomplete="country-name"></label>
+                <label>Phone number<input name="phone" type="tel" autocomplete="tel"></label>
+                <label class="wide">Address<textarea name="address" rows="2" autocomplete="street-address"></textarea></label>
+            </div></fieldset>
+            <fieldset><legend>Passport information</legend><div class="grid">
+                <label>Passport number *<input name="passportNumber" required autocomplete="off"></label>
+                <label>Passport expiry date<input id="passport-expiry" name="passportExpiry" type="date"></label>
+                <label class="wide">Passport issuing country<input name="passportCountry"></label>
+            </div></fieldset>
+            <button id="submit-button" type="submit"><span id="button-label">Create account</span><span id="spinner" class="spinner hidden" aria-hidden="true"></span></button>
+            <p class="below">Already registered? <a href="login.html">Sign in</a></p>
+        </form>
+
+    </section>
+</main>
+<footer><span>Airline Reservation System</span><span>Passenger registration</span></footer>
+</body>
+</html>

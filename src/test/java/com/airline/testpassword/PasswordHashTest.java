@@ -8,7 +8,7 @@ public class PasswordHashTest {
     @Test
     void generatePasswordHash() {
 
-        String password = "agentPassword";
+        String password = "thisisthepass";
 
         String hash =
                 PasswordHasher.hashPassword(password);

@@ -1,4 +1,4 @@
-
+/*
 "use strict";
 
 const DASHBOARD_API = {

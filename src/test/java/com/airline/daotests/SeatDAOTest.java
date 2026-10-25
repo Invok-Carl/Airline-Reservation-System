@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -35,7 +36,7 @@ class SeatDAOTest {
         seat = new Seat(1, "99C", "ECONOMY", "WINDOW");
         bookingSegment = new BookingSegment(
                 26, 11111111111118L,
-                1, 0, 1, 1);
+                1, 1623,  1);
     }
     @AfterEach
     void cleanup() throws Exception {
@@ -62,7 +63,7 @@ class SeatDAOTest {
     }
 
     @Test
-    void testGetSeatsByFlightId() throws Exception {
+    void testGetAvailableSeatsByFlightId() throws Exception {
         long seatId = seatDAO.insertSeat(connection, seat);
 
         // Create a booking segment for this seat and flight.
@@ -70,12 +71,23 @@ class SeatDAOTest {
         bookingSegment.setFlight_id(1);
 
         bookingSegmentDAO.addBookingSegment(connection, bookingSegment);
+        Seat addedSeat = seatDAO.getSeatById(connection, seatId);
+        assertNotNull(addedSeat);
 
         Map<Long, Seat> seats =
-                seatDAO.getSeatsByFlight(connection, 1);
+                seatDAO.getAvailableSeatsMapByFlight(connection, 1);
 
-        assertEquals(180, seats.size());
+        assertEquals(179, seats.size());
         assertNull(seats.get(seatId));
+    }
+    @Test
+    void testGetSeatsByFlightMapAndList() throws SQLException{
+        Map<Long, Seat> seats1 = seatDAO.getSeatsMapByFlight(connection, 1L);
+        List<Seat> seats = seatDAO.getSeatsListByFlight(connection, 1L);
+        assertNotNull(seats1.get(1623L));
+        assertNotNull(seats.get(179));
+        assertEquals(180, seats.size());
+        assertEquals(180, seats1.size());
     }
 
 

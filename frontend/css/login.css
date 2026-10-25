@@ -1,0 +1,755 @@
+
+/* ========================================
+   SkyWays — Login Page
+   ======================================== */
+
+:root {
+    --primary: #2457e6;
+    --primary-dark: #1944c2;
+    --primary-light: #edf2ff;
+
+    --background: #f5f7fc;
+    --surface: #ffffff;
+
+    --text-primary: #172033;
+    --text-secondary: #68738a;
+    --text-muted: #929bb0;
+
+    --border: #e0e5ef;
+    --danger: #c62828;
+    --success: #18794e;
+
+    --radius-sm: 8px;
+    --radius-md: 14px;
+    --radius-lg: 22px;
+
+    --shadow: 0 20px 60px rgba(23, 32, 51, 0.12);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    min-height: 100%;
+}
+
+body {
+    min-height: 100vh;
+    padding: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: var(--background);
+    color: var(--text-primary);
+
+    font-family:
+        Inter,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        sans-serif;
+
+    -webkit-font-smoothing: antialiased;
+}
+
+button,
+input {
+    font: inherit;
+}
+
+button,
+a,
+input {
+    -webkit-tap-highlight-color: transparent;
+}
+
+a {
+    color: var(--primary);
+    text-decoration: none;
+}
+
+a:hover {
+    color: var(--primary-dark);
+}
+
+/* ========================================
+   Main layout
+   ======================================== */
+
+.login-layout {
+    width: 100%;
+    max-width: 1120px;
+    min-height: 680px;
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+
+    overflow: hidden;
+    background: var(--surface);
+    border: 1px solid rgba(224, 229, 239, 0.8);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow);
+}
+
+/* ========================================
+   Left branding panel
+   ======================================== */
+
+.brand-panel {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+
+    min-height: 680px;
+    padding: 44px;
+
+    overflow: hidden;
+
+    color: #ffffff;
+    background:
+        radial-gradient(
+            circle at 85% 15%,
+            rgba(112, 151, 255, 0.4),
+            transparent 35%
+        ),
+        linear-gradient(145deg, #173ba8 0%, #2457e6 52%, #3979f6 100%);
+}
+
+.brand {
+    position: relative;
+    z-index: 2;
+
+    display: inline-flex;
+    align-items: center;
+    gap: 11px;
+
+    width: fit-content;
+
+    color: #ffffff;
+    font-size: 24px;
+    font-weight: 750;
+    letter-spacing: -0.8px;
+}
+
+.brand:hover {
+    color: #ffffff;
+}
+
+.brand-mark {
+    width: 40px;
+    height: 40px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.17);
+
+    font-size: 23px;
+}
+
+.brand-copy {
+    position: relative;
+    z-index: 2;
+    margin-top: 105px;
+    max-width: 410px;
+}
+
+.eyebrow {
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 2px;
+}
+
+.brand-copy .eyebrow {
+    margin-bottom: 20px;
+    color: #cbd9ff;
+}
+
+.brand-copy h1 {
+    max-width: 400px;
+    margin-bottom: 22px;
+
+    font-size: clamp(36px, 4vw, 49px);
+    line-height: 1.12;
+    font-weight: 750;
+    letter-spacing: -1.8px;
+}
+
+.brand-copy > p:last-child {
+    max-width: 350px;
+
+    color: #dce6ff;
+    font-size: 15px;
+    line-height: 1.9;
+}
+
+/* Decorative flight route */
+
+.route-art {
+    position: relative;
+    flex: 1;
+    min-height: 170px;
+    margin-top: 20px;
+}
+
+.route-line {
+    position: absolute;
+    top: 70px;
+    left: 7%;
+    width: 78%;
+    height: 100px;
+
+    border-top: 2px dashed rgba(255, 255, 255, 0.45);
+    border-radius: 50%;
+
+    transform: rotate(-12deg);
+}
+
+.route-dot {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+
+    border: 3px solid rgba(255, 255, 255, 0.9);
+    border-radius: 50%;
+    background: #8db4ff;
+}
+
+.dot-one {
+    top: 64px;
+    left: 7%;
+}
+
+.dot-two {
+    top: 38px;
+    right: 15%;
+}
+
+.route-plane {
+    position: absolute;
+    top: 27px;
+    left: 48%;
+
+    display: block;
+    color: #ffffff;
+    font-size: 27px;
+
+    transform: rotate(-12deg);
+}
+
+.route-label {
+    position: absolute;
+    color: rgba(255, 255, 255, 0.75);
+
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+}
+
+.label-one {
+    top: 88px;
+    left: 4%;
+}
+
+.label-two {
+    top: 12px;
+    right: 5%;
+}
+
+.brand-footer {
+    position: relative;
+    z-index: 2;
+
+    margin-top: auto;
+    padding-top: 24px;
+
+    color: #dce6ff;
+    font-size: 12px;
+    letter-spacing: 0.3px;
+}
+
+/* ========================================
+   Right form panel
+   ======================================== */
+
+.form-panel {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 55px 48px;
+    background: var(--surface);
+}
+
+.form-wrap {
+    width: 100%;
+    max-width: 410px;
+}
+
+.mobile-brand {
+    display: none;
+}
+
+.form-eyebrow {
+    margin-bottom: 13px;
+    color: var(--primary);
+}
+
+.form-wrap h2 {
+    margin-bottom: 12px;
+
+    color: var(--text-primary);
+    font-size: 30px;
+    line-height: 1.25;
+    font-weight: 750;
+    letter-spacing: -1px;
+}
+
+.form-subtitle {
+    margin-bottom: 30px;
+
+    color: var(--text-secondary);
+    font-size: 13px;
+    line-height: 1.7;
+}
+
+/* ========================================
+   Account type selector
+   ======================================== */
+
+.role-fieldset {
+    min-width: 0;
+    margin-bottom: 27px;
+    border: 0;
+}
+
+.role-fieldset legend {
+    margin-bottom: 12px;
+
+    color: var(--text-primary);
+    font-size: 13px;
+    font-weight: 650;
+}
+
+.role-options {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+}
+
+.role-option {
+    display: block;
+    cursor: pointer;
+}
+
+.role-option input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.role-card {
+    min-height: 84px;
+    padding: 12px 6px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    background: #ffffff;
+
+    color: var(--text-secondary);
+    font-size: 12px;
+    font-weight: 650;
+    text-align: center;
+
+    transition:
+        border-color 160ms ease,
+        background-color 160ms ease,
+        color 160ms ease,
+        box-shadow 160ms ease;
+}
+
+.role-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 31px;
+    height: 31px;
+
+    border-radius: 9px;
+    background: #f0f3fa;
+
+    color: #52617d;
+    font-size: 19px;
+}
+
+.role-option input:checked + .role-card {
+    border-color: var(--primary);
+    background: var(--primary-light);
+    color: var(--primary);
+    box-shadow: 0 0 0 1px var(--primary);
+}
+
+.role-option input:checked + .role-card .role-icon {
+    background: #dce6ff;
+    color: var(--primary);
+}
+
+.role-option input:focus-visible + .role-card {
+    outline: 3px solid rgba(36, 87, 230, 0.25);
+    outline-offset: 3px;
+}
+
+/* ========================================
+   Form fields
+   ======================================== */
+
+.field {
+    margin-bottom: 21px;
+}
+
+.field > label,
+.label-row > label {
+    display: block;
+    margin-bottom: 9px;
+
+    color: var(--text-primary);
+    font-size: 13px;
+    font-weight: 650;
+}
+
+.label-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.field input {
+    width: 100%;
+    min-height: 49px;
+    padding: 0 15px;
+
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    outline: none;
+
+    background: #ffffff;
+    color: var(--text-primary);
+
+    font-size: 13px;
+
+    transition:
+        border-color 160ms ease,
+        box-shadow 160ms ease;
+}
+
+.field input::placeholder {
+    color: #a0a8b9;
+}
+
+.field input:hover {
+    border-color: #b8c4dc;
+}
+
+.field input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(36, 87, 230, 0.11);
+}
+
+.password-wrap {
+    position: relative;
+}
+
+.password-wrap input {
+    padding-right: 70px;
+}
+
+.password-toggle {
+    position: absolute;
+    top: 50%;
+    right: 14px;
+
+    padding: 5px 0;
+    border: 0;
+    background: transparent;
+
+    color: var(--primary);
+    font-size: 12px;
+    font-weight: 700;
+
+    cursor: pointer;
+    transform: translateY(-50%);
+}
+
+.password-toggle:hover {
+    color: var(--primary-dark);
+}
+
+.password-toggle:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 3px;
+    border-radius: 3px;
+}
+
+/* ========================================
+   Messages and submit button
+   ======================================== */
+
+.form-message {
+    min-height: 0;
+    margin-bottom: 0;
+
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+.form-message:not(:empty) {
+    margin-top: -3px;
+    margin-bottom: 15px;
+    padding: 10px 12px;
+
+    border-radius: var(--radius-sm);
+    background: #fff0f0;
+    color: var(--danger);
+}
+
+.form-message.success {
+    background: #eaf8f0;
+    color: var(--success);
+}
+
+.submit-button {
+    width: 100%;
+    min-height: 50px;
+    padding: 0 18px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+
+    border: 0;
+    border-radius: var(--radius-sm);
+
+    background: var(--primary);
+    color: #ffffff;
+
+    font-size: 14px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        background-color 160ms ease,
+        transform 160ms ease,
+        box-shadow 160ms ease;
+}
+
+.submit-button:hover {
+    background: var(--primary-dark);
+    box-shadow: 0 6px 16px rgba(36, 87, 230, 0.2);
+}
+
+.submit-button:active {
+    transform: translateY(1px);
+}
+
+.submit-button:focus-visible {
+    outline: 3px solid rgba(36, 87, 230, 0.3);
+    outline-offset: 3px;
+}
+
+.submit-button:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+/* ========================================
+   Bottom links and security note
+   ======================================== */
+
+.register-prompt {
+    margin-top: 24px;
+
+    color: var(--text-secondary);
+    font-size: 12px;
+    line-height: 1.8;
+    text-align: center;
+}
+
+.register-prompt a {
+    margin-left: 3px;
+    font-weight: 700;
+}
+
+.back-link {
+    display: block;
+    width: fit-content;
+    margin: 25px auto 0;
+
+    color: var(--text-secondary);
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.back-link:hover {
+    color: var(--primary);
+}
+
+.security-note {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    margin-top: 32px;
+
+    color: var(--text-muted);
+    font-size: 10px;
+    line-height: 1.6;
+    text-align: center;
+}
+
+.security-note span {
+    color: var(--success);
+    font-size: 9px;
+}
+
+/* ========================================
+   Responsive layout
+   ======================================== */
+
+@media (max-width: 900px) {
+    body {
+        padding: 20px;
+    }
+
+    .login-layout {
+        max-width: 760px;
+        grid-template-columns: 0.85fr 1.15fr;
+    }
+
+    .brand-panel {
+        padding: 32px;
+    }
+
+    .brand-copy {
+        margin-top: 90px;
+    }
+
+    .brand-copy h1 {
+        font-size: 38px;
+    }
+
+    .form-panel {
+        padding: 45px 30px;
+    }
+}
+
+@media (max-width: 650px) {
+    body {
+        display: block;
+        padding: 0;
+        background: #ffffff;
+    }
+
+    .login-layout {
+        display: block;
+        min-height: 100vh;
+
+        border: 0;
+        border-radius: 0;
+        box-shadow: none;
+    }
+
+    .brand-panel {
+        display: none;
+    }
+
+    .form-panel {
+        min-height: 100vh;
+        align-items: flex-start;
+        padding: 35px 24px;
+    }
+
+    .form-wrap {
+        max-width: 440px;
+        margin: 0 auto;
+    }
+
+    .mobile-brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+
+        margin-bottom: 48px;
+
+        color: var(--text-primary);
+        font-size: 22px;
+        font-weight: 750;
+        letter-spacing: -0.6px;
+    }
+
+    .mobile-brand .brand-mark {
+        background: var(--primary-light);
+        color: var(--primary);
+    }
+
+    .form-wrap h2 {
+        font-size: 28px;
+    }
+
+    .form-subtitle {
+        margin-bottom: 27px;
+    }
+}
+
+@media (max-width: 380px) {
+    .form-panel {
+        padding: 28px 17px;
+    }
+
+    .role-options {
+        gap: 7px;
+    }
+
+    .role-card {
+        min-height: 78px;
+        font-size: 11px;
+    }
+
+    .mobile-brand {
+        margin-bottom: 38px;
+    }
+
+    .form-wrap h2 {
+        font-size: 25px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+    }
+}

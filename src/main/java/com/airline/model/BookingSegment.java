@@ -7,6 +7,7 @@ public class BookingSegment {
     private long flight_id;
     private long seat_id;
     private long fare_id;
+    public BookingSegment(){}
     public BookingSegment(long segment_id, long reservation_id,
                               long passenger_id, long flight_id,
                               long seat_id, long fare_id) {

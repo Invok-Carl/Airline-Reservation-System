@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Employee Dashboard | Skyline Airline</title>
+    <link rel="stylesheet" href="/css/employee-dashboard.css">
+    <script src="/js/employee-dashboard.js" defer></script>
+</head>
+<body>
+<div class="layout">
+    <aside class="sidebar" id="sidebar">
+        <a class="brand" href="/pages/employee-dashboard.html"><span class="brand-icon">A</span><span><b>SKYLINE</b><small>Airline Operations</small></span></a>
+        <p class="nav-heading">WORKSPACE</p>
+        <nav>
+            <a class="nav-link active" href="/pages/employee-dashboard.html">▦ <span>Dashboard</span></a>
+            <a class="nav-link" href="/pages/flights.html">✈ <span>Flights</span></a>
+            <a class="nav-link" href="/pages/reservations.html" data-permission="canCreateReservation">▤ <span>Reservations</span></a>
+            <a class="nav-link" href="/pages/check-in.html" data-permission="canCheckInPassenger">✓ <span>Passenger check-in</span></a>
+            <p class="nav-heading management-heading" data-any-permission="canAddFlight,canDeleteFlight,canManageEmployees,canAddEmployee">MANAGEMENT</p>
+            <a class="nav-link" href="/pages/flight-management.html" data-permission="canAddFlight">＋ <span>Flight management</span></a>
+            <a class="nav-link" href="/pages/employee-management.html" data-any-permission="canManageEmployees,canAddEmployee">♙ <span>Employee management</span></a>
+        </nav>
+        <div class="sidebar-bottom">
+            <div class="help-box"><b>Need help?</b><p>Contact your system administrator.</p></div>
+            <button class="nav-link logout" id="logoutButton" type="button">↪ <span>Sign out</span></button>
+        </div>
+    </aside>
+
+    <main class="main">
+        <header class="topbar">
+            <button class="menu-button" id="menuButton" aria-label="Toggle navigation" aria-expanded="false">☰</button>
+            <div class="crumb">Workspace <span>/</span> <b>Dashboard</b></div>
+            <div class="topbar-right"><i class="online-dot"></i><span>System online</span><div class="mini-avatar" id="headerAvatar">E</div></div>
+        </header>
+
+        <section class="content">
+            <div class="welcome">
+                <div><p class="eyebrow">EMPLOYEE WORKSPACE</p><h1>Good day, <span id="welcomeName">Employee</span></h1><p class="sub">Here is your airline operations overview.</p></div>
+                <div class="date-chip">◷ <span id="currentDate">Loading date…</span></div>
+            </div>
+
+            <div class="error-banner" id="authError" role="alert" hidden><b>Session unavailable.</b> <span id="authErrorMessage">Please sign in again.</span><a href="/pages/login.html">Go to login</a></div>
+
+            <section class="profile-card">
+                <div class="profile-avatar" id="profileAvatar">E</div>
+                <div class="profile-main"><small>SIGNED IN AS</small><b id="employeeName">Loading employee…</b><span id="employeeUsername">Checking your session</span></div>
+                <div class="profile-meta"><small>ROLE</small><span class="role-badge" id="employeeRole">Loading…</span></div>
+                <div class="profile-meta"><small>SESSION</small><span class="session-active"><i class="online-dot"></i> Active session</span></div>
+            </section>
+
+            <div class="section-title"><div><h2>Your workspace</h2><p>Quick access to tasks available to your account.</p></div></div>
+            <section class="quick-grid">
+                <a class="quick-card" href="/pages/flights.html"><span class="quick-icon blue">✈</span><b>Browse flights</b><p>View flight schedules and details.</p><strong>Open flights →</strong></a>
+                <a class="quick-card" href="/pages/reservations.html" data-permission="canCreateReservation"><span class="quick-icon amber">▤</span><b>Reservations</b><p>Create or manage passenger bookings.</p><strong>Open reservations →</strong></a>
+                <a class="quick-card" href="/pages/check-in.html" data-permission="canCheckInPassenger"><span class="quick-icon green">✓</span><b>Passenger check-in</b><p>Find a booking and check in passengers.</p><strong>Open check-in →</strong></a>
+                <a class="quick-card" href="/pages/flight-management.html" data-permission="canAddFlight"><span class="quick-icon purple">＋</span><b>Flight management</b><p>Access authorized flight-management tasks.</p><strong>Manage flights →</strong></a>
+                <a class="quick-card" href="/pages/employee-management.html" data-any-permission="canManageEmployees,canAddEmployee"><span class="quick-icon teal">♙</span><b>Employee management</b><p>Manage employee accounts and access.</p><strong>Manage employees →</strong></a>
+            </section>
+
+            <section class="bottom-grid">
+                <article class="panel"><div class="panel-heading"><div><h2>Account permissions</h2><p>Actions enabled for your account.</p></div><span class="tag">LIVE SESSION</span></div><div id="permissionList"><div class="loading-line"></div><div class="loading-line"></div><div class="loading-line"></div></div></article>
+                <article class="panel"><div class="panel-heading"><div><h2>Account & security</h2><p>Keep your employee session secure.</p></div></div>
+                    <div class="security-row"><span class="security-icon">▣</span><div><b>Authenticated session</b><p>Your session is checked by the server.</p></div><strong class="check">✓</strong></div>
+                    <div class="security-row"><span class="security-icon">⌑</span><div><b>Role-based access</b><p>Available actions depend on your permissions.</p></div><strong class="check">✓</strong></div>
+                    <button class="secondary-button" id="accountLogoutButton">Sign out securely <span>→</span></button>
+                </article>
+            </section>
+            <footer><span>Skyline Airline Operations</span><span>Employee workspace · <span id="footerYear"></span></span></footer>
+        </section>
+    </main>
+</div>
+<div class="overlay" id="mobileOverlay" hidden></div>
+</body>
+</html>

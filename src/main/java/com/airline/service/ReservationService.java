@@ -165,6 +165,7 @@ public class ReservationService {
                  * If any insertion fails, the entire transaction rolls back.
                  */
                 for (BookingSegment segment : requestedSegments) {
+
                     segment.setReservation_id(reservationId);
 
                     bookingSegmentDAO.addBookingSegment(
@@ -183,6 +184,318 @@ public class ReservationService {
                     exception.addSuppressed(rollbackException);
                 }
 
+                throw exception;
+            }
+        }
+    }
+
+
+    public long addSegment(
+            long accountId,
+            long reservationId,
+            BookingSegment segment
+    ) throws SQLException {
+
+        if (accountId <= 0 || reservationId <= 0) {
+            throw new IllegalArgumentException(
+                    "Account ID and reservation ID must be positive."
+            );
+        }
+
+        if (segment == null
+                || segment.getPassenger_id() <= 0
+                || segment.getFlight_id() <= 0
+                || segment.getSeat_id() <= 0) {
+            throw new IllegalArgumentException(
+                    "Valid passenger, flight, and seat IDs are required."
+            );
+        }
+
+        try (Connection connection = DatabaseConnection.getConnection()) {
+            connection.setAutoCommit(false);
+
+            try {
+                // 1. Verify that this reservation belongs to the account.
+                Reservation reservation =
+                        reservationDAO.getReservationByIdAndCreatedBy(
+                                connection, reservationId, accountId
+                        );
+
+                if (reservation == null) {
+                    throw new ReservationNotFoundException(
+                            "Reservation not found."
+                    );
+                }
+
+                // 2. Only allow adding segments to pending reservations.
+                if (!"PENDING".equals(reservation.getStatus())) {
+                    throw new IllegalStateException(
+                            "Segments can only be added to pending reservations."
+                    );
+                }
+
+                long passengerId = segment.getPassenger_id();
+                long flightId = segment.getFlight_id();
+                long seatId = segment.getSeat_id();
+
+                // 3. Verify that the passenger exists.
+                if (!passengerExists(connection, passengerId)) {
+                    throw new IllegalArgumentException(
+                            "Passenger does not exist."
+                    );
+                }
+
+                // 4. Verify that the flight exists.
+                Flight flight = getFlightDetails(connection, flightId);
+
+                if (flight == null) {
+                    throw new IllegalArgumentException(
+                            "Flight does not exist."
+                    );
+                }
+
+                // 5. Check whether this passenger already has
+                // an active booking for this flight.
+                if (hasActiveBooking(
+                        connection, passengerId, flightId)) {
+                    throw new IllegalStateException(
+                            "Passenger already has an active booking for this flight."
+                    );
+                }
+
+                // 6. Check seat availability, as in createReservation().
+                if (!isSeatAvailable(connection, flightId, seatId)) {
+                    throw new IllegalStateException(
+                            "The selected seat is not available."
+                    );
+                }
+
+                // 7. Retrieve the fare for this flight and seat.
+                Fare fare = getFare(connection, flightId, seatId);
+
+                if (fare == null || fare.getTotal_fare() == null) {
+                    throw new IllegalStateException(
+                            "No valid fare was found for this flight and seat."
+                    );
+                }
+
+                if (fare.getTotal_fare().signum() < 0) {
+                    throw new IllegalStateException(
+                            "The fare cannot be negative."
+                    );
+                }
+
+                // 8. Associate the new segment with the existing reservation.
+                segment.setReservation_id(reservationId);
+                segment.setFare_id(fare.getFare_id());
+
+                // 9. Insert the segment.
+                bookingSegmentDAO.addBookingSegment(connection, segment);
+
+                // 10. Add the new fare to the existing reservation total.
+                reservationDAO.updateTotalAmount(
+                        connection,
+                        reservationId,
+                        accountId,
+                        fare.getTotal_fare()
+                );
+
+                connection.commit();
+
+                return reservationId;
+
+            } catch (SQLException | RuntimeException e) {
+                try {
+                    connection.rollback();
+                } catch (SQLException rollbackException) {
+                    e.addSuppressed(rollbackException);
+                }
+
+                throw e;
+            }
+        }
+    }
+
+
+
+    public long removeSegment(
+            long accountId,
+            long reservationId,
+            long segmentId
+    ) throws SQLException {
+
+        if (accountId <= 0 || reservationId <= 0 || segmentId <= 0) {
+            throw new IllegalArgumentException(
+                    "Account, reservation, and segment IDs must be positive."
+            );
+        }
+
+        try (Connection connection = DatabaseConnection.getConnection()) {
+            connection.setAutoCommit(false);
+
+            try {
+                // 1. Lock the reservation and verify ownership.
+                Reservation reservation =
+                        reservationDAO.getReservationByIdAndCreatedByForUpdate(
+                                connection, reservationId, accountId
+                        );
+
+                if (reservation == null) {
+                    throw new ReservationNotFoundException(
+                            "Reservation not found."
+                    );
+                }
+
+                // 2. Only allow removal from pending reservations.
+                if (!"PENDING".equals(reservation.getStatus())) {
+                    throw new IllegalStateException(
+                            "Segments can only be removed from pending reservations."
+                    );
+                }
+
+                // 3. Find the segment within this reservation.
+                BookingSegment segment =
+                        bookingSegmentDAO.getBookingSegmentByIdAndReservationId(
+                                connection, segmentId, reservationId
+                        );
+
+                if (segment == null) {
+                    throw new IllegalArgumentException(
+                            "Segment not found in this reservation."
+                    );
+                }
+
+                // 4. Do not allow the reservation to become empty.
+                int segmentCount =
+                        bookingSegmentDAO.countSegmentsByReservationId(
+                                connection, reservationId
+                        );
+
+                if (segmentCount <= 1) {
+                    throw new IllegalStateException(
+                            "Cannot remove the only segment. "
+                                    + "Cancel the reservation instead."
+                    );
+                }
+
+                // 5. Get the fare associated with this segment.
+                Fare fare = getFare(
+                        connection,
+                        segment.getFlight_id(),
+                        segment.getSeat_id()
+                );
+
+                if (fare == null || fare.getTotal_fare() == null) {
+                    throw new IllegalStateException(
+                            "Could not determine the segment fare."
+                    );
+                }
+
+                // 6. Delete the segment.
+                bookingSegmentDAO.deleteBookingSegment(
+                        connection, segmentId, reservationId
+                );
+
+                // 7. Subtract its fare from the reservation total.
+                reservationDAO.subtractTotalAmount(
+                        connection,
+                        reservationId,
+                        accountId,
+                        fare.getTotal_fare()
+                );
+
+                connection.commit();
+
+                return reservationId;
+
+            } catch (SQLException | RuntimeException e) {
+                try {
+                    connection.rollback();
+                } catch (SQLException rollbackException) {
+                    e.addSuppressed(rollbackException);
+                }
+
+                throw e;
+            }
+        }
+    }
+
+
+    public List<Reservation> getReservationsByAccount(long accountId)
+            throws SQLException {
+
+        if (accountId <= 0) {
+            throw new IllegalArgumentException("Invalid account ID.");
+        }
+
+        try (Connection connection = DatabaseConnection.getConnection()) {
+            return reservationDAO.getReservationsByCreatedBy(
+                    connection, accountId
+            );
+        }
+    }
+
+    public Reservation getReservationById(
+            long accountId,
+            long reservationId
+    ) throws SQLException {
+
+        if (accountId <= 0 || reservationId <= 0) {
+            throw new IllegalArgumentException("Invalid account or reservation ID.");
+        }
+
+        try (Connection connection = DatabaseConnection.getConnection()) {
+            return reservationDAO.getReservationByIdAndCreatedBy(
+                    connection, reservationId, accountId
+            );
+        }
+    }
+
+    public void cancelReservation(
+            long accountId,
+            long reservationId
+    ) throws SQLException {
+
+        if (accountId <= 0 || reservationId <= 0) {
+            throw new IllegalArgumentException("Invalid account or reservation ID.");
+        }
+
+        try (Connection connection = DatabaseConnection.getConnection()) {
+            connection.setAutoCommit(false);
+
+            try {
+                Reservation reservation =
+                        reservationDAO.getReservationByIdAndCreatedByForUpdate(
+                                connection, reservationId, accountId
+                        );
+
+                if (reservation == null) {
+                    throw new ReservationNotFoundException(
+                            "Reservation not found."
+                    );
+                }
+
+                String status = reservation.getStatus();
+
+                if (!"PENDING".equals(status)
+                        && !"CONFIRMED".equals(status)) {
+                    throw new IllegalStateException(
+                            "Only pending or confirmed reservations can be cancelled."
+                    );
+                }
+
+                reservationDAO.updateReservationStatusByReservationId(
+                        connection, reservationId, "CANCELLED"
+                );
+
+                connection.commit();
+
+            } catch (SQLException | RuntimeException exception) {
+                try {
+                    connection.rollback();
+                } catch (SQLException rollbackException) {
+                    exception.addSuppressed(rollbackException);
+                }
                 throw exception;
             }
         }
@@ -263,6 +576,13 @@ public class ReservationService {
         return fare;
     }
 
+
+    public class ReservationNotFoundException extends RuntimeException {
+
+        public ReservationNotFoundException(String message) {
+            super(message);
+        }
+    }
     private String generateBookingReference() {
         return UUID.randomUUID()
                 .toString()

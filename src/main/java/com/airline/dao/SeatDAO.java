@@ -6,10 +6,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
 public class SeatDAO {
     public long insertSeat(Connection connection, Seat seat) throws SQLException {
@@ -55,7 +52,59 @@ public class SeatDAO {
         }
     }
 
-    public Map<Long, Seat> getSeatsByFlight(Connection connection, long flight_id) throws SQLException {
+
+    public Map<Long, Seat> getSeatsMapByFlight(Connection connection, long flight_id) throws SQLException {
+        String sql = """
+                SELECT
+                    S.SEAT_ID,
+                    S.AIRCRAFT_ID,
+                    S.SEAT_NUMBER,
+                    S.SEAT_CLASS,
+                    S.SEAT_TYPE
+                FROM FLIGHT F
+                JOIN SEAT S ON F.AIRCRAFT_ID = S.AIRCRAFT_ID
+                WHERE F.FLIGHT_ID = ?
+                """;
+        Map<Long, Seat> seats = new HashMap<>();
+        try(PreparedStatement statement = connection.prepareStatement(sql)){
+            statement.setLong(1, flight_id);
+            try(ResultSet resultSet = statement.executeQuery()){
+                while(resultSet.next()){
+                    seats.put( resultSet.getLong("SEAT_ID") , mapResultSetToSeat(resultSet));
+                }
+            }
+        }
+        return seats;
+    }
+
+    public List<Seat> getSeatsListByFlight(Connection connection, long flight_id) throws SQLException {
+        String sql = """
+                SELECT
+                    S.SEAT_ID,
+                    S.AIRCRAFT_ID,
+                    S.SEAT_NUMBER,
+                    S.SEAT_CLASS,
+                    S.SEAT_TYPE
+                FROM FLIGHT F
+                JOIN SEAT S ON F.AIRCRAFT_ID = S.AIRCRAFT_ID
+                WHERE F.FLIGHT_ID = ?
+                ORDER BY S.SEAT_ID
+                """;
+        List<Seat> seats = new ArrayList<>();
+        try(PreparedStatement statement = connection.prepareStatement(sql)){
+            statement.setLong(1, flight_id);
+            try(ResultSet resultSet = statement.executeQuery()){
+                while(resultSet.next()){
+                    seats.add(mapResultSetToSeat(resultSet));
+                }
+            }
+        }
+        return seats;
+    }
+
+
+
+    public Map<Long, Seat> getAvailableSeatsMapByFlight(Connection connection, long flight_id) throws SQLException {
         String sql = """
                 SELECT
                     S.SEAT_ID,
@@ -81,6 +130,39 @@ public class SeatDAO {
             try(ResultSet resultSet = statement.executeQuery()){
                 while(resultSet.next()){
                     seats.put( resultSet.getLong("SEAT_ID") , mapResultSetToSeat(resultSet));
+                }
+            }
+        }
+        return seats;
+    }
+
+    public List<Seat> getAvailableSeatsListByFlight(Connection connection, long flight_id) throws SQLException {
+        String sql = """
+                SELECT
+                    S.SEAT_ID,
+                    S.AIRCRAFT_ID,
+                    S.SEAT_NUMBER,
+                    S.SEAT_CLASS,
+                    S.SEAT_TYPE
+                FROM FLIGHT F JOIN SEAT S
+                    ON F.AIRCRAFT_ID = S.AIRCRAFT_ID
+                    AND F.FLIGHT_ID = ?
+                    AND NOT EXISTS (
+                      SELECT 1
+                      FROM BOOKING_SEGMENT BS
+                      JOIN RESERVATION R ON BS.RESERVATION_ID = R.RESERVATION_ID
+                      WHERE BS.FLIGHT_ID = F.FLIGHT_ID
+                        AND BS.SEAT_ID = S.SEAT_ID
+                        AND R.STATUS <> ('CANCELLED')
+                  )
+                ORDER BY SEAT_ID
+                """;
+        List<Seat> seats = new ArrayList<>();
+        try(PreparedStatement statement = connection.prepareStatement(sql)){
+            statement.setLong(1, flight_id);
+            try(ResultSet resultSet = statement.executeQuery()){
+                while(resultSet.next()){
+                    seats.add(mapResultSetToSeat(resultSet));
                 }
             }
         }

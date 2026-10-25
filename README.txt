@@ -243,3 +243,154 @@ BaggageDAO.java
 - deleteBaggage(long baggageId) — subject to business rules
 Manage baggage registration, weight, tags,
 and handling status according to your actual Baggage columns.
+
+
+
+
+frontend/
+├── index.html
+├── login.html
+├── flights.html
+├── booking.html
+├── manage-booking.html
+├── profile.html
+│
+├── manage-airlines.html
+├── manage-employees.html
+├── manage-airports.html
+├── manage-routes.html
+├── manage-aircraft.html
+├── manage-seats.html
+├── manage-flight-schedules.html
+├── manage-flight.html
+├── manage-fares.html
+├── manage-passengers.html
+├── manage-reservations.html
+├── manage-booking-segments.html
+├── manage-tickets.html
+├── manage-payments.html
+├── manage-cancellations.html
+├── manage-check-in.html
+├── manage-baggage.html
+│
+├── css/
+│   ├── common.css
+│   ├── index.css
+│   ├── forms.css
+│   └── tables.css
+│
+└── js/
+    ├── common.js
+    ├── index.js
+    ├── auth.js
+    ├── flights.js
+    ├── booking.js
+    ├── manage-booking.js
+    └── pages/
+        ├── manage-airports.js
+        ├── manage-routes.js
+        ├── manage-aircraft.js
+        ├── manage-flight-schedules.js
+        ├── manage-flight.js
+        └── ...
+
+
+
+
+
+
+
+
+
+
+
+
+        PassengerDAO {
+            public boolean addPassenger(Connection connection,Passenger passenger)
+            public Passenger getPassengerById(Connection connection,Long passengerId)
+            public List<Passenger> getAllPassengers(Connection connection)
+            public boolean deletePassenger(Connection connection,Long passengerId)
+        }
+
+
+        PassengerAccount {
+            private long accountId;
+            private long passengerId;
+            private String email;
+            private String passwordHash;
+            private String accountStatus;
+            private LocalDateTime createdAt;
+        }
+
+         PassengerAccountDAO {
+            public PassengerAccount findByEmail(Connection connection, String email)
+            public boolean existsByEmail(Connection connection, String email)
+            public PassengerAccount create(Connection connection, PassengerAccount account)
+        }
+
+
+        public class Reservation {
+            private long reservation_id;
+            private String booking_reference;
+            private LocalDateTime  reservation_date;
+            private String status;
+            private BigDecimal total_amount;
+            private long created_by;
+
+
+            public Reservation(){}
+            public Reservation(
+                    long reservation_id, String booking_reference,
+                    LocalDateTime reservation_date, String status,
+                    BigDecimal total_amount, long created_by
+            ) {
+                this.reservation_id = reservation_id;
+                this.booking_reference = booking_reference;
+                this.reservation_date = reservation_date;
+                this.status = status;
+                this.total_amount = total_amount;
+                this.created_by = created_by;
+            }
+            public Reservation(
+                    String booking_reference,
+                    LocalDateTime reservation_date, String status,
+                    BigDecimal total_amount, long created_by
+            ) {
+                this.booking_reference = booking_reference;
+                this.reservation_date = reservation_date;
+                this.status = status;
+                this.total_amount = total_amount;
+                this.created_by = created_by;
+            }
+        }
+
+        public class ReservationDAO {
+            public long createReservation(Connection connection,Reservation reservation)
+
+            public boolean updateReservationStatusByReservationId(
+                    Connection connection, long reservation_id, String status)
+
+            public boolean updateReservationStatusByBookingReference(
+                    Connection connection, String booking_reference, String status)
+
+            public Reservation getReservationById(Connection connection, long id)
+
+
+            public Reservation getReservationByBookingReference(Connection connection,
+                                                                String bookingReference)
+            public Map<Long, Reservation> getAllReservationsHash(Connection connection)
+
+
+
+            public List<Reservation> getAllReservationsList(Connection connection)
+
+            List<Reservation> getReservationsByCreatedBy( Connection connection,long accountId)
+
+            Reservation getReservationByIdAndCreatedBy(Connection connection,
+            long reservationId,long accountId)
+
+            void updateStatus(Connection connection,long reservationId,String status)
+
+            private Reservation mapResultSetToReservation(ResultSet resultSet)
+
+        }

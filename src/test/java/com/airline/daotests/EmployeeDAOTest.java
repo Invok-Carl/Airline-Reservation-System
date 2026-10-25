@@ -33,7 +33,7 @@ public class EmployeeDAOTest {
                 "nazirahmad@123.com",
                 "ACTIVE",
                 "nazirahmad001",
-                "asfdcvxzasd421234sadfxcvzxasdf213sa"
+                "$2a$12$rz.togQLobgd2lZuzMDiROAG2v8uLV61nMqXVX.UMNrEmhkS1lvKS"
         );
     }
 
@@ -43,7 +43,7 @@ public class EmployeeDAOTest {
             try {
                 connection.rollback();
             }finally {
-                connection.rollback();
+                connection.close();
             }
         }
     }

@@ -1,8 +1,16 @@
 
 package com.airline;
 
+import com.airline.controller.EmployeeAuthenticationController;
 import com.airline.controller.FlightController;
-import com.airline.service.FlightService;
+import com.airline.controller.ReservationController;
+import com.airline.dao.*;
+import com.airline.model.Employee;
+import com.airline.service.*;
+import com.airline.util.connection.DatabaseConnection;
+import com.airline.util.security.EmployeeSessionManager;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpServer;
 
 import java.io.IOException;
@@ -10,6 +18,10 @@ import java.net.InetSocketAddress;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.concurrent.Executors;
+import java.util.function.Function;
+
+import com.airline.controller.PassengerAccountController;
+import com.airline.util.security.PassengerSessionManager;
 
 public class AirlineHttpServer {
 
@@ -27,17 +39,84 @@ public class AirlineHttpServer {
 
         FlightService flightService = new FlightService();
 
-        /*
-         * Register the API endpoint.
-         *
-         * The employee resolver currently returns null because
-         * authentication/session handling has not been connected yet.
-         * Consequently, GET requests work, but POST requests return 401.
-         */
-        server.createContext(
-                "/api/flights",
-                new FlightController(flightService, exchange -> null)
+
+        PassengerDAO passengerDAO = new PassengerDAO();
+        PassengerAccountDAO passengerAccountDAO =
+                new PassengerAccountDAO();
+
+        PassengerAccountService passengerAccountService =
+                new PassengerAccountService(
+                        passengerDAO,
+                        passengerAccountDAO
+                );
+
+        // false for local HTTP development.
+        // Set true when the site is served over HTTPS.
+        PassengerSessionManager passengerSessionManager =
+                new PassengerSessionManager(false);
+
+        PassengerAccountController passengerAccountController =
+                new PassengerAccountController(
+                        passengerAccountService,
+                        passengerSessionManager
+                );
+
+
+
+
+        EmployeeDAO employeeDAO = new EmployeeDAO();
+        SeatDAO seatDAO = new SeatDAO();
+        SeatService seatService = new SeatService(DatabaseConnection::getConnection, seatDAO);
+
+        AuthenticationService authenticationService =
+                new AuthenticationService(employeeDAO, DatabaseConnection::getConnection);
+
+        AuthorizationService authorizationService =
+                new AuthorizationService();
+        ReservationService reservationService = new ReservationService();
+
+
+
+        EmployeeSessionManager employeeSessionManager =
+                new EmployeeSessionManager(false); // Local HTTP development
+        Function<HttpExchange, EmployeeSessionManager.Session> employeeResolver =
+                employeeSessionManager::getSessionFromRequest;
+
+        FlightController flightController = new FlightController(
+                flightService,
+                seatService,
+                employeeSessionManager,
+                authorizationService
         );
+
+
+        server.createContext(
+                "/api/reservations",
+                new ReservationController(reservationService, passengerSessionManager)
+        );
+
+        server.createContext("/api/flights", flightController);
+
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        server.createContext(
+                "/api/employee-auth",
+                new EmployeeAuthenticationController(
+                        authenticationService,
+                        authorizationService,
+                        employeeSessionManager,
+                        objectMapper
+                )
+        );
+
+        server.createContext(
+                "/api/auth",
+                passengerAccountController
+        );
+
+
+
+
 
         // Serve HTML, CSS, JavaScript, and other static files.
         server.createContext("/", exchange -> {

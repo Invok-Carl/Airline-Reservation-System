@@ -1,0 +1,488 @@
+-------------------------------------------------------------------------------
+Test set: com.airline.daotests.TicketDAOTest
+-------------------------------------------------------------------------------
+Tests run: 11, Failures: 0, Errors: 11, Skipped: 0, Time elapsed: 0.375 s <<< FAILURE! -- in com.airline.daotests.TicketDAOTest
+com.airline.daotests.TicketDAOTest.getTicketByIdShouldReturnNullWhenNotFound -- Time elapsed: 0.037 s <<< ERROR!
+java.sql.SQLIntegrityConstraintViolationException: 
+ORA-00001: unique constraint (AIRLINE_APP.UQ_TICKET_NUMBER) violated
+
+https://docs.oracle.com/error-help/db/ora-00001/
+	at oracle.jdbc.driver.T4CTTIoer11.processError(T4CTTIoer11.java:715)
+	at oracle.jdbc.driver.T4CTTIoer11.processError(T4CTTIoer11.java:615)
+	at oracle.jdbc.driver.T4C8Oall.processError(T4C8Oall.java:1372)
+	at oracle.jdbc.driver.T4CTTIfun.receive(T4CTTIfun.java:972)
+	at oracle.jdbc.driver.T4CTTIfun.doRPC(T4CTTIfun.java:237)
+	at oracle.jdbc.driver.T4C8Oall.doOALL(T4C8Oall.java:524)
+	at oracle.jdbc.driver.T4CPreparedStatement.doOall8(T4CPreparedStatement.java:298)
+	at oracle.jdbc.driver.T4CPreparedStatement.executeForRows(T4CPreparedStatement.java:1510)
+	at oracle.jdbc.driver.OracleStatement.executeSQLStatement(OracleStatement.java:2020)
+	at oracle.jdbc.driver.OracleStatement.doExecuteWithTimeout(OracleStatement.java:1633)
+	at oracle.jdbc.driver.OraclePreparedStatement.executeInternal(OraclePreparedStatement.java:3973)
+	at oracle.jdbc.driver.OraclePreparedStatement.doExecuteLargeUpdate(OraclePreparedStatement.java:4339)
+	at oracle.jdbc.driver.OraclePreparedStatement.executeLargeUpdate(OraclePreparedStatement.java:4316)
+	at oracle.jdbc.driver.OraclePreparedStatement.executeUpdate(OraclePreparedStatement.java:4291)
+	at oracle.jdbc.driver.OraclePreparedStatementWrapper.executeUpdate(OraclePreparedStatementWrapper.java:1007)
+	at com.airline.dao.TicketDAO.createTicket(TicketDAO.java:34)
+	at com.airline.daotests.TicketDAOTest.setUp(TicketDAOTest.java:47)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+Caused by: Error : 1, Position : 0, SQL = INSERT INTO TICKET (
+    TICKET_NUMBER,
+    SEGMENT_ID,
+    ISSUE_DATE,
+    STATUS
+)
+VALUES (:1 , :2 , :3 , :4 )
+ RETURNING TICKET_ID INTO :5  [SQL INCLUDES EXPRESSIONS ADDED BY THE ORACLE JDBC DRIVER], Original SQL = INSERT INTO TICKET (
+    TICKET_NUMBER,
+    SEGMENT_ID,
+    ISSUE_DATE,
+    STATUS
+)
+VALUES (?, ?, ?, ?)
+ RETURNING TICKET_ID INTO ?, Error Message = ORA-00001: unique constraint (AIRLINE_APP.UQ_TICKET_NUMBER) violated
+
+	at oracle.jdbc.driver.T4CTTIoer11.processError(T4CTTIoer11.java:723)
+	... 19 more
+
+com.airline.daotests.TicketDAOTest.getTicketByNumberShouldReturnNullWhenNotFound -- Time elapsed: 0.035 s <<< ERROR!
+java.sql.SQLIntegrityConstraintViolationException: 
+ORA-00001: unique constraint (AIRLINE_APP.UQ_TICKET_NUMBER) violated
+
+https://docs.oracle.com/error-help/db/ora-00001/
+	at oracle.jdbc.driver.T4CTTIoer11.processError(T4CTTIoer11.java:715)
+	at oracle.jdbc.driver.T4CTTIoer11.processError(T4CTTIoer11.java:615)
+	at oracle.jdbc.driver.T4C8Oall.processError(T4C8Oall.java:1372)
+	at oracle.jdbc.driver.T4CTTIfun.receive(T4CTTIfun.java:972)
+	at oracle.jdbc.driver.T4CTTIfun.doRPC(T4CTTIfun.java:237)
+	at oracle.jdbc.driver.T4C8Oall.doOALL(T4C8Oall.java:524)
+	at oracle.jdbc.driver.T4CPreparedStatement.doOall8(T4CPreparedStatement.java:298)
+	at oracle.jdbc.driver.T4CPreparedStatement.executeForRows(T4CPreparedStatement.java:1510)
+	at oracle.jdbc.driver.OracleStatement.executeSQLStatement(OracleStatement.java:2020)
+	at oracle.jdbc.driver.OracleStatement.doExecuteWithTimeout(OracleStatement.java:1633)
+	at oracle.jdbc.driver.OraclePreparedStatement.executeInternal(OraclePreparedStatement.java:3973)
+	at oracle.jdbc.driver.OraclePreparedStatement.doExecuteLargeUpdate(OraclePreparedStatement.java:4339)
+	at oracle.jdbc.driver.OraclePreparedStatement.executeLargeUpdate(OraclePreparedStatement.java:4316)
+	at oracle.jdbc.driver.OraclePreparedStatement.executeUpdate(OraclePreparedStatement.java:4291)
+	at oracle.jdbc.driver.OraclePreparedStatementWrapper.executeUpdate(OraclePreparedStatementWrapper.java:1007)
+	at com.airline.dao.TicketDAO.createTicket(TicketDAO.java:34)
+	at com.airline.daotests.TicketDAOTest.setUp(TicketDAOTest.java:47)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+Caused by: Error : 1, Position : 0, SQL = INSERT INTO TICKET (
+    TICKET_NUMBER,
+    SEGMENT_ID,
+    ISSUE_DATE,
+    STATUS
+)
+VALUES (:1 , :2 , :3 , :4 )
+ RETURNING TICKET_ID INTO :5  [SQL INCLUDES EXPRESSIONS ADDED BY THE ORACLE JDBC DRIVER], Original SQL = INSERT INTO TICKET (
+    TICKET_NUMBER,
+    SEGMENT_ID,
+    ISSUE_DATE,
+    STATUS
+)
+VALUES (?, ?, ?, ?)
+ RETURNING TICKET_ID INTO ?, Error Message = ORA-00001: unique constraint (AIRLINE_APP.UQ_TICKET_NUMBER) violated
+
+	at oracle.jdbc.driver.T4CTTIoer11.processError(T4CTTIoer11.java:723)
+	... 19 more
+
+com.airline.daotests.TicketDAOTest.getTicketByIdShouldReturnTicket -- Time elapsed: 0.033 s <<< ERROR!
+java.sql.SQLIntegrityConstraintViolationException: 
+ORA-00001: unique constraint (AIRLINE_APP.UQ_TICKET_NUMBER) violated
+
+https://docs.oracle.com/error-help/db/ora-00001/
+	at oracle.jdbc.driver.T4CTTIoer11.processError(T4CTTIoer11.java:715)
+	at oracle.jdbc.driver.T4CTTIoer11.processError(T4CTTIoer11.java:615)
+	at oracle.jdbc.driver.T4C8Oall.processError(T4C8Oall.java:1372)
+	at oracle.jdbc.driver.T4CTTIfun.receive(T4CTTIfun.java:972)
+	at oracle.jdbc.driver.T4CTTIfun.doRPC(T4CTTIfun.java:237)
+	at oracle.jdbc.driver.T4C8Oall.doOALL(T4C8Oall.java:524)
+	at oracle.jdbc.driver.T4CPreparedStatement.doOall8(T4CPreparedStatement.java:298)
+	at oracle.jdbc.driver.T4CPreparedStatement.executeForRows(T4CPreparedStatement.java:1510)
+	at oracle.jdbc.driver.OracleStatement.executeSQLStatement(OracleStatement.java:2020)
+	at oracle.jdbc.driver.OracleStatement.doExecuteWithTimeout(OracleStatement.java:1633)
+	at oracle.jdbc.driver.OraclePreparedStatement.executeInternal(OraclePreparedStatement.java:3973)
+	at oracle.jdbc.driver.OraclePreparedStatement.doExecuteLargeUpdate(OraclePreparedStatement.java:4339)
+	at oracle.jdbc.driver.OraclePreparedStatement.executeLargeUpdate(OraclePreparedStatement.java:4316)
+	at oracle.jdbc.driver.OraclePreparedStatement.executeUpdate(OraclePreparedStatement.java:4291)
+	at oracle.jdbc.driver.OraclePreparedStatementWrapper.executeUpdate(OraclePreparedStatementWrapper.java:1007)
+	at com.airline.dao.TicketDAO.createTicket(TicketDAO.java:34)
+	at com.airline.daotests.TicketDAOTest.setUp(TicketDAOTest.java:47)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+Caused by: Error : 1, Position : 0, SQL = INSERT INTO TICKET (
+    TICKET_NUMBER,
+    SEGMENT_ID,
+    ISSUE_DATE,
+    STATUS
+)
+VALUES (:1 , :2 , :3 , :4 )
+ RETURNING TICKET_ID INTO :5  [SQL INCLUDES EXPRESSIONS ADDED BY THE ORACLE JDBC DRIVER], Original SQL = INSERT INTO TICKET (
+    TICKET_NUMBER,
+    SEGMENT_ID,
+    ISSUE_DATE,
+    STATUS
+)
+VALUES (?, ?, ?, ?)
+ RETURNING TICKET_ID INTO ?, Error Message = ORA-00001: unique constraint (AIRLINE_APP.UQ_TICKET_NUMBER) violated
+
+	at oracle.jdbc.driver.T4CTTIoer11.processError(T4CTTIoer11.java:723)
+	... 19 more
+
+com.airline.daotests.TicketDAOTest.updateTicketStatusShouldReturnFalseWhenNotFound -- Time elapsed: 0.032 s <<< ERROR!
+java.sql.SQLIntegrityConstraintViolationException: 
+ORA-00001: unique constraint (AIRLINE_APP.UQ_TICKET_NUMBER) violated
+
+https://docs.oracle.com/error-help/db/ora-00001/
+	at oracle.jdbc.driver.T4CTTIoer11.processError(T4CTTIoer11.java:715)
+	at oracle.jdbc.driver.T4CTTIoer11.processError(T4CTTIoer11.java:615)
+	at oracle.jdbc.driver.T4C8Oall.processError(T4C8Oall.java:1372)
+	at oracle.jdbc.driver.T4CTTIfun.receive(T4CTTIfun.java:972)
+	at oracle.jdbc.driver.T4CTTIfun.doRPC(T4CTTIfun.java:237)
+	at oracle.jdbc.driver.T4C8Oall.doOALL(T4C8Oall.java:524)
+	at oracle.jdbc.driver.T4CPreparedStatement.doOall8(T4CPreparedStatement.java:298)
+	at oracle.jdbc.driver.T4CPreparedStatement.executeForRows(T4CPreparedStatement.java:1510)
+	at oracle.jdbc.driver.OracleStatement.executeSQLStatement(OracleStatement.java:2020)
+	at oracle.jdbc.driver.OracleStatement.doExecuteWithTimeout(OracleStatement.java:1633)
+	at oracle.jdbc.driver.OraclePreparedStatement.executeInternal(OraclePreparedStatement.java:3973)
+	at oracle.jdbc.driver.OraclePreparedStatement.doExecuteLargeUpdate(OraclePreparedStatement.java:4339)
+	at oracle.jdbc.driver.OraclePreparedStatement.executeLargeUpdate(OraclePreparedStatement.java:4316)
+	at oracle.jdbc.driver.OraclePreparedStatement.executeUpdate(OraclePreparedStatement.java:4291)
+	at oracle.jdbc.driver.OraclePreparedStatementWrapper.executeUpdate(OraclePreparedStatementWrapper.java:1007)
+	at com.airline.dao.TicketDAO.createTicket(TicketDAO.java:34)
+	at com.airline.daotests.TicketDAOTest.setUp(TicketDAOTest.java:47)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+Caused by: Error : 1, Position : 0, SQL = INSERT INTO TICKET (
+    TICKET_NUMBER,
+    SEGMENT_ID,
+    ISSUE_DATE,
+    STATUS
+)
+VALUES (:1 , :2 , :3 , :4 )
+ RETURNING TICKET_ID INTO :5  [SQL INCLUDES EXPRESSIONS ADDED BY THE ORACLE JDBC DRIVER], Original SQL = INSERT INTO TICKET (
+    TICKET_NUMBER,
+    SEGMENT_ID,
+    ISSUE_DATE,
+    STATUS
+)
+VALUES (?, ?, ?, ?)
+ RETURNING TICKET_ID INTO ?, Error Message = ORA-00001: unique constraint (AIRLINE_APP.UQ_TICKET_NUMBER) violated
+
+	at oracle.jdbc.driver.T4CTTIoer11.processError(T4CTTIoer11.java:723)
+	... 19 more
+
+com.airline.daotests.TicketDAOTest.getTicketByNumberShouldReturnTicket -- Time elapsed: 0.035 s <<< ERROR!
+java.sql.SQLIntegrityConstraintViolationException: 
+ORA-00001: unique constraint (AIRLINE_APP.UQ_TICKET_NUMBER) violated
+
+https://docs.oracle.com/error-help/db/ora-00001/
+	at oracle.jdbc.driver.T4CTTIoer11.processError(T4CTTIoer11.java:715)
+	at oracle.jdbc.driver.T4CTTIoer11.processError(T4CTTIoer11.java:615)
+	at oracle.jdbc.driver.T4C8Oall.processError(T4C8Oall.java:1372)
+	at oracle.jdbc.driver.T4CTTIfun.receive(T4CTTIfun.java:972)
+	at oracle.jdbc.driver.T4CTTIfun.doRPC(T4CTTIfun.java:237)
+	at oracle.jdbc.driver.T4C8Oall.doOALL(T4C8Oall.java:524)
+	at oracle.jdbc.driver.T4CPreparedStatement.doOall8(T4CPreparedStatement.java:298)
+	at oracle.jdbc.driver.T4CPreparedStatement.executeForRows(T4CPreparedStatement.java:1510)
+	at oracle.jdbc.driver.OracleStatement.executeSQLStatement(OracleStatement.java:2020)
+	at oracle.jdbc.driver.OracleStatement.doExecuteWithTimeout(OracleStatement.java:1633)
+	at oracle.jdbc.driver.OraclePreparedStatement.executeInternal(OraclePreparedStatement.java:3973)
+	at oracle.jdbc.driver.OraclePreparedStatement.doExecuteLargeUpdate(OraclePreparedStatement.java:4339)
+	at oracle.jdbc.driver.OraclePreparedStatement.executeLargeUpdate(OraclePreparedStatement.java:4316)
+	at oracle.jdbc.driver.OraclePreparedStatement.executeUpdate(OraclePreparedStatement.java:4291)
+	at oracle.jdbc.driver.OraclePreparedStatementWrapper.executeUpdate(OraclePreparedStatementWrapper.java:1007)
+	at com.airline.dao.TicketDAO.createTicket(TicketDAO.java:34)
+	at com.airline.daotests.TicketDAOTest.setUp(TicketDAOTest.java:47)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+Caused by: Error : 1, Position : 0, SQL = INSERT INTO TICKET (
+    TICKET_NUMBER,
+    SEGMENT_ID,
+    ISSUE_DATE,
+    STATUS
+)
+VALUES (:1 , :2 , :3 , :4 )
+ RETURNING TICKET_ID INTO :5  [SQL INCLUDES EXPRESSIONS ADDED BY THE ORACLE JDBC DRIVER], Original SQL = INSERT INTO TICKET (
+    TICKET_NUMBER,
+    SEGMENT_ID,
+    ISSUE_DATE,
+    STATUS
+)
+VALUES (?, ?, ?, ?)
+ RETURNING TICKET_ID INTO ?, Error Message = ORA-00001: unique constraint (AIRLINE_APP.UQ_TICKET_NUMBER) violated
+
+	at oracle.jdbc.driver.T4CTTIoer11.processError(T4CTTIoer11.java:723)
+	... 19 more
+
+com.airline.daotests.TicketDAOTest.getTicketsByPassengerShouldReturnList -- Time elapsed: 0.031 s <<< ERROR!
+java.sql.SQLIntegrityConstraintViolationException: 
+ORA-00001: unique constraint (AIRLINE_APP.UQ_TICKET_NUMBER) violated
+
+https://docs.oracle.com/error-help/db/ora-00001/
+	at oracle.jdbc.driver.T4CTTIoer11.processError(T4CTTIoer11.java:715)
+	at oracle.jdbc.driver.T4CTTIoer11.processError(T4CTTIoer11.java:615)
+	at oracle.jdbc.driver.T4C8Oall.processError(T4C8Oall.java:1372)
+	at oracle.jdbc.driver.T4CTTIfun.receive(T4CTTIfun.java:972)
+	at oracle.jdbc.driver.T4CTTIfun.doRPC(T4CTTIfun.java:237)
+	at oracle.jdbc.driver.T4C8Oall.doOALL(T4C8Oall.java:524)
+	at oracle.jdbc.driver.T4CPreparedStatement.doOall8(T4CPreparedStatement.java:298)
+	at oracle.jdbc.driver.T4CPreparedStatement.executeForRows(T4CPreparedStatement.java:1510)
+	at oracle.jdbc.driver.OracleStatement.executeSQLStatement(OracleStatement.java:2020)
+	at oracle.jdbc.driver.OracleStatement.doExecuteWithTimeout(OracleStatement.java:1633)
+	at oracle.jdbc.driver.OraclePreparedStatement.executeInternal(OraclePreparedStatement.java:3973)
+	at oracle.jdbc.driver.OraclePreparedStatement.doExecuteLargeUpdate(OraclePreparedStatement.java:4339)
+	at oracle.jdbc.driver.OraclePreparedStatement.executeLargeUpdate(OraclePreparedStatement.java:4316)
+	at oracle.jdbc.driver.OraclePreparedStatement.executeUpdate(OraclePreparedStatement.java:4291)
+	at oracle.jdbc.driver.OraclePreparedStatementWrapper.executeUpdate(OraclePreparedStatementWrapper.java:1007)
+	at com.airline.dao.TicketDAO.createTicket(TicketDAO.java:34)
+	at com.airline.daotests.TicketDAOTest.setUp(TicketDAOTest.java:47)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+Caused by: Error : 1, Position : 0, SQL = INSERT INTO TICKET (
+    TICKET_NUMBER,
+    SEGMENT_ID,
+    ISSUE_DATE,
+    STATUS
+)
+VALUES (:1 , :2 , :3 , :4 )
+ RETURNING TICKET_ID INTO :5  [SQL INCLUDES EXPRESSIONS ADDED BY THE ORACLE JDBC DRIVER], Original SQL = INSERT INTO TICKET (
+    TICKET_NUMBER,
+    SEGMENT_ID,
+    ISSUE_DATE,
+    STATUS
+)
+VALUES (?, ?, ?, ?)
+ RETURNING TICKET_ID INTO ?, Error Message = ORA-00001: unique constraint (AIRLINE_APP.UQ_TICKET_NUMBER) violated
+
+	at oracle.jdbc.driver.T4CTTIoer11.processError(T4CTTIoer11.java:723)
+	... 19 more
+
+com.airline.daotests.TicketDAOTest.deleteTicketShouldReturnFalseWhenNotFound -- Time elapsed: 0.032 s <<< ERROR!
+java.sql.SQLIntegrityConstraintViolationException: 
+ORA-00001: unique constraint (AIRLINE_APP.UQ_TICKET_NUMBER) violated
+
+https://docs.oracle.com/error-help/db/ora-00001/
+	at oracle.jdbc.driver.T4CTTIoer11.processError(T4CTTIoer11.java:715)
+	at oracle.jdbc.driver.T4CTTIoer11.processError(T4CTTIoer11.java:615)
+	at oracle.jdbc.driver.T4C8Oall.processError(T4C8Oall.java:1372)
+	at oracle.jdbc.driver.T4CTTIfun.receive(T4CTTIfun.java:972)
+	at oracle.jdbc.driver.T4CTTIfun.doRPC(T4CTTIfun.java:237)
+	at oracle.jdbc.driver.T4C8Oall.doOALL(T4C8Oall.java:524)
+	at oracle.jdbc.driver.T4CPreparedStatement.doOall8(T4CPreparedStatement.java:298)
+	at oracle.jdbc.driver.T4CPreparedStatement.executeForRows(T4CPreparedStatement.java:1510)
+	at oracle.jdbc.driver.OracleStatement.executeSQLStatement(OracleStatement.java:2020)
+	at oracle.jdbc.driver.OracleStatement.doExecuteWithTimeout(OracleStatement.java:1633)
+	at oracle.jdbc.driver.OraclePreparedStatement.executeInternal(OraclePreparedStatement.java:3973)
+	at oracle.jdbc.driver.OraclePreparedStatement.doExecuteLargeUpdate(OraclePreparedStatement.java:4339)
+	at oracle.jdbc.driver.OraclePreparedStatement.executeLargeUpdate(OraclePreparedStatement.java:4316)
+	at oracle.jdbc.driver.OraclePreparedStatement.executeUpdate(OraclePreparedStatement.java:4291)
+	at oracle.jdbc.driver.OraclePreparedStatementWrapper.executeUpdate(OraclePreparedStatementWrapper.java:1007)
+	at com.airline.dao.TicketDAO.createTicket(TicketDAO.java:34)
+	at com.airline.daotests.TicketDAOTest.setUp(TicketDAOTest.java:47)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+Caused by: Error : 1, Position : 0, SQL = INSERT INTO TICKET (
+    TICKET_NUMBER,
+    SEGMENT_ID,
+    ISSUE_DATE,
+    STATUS
+)
+VALUES (:1 , :2 , :3 , :4 )
+ RETURNING TICKET_ID INTO :5  [SQL INCLUDES EXPRESSIONS ADDED BY THE ORACLE JDBC DRIVER], Original SQL = INSERT INTO TICKET (
+    TICKET_NUMBER,
+    SEGMENT_ID,
+    ISSUE_DATE,
+    STATUS
+)
+VALUES (?, ?, ?, ?)
+ RETURNING TICKET_ID INTO ?, Error Message = ORA-00001: unique constraint (AIRLINE_APP.UQ_TICKET_NUMBER) violated
+
+	at oracle.jdbc.driver.T4CTTIoer11.processError(T4CTTIoer11.java:723)
+	... 19 more
+
+com.airline.daotests.TicketDAOTest.createTicketShouldGenerateId -- Time elapsed: 0.034 s <<< ERROR!
+java.sql.SQLIntegrityConstraintViolationException: 
+ORA-00001: unique constraint (AIRLINE_APP.UQ_TICKET_NUMBER) violated
+
+https://docs.oracle.com/error-help/db/ora-00001/
+	at oracle.jdbc.driver.T4CTTIoer11.processError(T4CTTIoer11.java:715)
+	at oracle.jdbc.driver.T4CTTIoer11.processError(T4CTTIoer11.java:615)
+	at oracle.jdbc.driver.T4C8Oall.processError(T4C8Oall.java:1372)
+	at oracle.jdbc.driver.T4CTTIfun.receive(T4CTTIfun.java:972)
+	at oracle.jdbc.driver.T4CTTIfun.doRPC(T4CTTIfun.java:237)
+	at oracle.jdbc.driver.T4C8Oall.doOALL(T4C8Oall.java:524)
+	at oracle.jdbc.driver.T4CPreparedStatement.doOall8(T4CPreparedStatement.java:298)
+	at oracle.jdbc.driver.T4CPreparedStatement.executeForRows(T4CPreparedStatement.java:1510)
+	at oracle.jdbc.driver.OracleStatement.executeSQLStatement(OracleStatement.java:2020)
+	at oracle.jdbc.driver.OracleStatement.doExecuteWithTimeout(OracleStatement.java:1633)
+	at oracle.jdbc.driver.OraclePreparedStatement.executeInternal(OraclePreparedStatement.java:3973)
+	at oracle.jdbc.driver.OraclePreparedStatement.doExecuteLargeUpdate(OraclePreparedStatement.java:4339)
+	at oracle.jdbc.driver.OraclePreparedStatement.executeLargeUpdate(OraclePreparedStatement.java:4316)
+	at oracle.jdbc.driver.OraclePreparedStatement.executeUpdate(OraclePreparedStatement.java:4291)
+	at oracle.jdbc.driver.OraclePreparedStatementWrapper.executeUpdate(OraclePreparedStatementWrapper.java:1007)
+	at com.airline.dao.TicketDAO.createTicket(TicketDAO.java:34)
+	at com.airline.daotests.TicketDAOTest.setUp(TicketDAOTest.java:47)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+Caused by: Error : 1, Position : 0, SQL = INSERT INTO TICKET (
+    TICKET_NUMBER,
+    SEGMENT_ID,
+    ISSUE_DATE,
+    STATUS
+)
+VALUES (:1 , :2 , :3 , :4 )
+ RETURNING TICKET_ID INTO :5  [SQL INCLUDES EXPRESSIONS ADDED BY THE ORACLE JDBC DRIVER], Original SQL = INSERT INTO TICKET (
+    TICKET_NUMBER,
+    SEGMENT_ID,
+    ISSUE_DATE,
+    STATUS
+)
+VALUES (?, ?, ?, ?)
+ RETURNING TICKET_ID INTO ?, Error Message = ORA-00001: unique constraint (AIRLINE_APP.UQ_TICKET_NUMBER) violated
+
+	at oracle.jdbc.driver.T4CTTIoer11.processError(T4CTTIoer11.java:723)
+	... 19 more
+
+com.airline.daotests.TicketDAOTest.getTicketsByReservationShouldReturnList -- Time elapsed: 0.029 s <<< ERROR!
+java.sql.SQLIntegrityConstraintViolationException: 
+ORA-00001: unique constraint (AIRLINE_APP.UQ_TICKET_NUMBER) violated
+
+https://docs.oracle.com/error-help/db/ora-00001/
+	at oracle.jdbc.driver.T4CTTIoer11.processError(T4CTTIoer11.java:715)
+	at oracle.jdbc.driver.T4CTTIoer11.processError(T4CTTIoer11.java:615)
+	at oracle.jdbc.driver.T4C8Oall.processError(T4C8Oall.java:1372)
+	at oracle.jdbc.driver.T4CTTIfun.receive(T4CTTIfun.java:972)
+	at oracle.jdbc.driver.T4CTTIfun.doRPC(T4CTTIfun.java:237)
+	at oracle.jdbc.driver.T4C8Oall.doOALL(T4C8Oall.java:524)
+	at oracle.jdbc.driver.T4CPreparedStatement.doOall8(T4CPreparedStatement.java:298)
+	at oracle.jdbc.driver.T4CPreparedStatement.executeForRows(T4CPreparedStatement.java:1510)
+	at oracle.jdbc.driver.OracleStatement.executeSQLStatement(OracleStatement.java:2020)
+	at oracle.jdbc.driver.OracleStatement.doExecuteWithTimeout(OracleStatement.java:1633)
+	at oracle.jdbc.driver.OraclePreparedStatement.executeInternal(OraclePreparedStatement.java:3973)
+	at oracle.jdbc.driver.OraclePreparedStatement.doExecuteLargeUpdate(OraclePreparedStatement.java:4339)
+	at oracle.jdbc.driver.OraclePreparedStatement.executeLargeUpdate(OraclePreparedStatement.java:4316)
+	at oracle.jdbc.driver.OraclePreparedStatement.executeUpdate(OraclePreparedStatement.java:4291)
+	at oracle.jdbc.driver.OraclePreparedStatementWrapper.executeUpdate(OraclePreparedStatementWrapper.java:1007)
+	at com.airline.dao.TicketDAO.createTicket(TicketDAO.java:34)
+	at com.airline.daotests.TicketDAOTest.setUp(TicketDAOTest.java:47)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+Caused by: Error : 1, Position : 0, SQL = INSERT INTO TICKET (
+    TICKET_NUMBER,
+    SEGMENT_ID,
+    ISSUE_DATE,
+    STATUS
+)
+VALUES (:1 , :2 , :3 , :4 )
+ RETURNING TICKET_ID INTO :5  [SQL INCLUDES EXPRESSIONS ADDED BY THE ORACLE JDBC DRIVER], Original SQL = INSERT INTO TICKET (
+    TICKET_NUMBER,
+    SEGMENT_ID,
+    ISSUE_DATE,
+    STATUS
+)
+VALUES (?, ?, ?, ?)
+ RETURNING TICKET_ID INTO ?, Error Message = ORA-00001: unique constraint (AIRLINE_APP.UQ_TICKET_NUMBER) violated
+
+	at oracle.jdbc.driver.T4CTTIoer11.processError(T4CTTIoer11.java:723)
+	... 19 more
+
+com.airline.daotests.TicketDAOTest.updateTicketStatusShouldUpdateStatus -- Time elapsed: 0.034 s <<< ERROR!
+java.sql.SQLIntegrityConstraintViolationException: 
+ORA-00001: unique constraint (AIRLINE_APP.UQ_TICKET_NUMBER) violated
+
+https://docs.oracle.com/error-help/db/ora-00001/
+	at oracle.jdbc.driver.T4CTTIoer11.processError(T4CTTIoer11.java:715)
+	at oracle.jdbc.driver.T4CTTIoer11.processError(T4CTTIoer11.java:615)
+	at oracle.jdbc.driver.T4C8Oall.processError(T4C8Oall.java:1372)
+	at oracle.jdbc.driver.T4CTTIfun.receive(T4CTTIfun.java:972)
+	at oracle.jdbc.driver.T4CTTIfun.doRPC(T4CTTIfun.java:237)
+	at oracle.jdbc.driver.T4C8Oall.doOALL(T4C8Oall.java:524)
+	at oracle.jdbc.driver.T4CPreparedStatement.doOall8(T4CPreparedStatement.java:298)
+	at oracle.jdbc.driver.T4CPreparedStatement.executeForRows(T4CPreparedStatement.java:1510)
+	at oracle.jdbc.driver.OracleStatement.executeSQLStatement(OracleStatement.java:2020)
+	at oracle.jdbc.driver.OracleStatement.doExecuteWithTimeout(OracleStatement.java:1633)
+	at oracle.jdbc.driver.OraclePreparedStatement.executeInternal(OraclePreparedStatement.java:3973)
+	at oracle.jdbc.driver.OraclePreparedStatement.doExecuteLargeUpdate(OraclePreparedStatement.java:4339)
+	at oracle.jdbc.driver.OraclePreparedStatement.executeLargeUpdate(OraclePreparedStatement.java:4316)
+	at oracle.jdbc.driver.OraclePreparedStatement.executeUpdate(OraclePreparedStatement.java:4291)
+	at oracle.jdbc.driver.OraclePreparedStatementWrapper.executeUpdate(OraclePreparedStatementWrapper.java:1007)
+	at com.airline.dao.TicketDAO.createTicket(TicketDAO.java:34)
+	at com.airline.daotests.TicketDAOTest.setUp(TicketDAOTest.java:47)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+Caused by: Error : 1, Position : 0, SQL = INSERT INTO TICKET (
+    TICKET_NUMBER,
+    SEGMENT_ID,
+    ISSUE_DATE,
+    STATUS
+)
+VALUES (:1 , :2 , :3 , :4 )
+ RETURNING TICKET_ID INTO :5  [SQL INCLUDES EXPRESSIONS ADDED BY THE ORACLE JDBC DRIVER], Original SQL = INSERT INTO TICKET (
+    TICKET_NUMBER,
+    SEGMENT_ID,
+    ISSUE_DATE,
+    STATUS
+)
+VALUES (?, ?, ?, ?)
+ RETURNING TICKET_ID INTO ?, Error Message = ORA-00001: unique constraint (AIRLINE_APP.UQ_TICKET_NUMBER) violated
+
+	at oracle.jdbc.driver.T4CTTIoer11.processError(T4CTTIoer11.java:723)
+	... 19 more
+
+com.airline.daotests.TicketDAOTest.deleteTicketShouldDeleteTicket -- Time elapsed: 0.037 s <<< ERROR!
+java.sql.SQLIntegrityConstraintViolationException: 
+ORA-00001: unique constraint (AIRLINE_APP.UQ_TICKET_NUMBER) violated
+
+https://docs.oracle.com/error-help/db/ora-00001/
+	at oracle.jdbc.driver.T4CTTIoer11.processError(T4CTTIoer11.java:715)
+	at oracle.jdbc.driver.T4CTTIoer11.processError(T4CTTIoer11.java:615)
+	at oracle.jdbc.driver.T4C8Oall.processError(T4C8Oall.java:1372)
+	at oracle.jdbc.driver.T4CTTIfun.receive(T4CTTIfun.java:972)
+	at oracle.jdbc.driver.T4CTTIfun.doRPC(T4CTTIfun.java:237)
+	at oracle.jdbc.driver.T4C8Oall.doOALL(T4C8Oall.java:524)
+	at oracle.jdbc.driver.T4CPreparedStatement.doOall8(T4CPreparedStatement.java:298)
+	at oracle.jdbc.driver.T4CPreparedStatement.executeForRows(T4CPreparedStatement.java:1510)
+	at oracle.jdbc.driver.OracleStatement.executeSQLStatement(OracleStatement.java:2020)
+	at oracle.jdbc.driver.OracleStatement.doExecuteWithTimeout(OracleStatement.java:1633)
+	at oracle.jdbc.driver.OraclePreparedStatement.executeInternal(OraclePreparedStatement.java:3973)
+	at oracle.jdbc.driver.OraclePreparedStatement.doExecuteLargeUpdate(OraclePreparedStatement.java:4339)
+	at oracle.jdbc.driver.OraclePreparedStatement.executeLargeUpdate(OraclePreparedStatement.java:4316)
+	at oracle.jdbc.driver.OraclePreparedStatement.executeUpdate(OraclePreparedStatement.java:4291)
+	at oracle.jdbc.driver.OraclePreparedStatementWrapper.executeUpdate(OraclePreparedStatementWrapper.java:1007)
+	at com.airline.dao.TicketDAO.createTicket(TicketDAO.java:34)
+	at com.airline.daotests.TicketDAOTest.setUp(TicketDAOTest.java:47)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+Caused by: Error : 1, Position : 0, SQL = INSERT INTO TICKET (
+    TICKET_NUMBER,
+    SEGMENT_ID,
+    ISSUE_DATE,
+    STATUS
+)
+VALUES (:1 , :2 , :3 , :4 )
+ RETURNING TICKET_ID INTO :5  [SQL INCLUDES EXPRESSIONS ADDED BY THE ORACLE JDBC DRIVER], Original SQL = INSERT INTO TICKET (
+    TICKET_NUMBER,
+    SEGMENT_ID,
+    ISSUE_DATE,
+    STATUS
+)
+VALUES (?, ?, ?, ?)
+ RETURNING TICKET_ID INTO ?, Error Message = ORA-00001: unique constraint (AIRLINE_APP.UQ_TICKET_NUMBER) violated
+
+	at oracle.jdbc.driver.T4CTTIoer11.processError(T4CTTIoer11.java:723)
+	... 19 more
+

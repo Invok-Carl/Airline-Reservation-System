@@ -2,6 +2,7 @@ package com.airline.dao;
 
 import com.airline.model.Reservation;
 
+import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -175,6 +176,154 @@ public class ReservationDAO {
         }
     }
 
+    public List<Reservation> getReservationsByCreatedBy(
+            Connection connection,
+            long accountId
+    ) throws SQLException{
+        String sql = """
+                SELECT
+                    RESERVATION_ID,
+                    BOOKING_REFERENCE,
+                    RESERVATION_DATE,
+                    STATUS,
+                    TOTAL_AMOUNT,
+                    CREATED_BY
+                FROM RESERVATION
+                WHERE CREATED_BY = ?
+                """;
+        List<Reservation> reservaitons = new ArrayList<>();
+        try(PreparedStatement statement = connection.prepareStatement(sql)){
+                statement.setLong(1, accountId);
+            try(ResultSet resultSet = statement.executeQuery()){
+                while(resultSet.next()) {
+                    reservaitons.add(mapResultSetToReservation(resultSet)
+                    );
+                }
+                return reservaitons;
+            }
+        }
+    }
+
+    public Reservation getReservationByIdAndCreatedBy(
+            Connection connection,
+            long reservationId,
+            long accountId
+    ) throws SQLException{
+        String sql = """
+                SELECT
+                    RESERVATION_ID,
+                    BOOKING_REFERENCE,
+                    RESERVATION_DATE,
+                    STATUS,
+                    TOTAL_AMOUNT,
+                    CREATED_BY
+                FROM RESERVATION
+                WHERE CREATED_BY = ? AND RESERVATION_ID = ?
+                """;
+        try(PreparedStatement statement = connection.prepareStatement(sql)){
+            statement.setLong(1, accountId);
+            statement.setLong(2, reservationId);
+            try(ResultSet resultSet = statement.executeQuery()){
+                if(resultSet.next()) {
+                    return (mapResultSetToReservation(resultSet)
+                    );
+                }
+                return null;
+            }
+        }
+    }
+
+    public Reservation getReservationByIdAndCreatedByForUpdate(
+            Connection connection,
+            long reservationId,
+            long accountId
+    ) throws SQLException {
+
+        String sql = """
+        SELECT reservation_id, booking_reference, reservation_date,
+               status, total_amount, created_by
+        FROM reservation
+        WHERE reservation_id = ?
+          AND created_by = ?
+        FOR UPDATE
+        """;
+
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setLong(1, reservationId);
+            statement.setLong(2, accountId);
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    return mapResultSetToReservation(resultSet);
+                }
+                return null;
+            }
+        }
+    }
+
+
+    public void updateTotalAmount(
+            Connection connection,
+            long reservationId,
+            long accountId,
+            BigDecimal additionalFare
+    ) throws SQLException {
+
+        String sql = """
+            UPDATE RESERVATION
+            SET TOTAL_AMOUNT = TOTAL_AMOUNT + ?
+            WHERE RESERVATION_ID = ?
+              AND CREATED_BY = ?
+            """;
+
+        try (PreparedStatement statement =
+                     connection.prepareStatement(sql)) {
+
+            statement.setBigDecimal(1, additionalFare);
+            statement.setLong(2, reservationId);
+            statement.setLong(3, accountId);
+
+            int rowsUpdated = statement.executeUpdate();
+
+            if (rowsUpdated != 1) {
+                throw new SQLException(
+                        "Could not update the reservation total."
+                );
+            }
+        }
+    }
+    public void subtractTotalAmount(
+            Connection connection,
+            long reservationId,
+            long accountId,
+            BigDecimal amount
+    ) throws SQLException {
+
+        String sql = """
+            UPDATE RESERVATION
+            SET TOTAL_AMOUNT = TOTAL_AMOUNT - ?
+            WHERE RESERVATION_ID = ?
+              AND CREATED_BY = ?
+              AND TOTAL_AMOUNT >= ?
+            """;
+
+        try (PreparedStatement statement =
+                     connection.prepareStatement(sql)) {
+
+            statement.setBigDecimal(1, amount);
+            statement.setLong(2, reservationId);
+            statement.setLong(3, accountId);
+            statement.setBigDecimal(4, amount);
+
+            if (statement.executeUpdate() != 1) {
+                throw new SQLException(
+                        "Could not update the reservation total."
+                );
+            }
+        }
+    }
+
+
 
     private Reservation mapResultSetToReservation(ResultSet resultSet) throws SQLException {
         return new Reservation(
@@ -186,5 +335,4 @@ public class ReservationDAO {
                 resultSet.getLong("CREATED_BY")
         );
     }
-
 }

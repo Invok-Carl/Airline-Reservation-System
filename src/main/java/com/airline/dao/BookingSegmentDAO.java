@@ -220,7 +220,83 @@ public class BookingSegmentDAO {
     }
 
 
+    public BookingSegment getBookingSegmentByIdAndReservationId(
+            Connection connection,
+            long segmentId,
+            long reservationId
+    ) throws SQLException {
 
+        String sql = """
+            SELECT *
+            FROM BOOKING_SEGMENT
+            WHERE SEGMENT_ID = ?
+              AND RESERVATION_ID = ?
+            """;
+
+        try (PreparedStatement statement =
+                     connection.prepareStatement(sql)) {
+
+            statement.setLong(1, segmentId);
+            statement.setLong(2, reservationId);
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    return mapResultSetToBookingSegment(resultSet);
+                }
+
+                return null;
+            }
+        }
+    }
+    public int countSegmentsByReservationId(
+            Connection connection,
+            long reservationId
+    ) throws SQLException {
+
+        String sql = """
+            SELECT COUNT(*)
+            FROM BOOKING_SEGMENT
+            WHERE RESERVATION_ID = ?
+            """;
+
+        try (PreparedStatement statement =
+                     connection.prepareStatement(sql)) {
+
+            statement.setLong(1, reservationId);
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                resultSet.next();
+                return resultSet.getInt(1);
+            }
+        }
+    }
+    public void deleteBookingSegment(
+            Connection connection,
+            long segmentId,
+            long reservationId
+    ) throws SQLException {
+
+        String sql = """
+            DELETE FROM BOOKING_SEGMENT
+            WHERE SEGMENT_ID = ?
+              AND RESERVATION_ID = ?
+            """;
+
+        try (PreparedStatement statement =
+                     connection.prepareStatement(sql)) {
+
+            statement.setLong(1, segmentId);
+            statement.setLong(2, reservationId);
+
+            int rowsDeleted = statement.executeUpdate();
+
+            if (rowsDeleted != 1) {
+                throw new SQLException(
+                        "Could not delete the booking segment."
+                );
+            }
+        }
+    }
 
 
     private BookingSegment mapResultSetToBookingSegment(ResultSet resultSet)

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Passenger Dashboard</title>
+    <link rel="stylesheet" href="../css/passenger-dashboard.css">
+    <script src="../js/passenger-dashboard.js" defer></script>
+</head>
+<body>
+<header>
+    <h1>Passenger Dashboard</h1>
+    <span id="passenger-email">Loading account...</span>
+    <button id="logout-button" type="button">Logout</button>
+</header>
+
+<main>
+    <h2 id="welcome">Welcome</h2>
+    <p>Manage your flights and reservations.</p>
+
+    <nav aria-label="Passenger menu">
+        <a href="/pages/flights.html">Search Flights</a>
+        <a href="/pages/my-reservations.html">My Reservations</a>
+        <a href="/pages/my-tickets.html">My Tickets</a>
+        <a href="/pages/check-in.html">Check-in</a>
+        <a href="/pages/my-profile.html">My Profile</a>
+    </nav>
+
+    <section>
+        <h2>Account</h2>
+        <p id="account-status">Loading...</p>
+    </section>
+
+    <p id="message" role="status"></p>
+</main>
+</body>
+</html>

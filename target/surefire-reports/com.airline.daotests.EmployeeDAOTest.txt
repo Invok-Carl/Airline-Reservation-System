@@ -1,0 +1,328 @@
+-------------------------------------------------------------------------------
+Test set: com.airline.daotests.EmployeeDAOTest
+-------------------------------------------------------------------------------
+Tests run: 6, Failures: 0, Errors: 6, Skipped: 0, Time elapsed: 0.210 s <<< FAILURE! -- in com.airline.daotests.EmployeeDAOTest
+com.airline.daotests.EmployeeDAOTest.testDeleteEmployee -- Time elapsed: 0.037 s <<< ERROR!
+java.sql.SQLIntegrityConstraintViolationException: 
+ORA-00001: unique constraint (AIRLINE_APP.SYS_C007471) violated
+
+https://docs.oracle.com/error-help/db/ora-00001/
+	at oracle.jdbc.driver.T4CTTIoer11.processError(T4CTTIoer11.java:715)
+	at oracle.jdbc.driver.T4CTTIoer11.processError(T4CTTIoer11.java:615)
+	at oracle.jdbc.driver.T4C8Oall.processError(T4C8Oall.java:1372)
+	at oracle.jdbc.driver.T4CTTIfun.receive(T4CTTIfun.java:972)
+	at oracle.jdbc.driver.T4CTTIfun.doRPC(T4CTTIfun.java:237)
+	at oracle.jdbc.driver.T4C8Oall.doOALL(T4C8Oall.java:524)
+	at oracle.jdbc.driver.T4CPreparedStatement.doOall8(T4CPreparedStatement.java:298)
+	at oracle.jdbc.driver.T4CPreparedStatement.executeForRows(T4CPreparedStatement.java:1510)
+	at oracle.jdbc.driver.OracleStatement.executeSQLStatement(OracleStatement.java:2020)
+	at oracle.jdbc.driver.OracleStatement.doExecuteWithTimeout(OracleStatement.java:1633)
+	at oracle.jdbc.driver.OraclePreparedStatement.executeInternal(OraclePreparedStatement.java:3973)
+	at oracle.jdbc.driver.OraclePreparedStatement.doExecuteLargeUpdate(OraclePreparedStatement.java:4339)
+	at oracle.jdbc.driver.OraclePreparedStatement.executeLargeUpdate(OraclePreparedStatement.java:4316)
+	at oracle.jdbc.driver.OraclePreparedStatement.executeUpdate(OraclePreparedStatement.java:4291)
+	at oracle.jdbc.driver.OraclePreparedStatementWrapper.executeUpdate(OraclePreparedStatementWrapper.java:1007)
+	at com.airline.dao.EmployeeDAO.insertEmployee(EmployeeDAO.java:42)
+	at com.airline.daotests.EmployeeDAOTest.testDeleteEmployee(EmployeeDAOTest.java:129)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+Caused by: Error : 1, Position : 0, SQL = INSERT INTO EMPLOYEE (
+    EMPLOYEE_ID,
+    FIRST_NAME,
+    LAST_NAME,
+    EMP_POSITION,
+    PHONE,
+    EMAIL,
+    EMPLOYMENT_STATUS,
+    USERNAME,
+    PASSWORD_HASH
+)
+VALUES (:1 , :2 , :3 , :4 , :5 , :6 , :7 , :8 , :9 )
+, Original SQL = INSERT INTO EMPLOYEE (
+    EMPLOYEE_ID,
+    FIRST_NAME,
+    LAST_NAME,
+    EMP_POSITION,
+    PHONE,
+    EMAIL,
+    EMPLOYMENT_STATUS,
+    USERNAME,
+    PASSWORD_HASH
+)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+, Error Message = ORA-00001: unique constraint (AIRLINE_APP.SYS_C007471) violated
+
+	at oracle.jdbc.driver.T4CTTIoer11.processError(T4CTTIoer11.java:723)
+	... 19 more
+
+com.airline.daotests.EmployeeDAOTest.testChangeEmployementStatus -- Time elapsed: 0.035 s <<< ERROR!
+java.sql.SQLIntegrityConstraintViolationException: 
+ORA-00001: unique constraint (AIRLINE_APP.SYS_C007471) violated
+
+https://docs.oracle.com/error-help/db/ora-00001/
+	at oracle.jdbc.driver.T4CTTIoer11.processError(T4CTTIoer11.java:715)
+	at oracle.jdbc.driver.T4CTTIoer11.processError(T4CTTIoer11.java:615)
+	at oracle.jdbc.driver.T4C8Oall.processError(T4C8Oall.java:1372)
+	at oracle.jdbc.driver.T4CTTIfun.receive(T4CTTIfun.java:972)
+	at oracle.jdbc.driver.T4CTTIfun.doRPC(T4CTTIfun.java:237)
+	at oracle.jdbc.driver.T4C8Oall.doOALL(T4C8Oall.java:524)
+	at oracle.jdbc.driver.T4CPreparedStatement.doOall8(T4CPreparedStatement.java:298)
+	at oracle.jdbc.driver.T4CPreparedStatement.executeForRows(T4CPreparedStatement.java:1510)
+	at oracle.jdbc.driver.OracleStatement.executeSQLStatement(OracleStatement.java:2020)
+	at oracle.jdbc.driver.OracleStatement.doExecuteWithTimeout(OracleStatement.java:1633)
+	at oracle.jdbc.driver.OraclePreparedStatement.executeInternal(OraclePreparedStatement.java:3973)
+	at oracle.jdbc.driver.OraclePreparedStatement.doExecuteLargeUpdate(OraclePreparedStatement.java:4339)
+	at oracle.jdbc.driver.OraclePreparedStatement.executeLargeUpdate(OraclePreparedStatement.java:4316)
+	at oracle.jdbc.driver.OraclePreparedStatement.executeUpdate(OraclePreparedStatement.java:4291)
+	at oracle.jdbc.driver.OraclePreparedStatementWrapper.executeUpdate(OraclePreparedStatementWrapper.java:1007)
+	at com.airline.dao.EmployeeDAO.insertEmployee(EmployeeDAO.java:42)
+	at com.airline.daotests.EmployeeDAOTest.testChangeEmployementStatus(EmployeeDAOTest.java:109)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+Caused by: Error : 1, Position : 0, SQL = INSERT INTO EMPLOYEE (
+    EMPLOYEE_ID,
+    FIRST_NAME,
+    LAST_NAME,
+    EMP_POSITION,
+    PHONE,
+    EMAIL,
+    EMPLOYMENT_STATUS,
+    USERNAME,
+    PASSWORD_HASH
+)
+VALUES (:1 , :2 , :3 , :4 , :5 , :6 , :7 , :8 , :9 )
+, Original SQL = INSERT INTO EMPLOYEE (
+    EMPLOYEE_ID,
+    FIRST_NAME,
+    LAST_NAME,
+    EMP_POSITION,
+    PHONE,
+    EMAIL,
+    EMPLOYMENT_STATUS,
+    USERNAME,
+    PASSWORD_HASH
+)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+, Error Message = ORA-00001: unique constraint (AIRLINE_APP.SYS_C007471) violated
+
+	at oracle.jdbc.driver.T4CTTIoer11.processError(T4CTTIoer11.java:723)
+	... 19 more
+
+com.airline.daotests.EmployeeDAOTest.testFindById -- Time elapsed: 0.034 s <<< ERROR!
+java.sql.SQLIntegrityConstraintViolationException: 
+ORA-00001: unique constraint (AIRLINE_APP.SYS_C007471) violated
+
+https://docs.oracle.com/error-help/db/ora-00001/
+	at oracle.jdbc.driver.T4CTTIoer11.processError(T4CTTIoer11.java:715)
+	at oracle.jdbc.driver.T4CTTIoer11.processError(T4CTTIoer11.java:615)
+	at oracle.jdbc.driver.T4C8Oall.processError(T4C8Oall.java:1372)
+	at oracle.jdbc.driver.T4CTTIfun.receive(T4CTTIfun.java:972)
+	at oracle.jdbc.driver.T4CTTIfun.doRPC(T4CTTIfun.java:237)
+	at oracle.jdbc.driver.T4C8Oall.doOALL(T4C8Oall.java:524)
+	at oracle.jdbc.driver.T4CPreparedStatement.doOall8(T4CPreparedStatement.java:298)
+	at oracle.jdbc.driver.T4CPreparedStatement.executeForRows(T4CPreparedStatement.java:1510)
+	at oracle.jdbc.driver.OracleStatement.executeSQLStatement(OracleStatement.java:2020)
+	at oracle.jdbc.driver.OracleStatement.doExecuteWithTimeout(OracleStatement.java:1633)
+	at oracle.jdbc.driver.OraclePreparedStatement.executeInternal(OraclePreparedStatement.java:3973)
+	at oracle.jdbc.driver.OraclePreparedStatement.doExecuteLargeUpdate(OraclePreparedStatement.java:4339)
+	at oracle.jdbc.driver.OraclePreparedStatement.executeLargeUpdate(OraclePreparedStatement.java:4316)
+	at oracle.jdbc.driver.OraclePreparedStatement.executeUpdate(OraclePreparedStatement.java:4291)
+	at oracle.jdbc.driver.OraclePreparedStatementWrapper.executeUpdate(OraclePreparedStatementWrapper.java:1007)
+	at com.airline.dao.EmployeeDAO.insertEmployee(EmployeeDAO.java:42)
+	at com.airline.daotests.EmployeeDAOTest.testFindById(EmployeeDAOTest.java:73)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+Caused by: Error : 1, Position : 0, SQL = INSERT INTO EMPLOYEE (
+    EMPLOYEE_ID,
+    FIRST_NAME,
+    LAST_NAME,
+    EMP_POSITION,
+    PHONE,
+    EMAIL,
+    EMPLOYMENT_STATUS,
+    USERNAME,
+    PASSWORD_HASH
+)
+VALUES (:1 , :2 , :3 , :4 , :5 , :6 , :7 , :8 , :9 )
+, Original SQL = INSERT INTO EMPLOYEE (
+    EMPLOYEE_ID,
+    FIRST_NAME,
+    LAST_NAME,
+    EMP_POSITION,
+    PHONE,
+    EMAIL,
+    EMPLOYMENT_STATUS,
+    USERNAME,
+    PASSWORD_HASH
+)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+, Error Message = ORA-00001: unique constraint (AIRLINE_APP.SYS_C007471) violated
+
+	at oracle.jdbc.driver.T4CTTIoer11.processError(T4CTTIoer11.java:723)
+	... 19 more
+
+com.airline.daotests.EmployeeDAOTest.testFindByEmail -- Time elapsed: 0.034 s <<< ERROR!
+java.sql.SQLIntegrityConstraintViolationException: 
+ORA-00001: unique constraint (AIRLINE_APP.SYS_C007471) violated
+
+https://docs.oracle.com/error-help/db/ora-00001/
+	at oracle.jdbc.driver.T4CTTIoer11.processError(T4CTTIoer11.java:715)
+	at oracle.jdbc.driver.T4CTTIoer11.processError(T4CTTIoer11.java:615)
+	at oracle.jdbc.driver.T4C8Oall.processError(T4C8Oall.java:1372)
+	at oracle.jdbc.driver.T4CTTIfun.receive(T4CTTIfun.java:972)
+	at oracle.jdbc.driver.T4CTTIfun.doRPC(T4CTTIfun.java:237)
+	at oracle.jdbc.driver.T4C8Oall.doOALL(T4C8Oall.java:524)
+	at oracle.jdbc.driver.T4CPreparedStatement.doOall8(T4CPreparedStatement.java:298)
+	at oracle.jdbc.driver.T4CPreparedStatement.executeForRows(T4CPreparedStatement.java:1510)
+	at oracle.jdbc.driver.OracleStatement.executeSQLStatement(OracleStatement.java:2020)
+	at oracle.jdbc.driver.OracleStatement.doExecuteWithTimeout(OracleStatement.java:1633)
+	at oracle.jdbc.driver.OraclePreparedStatement.executeInternal(OraclePreparedStatement.java:3973)
+	at oracle.jdbc.driver.OraclePreparedStatement.doExecuteLargeUpdate(OraclePreparedStatement.java:4339)
+	at oracle.jdbc.driver.OraclePreparedStatement.executeLargeUpdate(OraclePreparedStatement.java:4316)
+	at oracle.jdbc.driver.OraclePreparedStatement.executeUpdate(OraclePreparedStatement.java:4291)
+	at oracle.jdbc.driver.OraclePreparedStatementWrapper.executeUpdate(OraclePreparedStatementWrapper.java:1007)
+	at com.airline.dao.EmployeeDAO.insertEmployee(EmployeeDAO.java:42)
+	at com.airline.daotests.EmployeeDAOTest.testFindByEmail(EmployeeDAOTest.java:92)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+Caused by: Error : 1, Position : 0, SQL = INSERT INTO EMPLOYEE (
+    EMPLOYEE_ID,
+    FIRST_NAME,
+    LAST_NAME,
+    EMP_POSITION,
+    PHONE,
+    EMAIL,
+    EMPLOYMENT_STATUS,
+    USERNAME,
+    PASSWORD_HASH
+)
+VALUES (:1 , :2 , :3 , :4 , :5 , :6 , :7 , :8 , :9 )
+, Original SQL = INSERT INTO EMPLOYEE (
+    EMPLOYEE_ID,
+    FIRST_NAME,
+    LAST_NAME,
+    EMP_POSITION,
+    PHONE,
+    EMAIL,
+    EMPLOYMENT_STATUS,
+    USERNAME,
+    PASSWORD_HASH
+)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+, Error Message = ORA-00001: unique constraint (AIRLINE_APP.SYS_C007471) violated
+
+	at oracle.jdbc.driver.T4CTTIoer11.processError(T4CTTIoer11.java:723)
+	... 19 more
+
+com.airline.daotests.EmployeeDAOTest.testGetAllEmployees -- Time elapsed: 0.030 s <<< ERROR!
+java.sql.SQLIntegrityConstraintViolationException: 
+ORA-00001: unique constraint (AIRLINE_APP.SYS_C007471) violated
+
+https://docs.oracle.com/error-help/db/ora-00001/
+	at oracle.jdbc.driver.T4CTTIoer11.processError(T4CTTIoer11.java:715)
+	at oracle.jdbc.driver.T4CTTIoer11.processError(T4CTTIoer11.java:615)
+	at oracle.jdbc.driver.T4C8Oall.processError(T4C8Oall.java:1372)
+	at oracle.jdbc.driver.T4CTTIfun.receive(T4CTTIfun.java:972)
+	at oracle.jdbc.driver.T4CTTIfun.doRPC(T4CTTIfun.java:237)
+	at oracle.jdbc.driver.T4C8Oall.doOALL(T4C8Oall.java:524)
+	at oracle.jdbc.driver.T4CPreparedStatement.doOall8(T4CPreparedStatement.java:298)
+	at oracle.jdbc.driver.T4CPreparedStatement.executeForRows(T4CPreparedStatement.java:1510)
+	at oracle.jdbc.driver.OracleStatement.executeSQLStatement(OracleStatement.java:2020)
+	at oracle.jdbc.driver.OracleStatement.doExecuteWithTimeout(OracleStatement.java:1633)
+	at oracle.jdbc.driver.OraclePreparedStatement.executeInternal(OraclePreparedStatement.java:3973)
+	at oracle.jdbc.driver.OraclePreparedStatement.doExecuteLargeUpdate(OraclePreparedStatement.java:4339)
+	at oracle.jdbc.driver.OraclePreparedStatement.executeLargeUpdate(OraclePreparedStatement.java:4316)
+	at oracle.jdbc.driver.OraclePreparedStatement.executeUpdate(OraclePreparedStatement.java:4291)
+	at oracle.jdbc.driver.OraclePreparedStatementWrapper.executeUpdate(OraclePreparedStatementWrapper.java:1007)
+	at com.airline.dao.EmployeeDAO.insertEmployee(EmployeeDAO.java:42)
+	at com.airline.daotests.EmployeeDAOTest.testGetAllEmployees(EmployeeDAOTest.java:141)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+Caused by: Error : 1, Position : 0, SQL = INSERT INTO EMPLOYEE (
+    EMPLOYEE_ID,
+    FIRST_NAME,
+    LAST_NAME,
+    EMP_POSITION,
+    PHONE,
+    EMAIL,
+    EMPLOYMENT_STATUS,
+    USERNAME,
+    PASSWORD_HASH
+)
+VALUES (:1 , :2 , :3 , :4 , :5 , :6 , :7 , :8 , :9 )
+, Original SQL = INSERT INTO EMPLOYEE (
+    EMPLOYEE_ID,
+    FIRST_NAME,
+    LAST_NAME,
+    EMP_POSITION,
+    PHONE,
+    EMAIL,
+    EMPLOYMENT_STATUS,
+    USERNAME,
+    PASSWORD_HASH
+)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+, Error Message = ORA-00001: unique constraint (AIRLINE_APP.SYS_C007471) violated
+
+	at oracle.jdbc.driver.T4CTTIoer11.processError(T4CTTIoer11.java:723)
+	... 19 more
+
+com.airline.daotests.EmployeeDAOTest.testInsertEmployee_and_findbyUsername -- Time elapsed: 0.033 s <<< ERROR!
+java.sql.SQLIntegrityConstraintViolationException: 
+ORA-00001: unique constraint (AIRLINE_APP.SYS_C007471) violated
+
+https://docs.oracle.com/error-help/db/ora-00001/
+	at oracle.jdbc.driver.T4CTTIoer11.processError(T4CTTIoer11.java:715)
+	at oracle.jdbc.driver.T4CTTIoer11.processError(T4CTTIoer11.java:615)
+	at oracle.jdbc.driver.T4C8Oall.processError(T4C8Oall.java:1372)
+	at oracle.jdbc.driver.T4CTTIfun.receive(T4CTTIfun.java:972)
+	at oracle.jdbc.driver.T4CTTIfun.doRPC(T4CTTIfun.java:237)
+	at oracle.jdbc.driver.T4C8Oall.doOALL(T4C8Oall.java:524)
+	at oracle.jdbc.driver.T4CPreparedStatement.doOall8(T4CPreparedStatement.java:298)
+	at oracle.jdbc.driver.T4CPreparedStatement.executeForRows(T4CPreparedStatement.java:1510)
+	at oracle.jdbc.driver.OracleStatement.executeSQLStatement(OracleStatement.java:2020)
+	at oracle.jdbc.driver.OracleStatement.doExecuteWithTimeout(OracleStatement.java:1633)
+	at oracle.jdbc.driver.OraclePreparedStatement.executeInternal(OraclePreparedStatement.java:3973)
+	at oracle.jdbc.driver.OraclePreparedStatement.doExecuteLargeUpdate(OraclePreparedStatement.java:4339)
+	at oracle.jdbc.driver.OraclePreparedStatement.executeLargeUpdate(OraclePreparedStatement.java:4316)
+	at oracle.jdbc.driver.OraclePreparedStatement.executeUpdate(OraclePreparedStatement.java:4291)
+	at oracle.jdbc.driver.OraclePreparedStatementWrapper.executeUpdate(OraclePreparedStatementWrapper.java:1007)
+	at com.airline.dao.EmployeeDAO.insertEmployee(EmployeeDAO.java:42)
+	at com.airline.daotests.EmployeeDAOTest.testInsertEmployee_and_findbyUsername(EmployeeDAOTest.java:55)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+Caused by: Error : 1, Position : 0, SQL = INSERT INTO EMPLOYEE (
+    EMPLOYEE_ID,
+    FIRST_NAME,
+    LAST_NAME,
+    EMP_POSITION,
+    PHONE,
+    EMAIL,
+    EMPLOYMENT_STATUS,
+    USERNAME,
+    PASSWORD_HASH
+)
+VALUES (:1 , :2 , :3 , :4 , :5 , :6 , :7 , :8 , :9 )
+, Original SQL = INSERT INTO EMPLOYEE (
+    EMPLOYEE_ID,
+    FIRST_NAME,
+    LAST_NAME,
+    EMP_POSITION,
+    PHONE,
+    EMAIL,
+    EMPLOYMENT_STATUS,
+    USERNAME,
+    PASSWORD_HASH
+)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+, Error Message = ORA-00001: unique constraint (AIRLINE_APP.SYS_C007471) violated
+
+	at oracle.jdbc.driver.T4CTTIoer11.processError(T4CTTIoer11.java:723)
+	... 19 more
+
