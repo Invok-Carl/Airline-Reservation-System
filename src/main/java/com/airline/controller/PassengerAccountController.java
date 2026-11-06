@@ -4,6 +4,7 @@ package com.airline.controller;
 import com.airline.model.Passenger;
 import com.airline.model.PassengerAccount;
 import com.airline.service.PassengerAccountService;
+import com.airline.util.http.HttpResponseUtil;
 import com.airline.util.security.PassengerSessionManager;
 import com.airline.util.security.PassengerSessionManager.Session;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -23,6 +24,7 @@ public class PassengerAccountController implements HttpHandler {
     private final PassengerAccountService passengerAccountService;
     private final PassengerSessionManager sessionManager;
     private final ObjectMapper objectMapper;
+    private final HttpResponseUtil responseUtil;
 
     public PassengerAccountController(
             PassengerAccountService passengerAccountService,
@@ -40,6 +42,7 @@ public class PassengerAccountController implements HttpHandler {
                 DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,
                 true
         );
+        responseUtil = new HttpResponseUtil(objectMapper);
     }
 
     @Override
@@ -76,31 +79,31 @@ public class PassengerAccountController implements HttpHandler {
                     "Allow", "GET, POST"
             );
 
-            sendJson(exchange, 404, Map.of(
+            responseUtil.sendJson(exchange, 404, Map.of(
                     "error", "Endpoint not found."
             ));
 
         } catch (SecurityException e) {
-            sendJson(exchange, 401, Map.of(
+            responseUtil.sendJson(exchange, 401, Map.of(
                     "error", "Authentication is required."
             ));
 
         } catch (IllegalArgumentException e) {
-            sendJson(exchange, 400, Map.of(
+            responseUtil.sendJson(exchange, 400, Map.of(
                     "error", e.getMessage()
             ));
 
         } catch (SQLException e) {
             e.printStackTrace();
 
-            sendJson(exchange, 500, Map.of(
+            responseUtil.sendJson(exchange, 500, Map.of(
                     "error", "A database error occurred."
             ));
 
         } catch (Exception e) {
             e.printStackTrace();
 
-            sendJson(exchange, 500, Map.of(
+            responseUtil.sendJson(exchange, 500, Map.of(
                     "error", "An internal server error occurred."
             ));
 
@@ -131,7 +134,8 @@ public class PassengerAccountController implements HttpHandler {
                 request.address(),
                 request.passportNumber(),
                 request.passportExpiry(),
-                request.passportCountry()
+                request.passportCountry(),
+                0
         );
 
         PassengerAccount account = passengerAccountService.register(
@@ -151,7 +155,7 @@ public class PassengerAccountController implements HttpHandler {
                 sessionManager.createCookieHeader(token)
         );
 
-        sendJson(exchange, 201, Map.of(
+        responseUtil.sendJson(exchange, 201, Map.of(
                 "message", "Registration successful.",
                 "account", publicAccount(account)
         ));
@@ -179,7 +183,7 @@ public class PassengerAccountController implements HttpHandler {
         );
 
         if (account == null) {
-            sendJson(exchange, 401, Map.of(
+            responseUtil.sendJson(exchange, 401, Map.of(
                     "error", "Invalid email or password."
             ));
             return;
@@ -196,7 +200,7 @@ public class PassengerAccountController implements HttpHandler {
                 sessionManager.createCookieHeader(token)
         );
 
-        sendJson(exchange, 200, Map.of(
+        responseUtil.sendJson(exchange, 200, Map.of(
                 "message", "Login successful.",
                 "account", publicAccount(account)
         ));
@@ -214,7 +218,7 @@ public class PassengerAccountController implements HttpHandler {
                 sessionManager.clearCookieHeader()
         );
 
-        sendJson(exchange, 200, Map.of(
+        responseUtil.sendJson(exchange, 200, Map.of(
                 "message", "Logout successful."
         ));
     }
@@ -225,13 +229,13 @@ public class PassengerAccountController implements HttpHandler {
         Session session = resolveSession(exchange);
 
         if (session == null) {
-            sendJson(exchange, 401, Map.of(
+            responseUtil.sendJson(exchange, 401, Map.of(
                     "error", "Authentication is required."
             ));
             return;
         }
 
-        sendJson(exchange, 200, Map.of(
+        responseUtil.sendJson(exchange, 200, Map.of(
                 "accountId", session.accountId(),
                 "passengerId", session.passengerId(),
                 "email", session.email()
@@ -310,30 +314,7 @@ public class PassengerAccountController implements HttpHandler {
         );
     }
 
-    private void sendJson(
-            HttpExchange exchange,
-            int status,
-            Object body
-    ) throws IOException {
 
-        byte[] json = objectMapper.writeValueAsBytes(body);
-
-        exchange.getResponseHeaders().set(
-                "Content-Type",
-                "application/json; charset=UTF-8"
-        );
-        exchange.getResponseHeaders().set(
-                "X-Content-Type-Options",
-                "nosniff"
-        );
-        exchange.getResponseHeaders().set(
-                "Cache-Control",
-                "no-store"
-        );
-
-        exchange.sendResponseHeaders(status, json.length);
-        exchange.getResponseBody().write(json);
-    }
 
     public record RegisterRequest(
             long passengerId,

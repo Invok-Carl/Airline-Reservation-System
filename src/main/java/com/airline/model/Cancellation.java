@@ -4,56 +4,56 @@ import java.time.LocalDateTime;
 
 public class Cancellation {
 
-    private long cancellation_id;
-    private long reservation_id;
-    private LocalDateTime cancel_date;
+    private long cancellationId;
+    private long reservationId;
+    private LocalDateTime cancelDate;
     private String reason;
-    private long employee_id;
+    private long employeeId;
 
-    public Cancellation(long reservation_id,
-                        LocalDateTime cancel_date,
+    public Cancellation(long reservationId,
+                        LocalDateTime cancelDate,
                         String reason,
-                        long employee_id) {
-        this.reservation_id = reservation_id;
-        this.cancel_date = cancel_date;
+                        long employeeId) {
+        this.reservationId = reservationId;
+        this.cancelDate = cancelDate;
         this.reason = reason;
-        this.employee_id = employee_id;
+        this.employeeId = employeeId;
     }
 
-    public Cancellation(long cancellation_id,
-                        long reservation_id,
-                        LocalDateTime cancel_date,
+    public Cancellation(long cancellationId,
+                        long reservationId,
+                        LocalDateTime cancelDate,
                         String reason,
-                        long employee_id) {
-        this.cancellation_id = cancellation_id;
-        this.reservation_id = reservation_id;
-        this.cancel_date = cancel_date;
+                        long employeeId) {
+        this.cancellationId = cancellationId;
+        this.reservationId = reservationId;
+        this.cancelDate = cancelDate;
         this.reason = reason;
-        this.employee_id = employee_id;
+        this.employeeId = employeeId;
     }
 
-    public long getCancellation_id() {
-        return cancellation_id;
+    public long getCancellationId() {
+        return cancellationId;
     }
 
-    public void setCancellation_id(long cancellation_id) {
-        this.cancellation_id = cancellation_id;
+    public void setCancellationId(long cancellationId) {
+        this.cancellationId = cancellationId;
     }
 
-    public long getReservation_id() {
-        return reservation_id;
+    public long getReservationId() {
+        return reservationId;
     }
 
-    public void setReservation_id(long reservation_id) {
-        this.reservation_id = reservation_id;
+    public void setReservationId(long reservationId) {
+        this.reservationId = reservationId;
     }
 
-    public LocalDateTime getCancel_date() {
-        return cancel_date;
+    public LocalDateTime getCancelDate() {
+        return cancelDate;
     }
 
-    public void setCancel_date(LocalDateTime cancel_date) {
-        this.cancel_date = cancel_date;
+    public void setCancelDate(LocalDateTime cancelDate) {
+        this.cancelDate = cancelDate;
     }
 
     public String getReason() {
@@ -64,11 +64,11 @@ public class Cancellation {
         this.reason = reason;
     }
 
-    public long getEmployee_id() {
-        return employee_id;
+    public long getEmployeeId() {
+        return employeeId;
     }
 
-    public void setEmployee_id(long employee_id) {
-        this.employee_id = employee_id;
+    public void setEmployeeId(long employeeId) {
+        this.employeeId = employeeId;
     }
 }

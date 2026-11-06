@@ -78,12 +78,12 @@ class BaggageDAOTest {
                 baggageDAO.getBaggageById(connection, baggageId);
 
         assertNotNull(result);
-        assertEquals(baggageId, result.getBaggage_id());
-        assertEquals(tagNumber, result.getTag_number());
-        assertEquals(segmentId, result.getSegment_id());
+        assertEquals(baggageId, result.getBaggageId());
+        assertEquals(tagNumber, result.getTagNumber());
+        assertEquals(segmentId, result.getSegmentId());
         assertEquals(
                 0,
-                new BigDecimal("18.50").compareTo(result.getWeight_kg())
+                new BigDecimal("18.50").compareTo(result.getWeightKg())
         );
         assertEquals("LOADED", result.getStatus());
     }
@@ -105,7 +105,7 @@ class BaggageDAOTest {
 
         assertNotNull(results);
         assertTrue(results.stream().anyMatch(
-                item -> item.getBaggage_id() == baggageId));
+                item -> item.getBaggageId() == baggageId));
     }
 
     @Test
@@ -127,7 +127,7 @@ class BaggageDAOTest {
 
         assertNotNull(results);
         assertTrue(results.stream().anyMatch(
-                item -> item.getBaggage_id() == baggageId));
+                item -> item.getBaggageId() == baggageId));
     }
 
     @Test

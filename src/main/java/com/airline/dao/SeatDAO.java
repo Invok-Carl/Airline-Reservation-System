@@ -24,10 +24,10 @@ public class SeatDAO {
                 new String[] {"SEAT_ID"}
         )
         ){
-            statement.setLong(1, seat.getAircraft_id());
-            statement.setString(2, seat.getSeat_number());
-            statement.setString(3, seat.getSeat_class().toUpperCase());
-            statement.setString(4, seat.getSeat_type().toUpperCase());
+            statement.setLong(1, seat.getAircraftId());
+            statement.setString(2, seat.getSeatNumber());
+            statement.setString(3, seat.getSeatClass().toUpperCase());
+            statement.setString(4, seat.getSeatType().toUpperCase());
             int result = statement.executeUpdate();
             if(result == 0) throw new SQLException("No rows affected");
             try(ResultSet resultSet = statement.getGeneratedKeys()){
@@ -253,7 +253,7 @@ public class SeatDAO {
     public String getSeatClassBySeatId(Connection connection, long seatId
     )throws SQLException {
         Seat seat = getSeatById(connection, seatId);
-        return seat.getSeat_class();
+        return seat.getSeatClass();
     }
 
     private Seat mapResultSetToSeat(ResultSet resultSet) throws SQLException {

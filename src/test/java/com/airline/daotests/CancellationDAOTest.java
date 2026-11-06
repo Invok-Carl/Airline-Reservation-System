@@ -76,9 +76,9 @@ class CancellationDAOTest {
                 connection, cancellationId);
 
         assertNotNull(result);
-        assertEquals(cancellationId, result.getCancellation_id());
-        assertEquals(reservationId, result.getReservation_id());
-        assertEquals(employeeId, result.getEmployee_id());
+        assertEquals(cancellationId, result.getCancellationId());
+        assertEquals(reservationId, result.getReservationId());
+        assertEquals(employeeId, result.getEmployeeId());
         assertEquals(
                 "Customer requested cancellation",
                 result.getReason()
@@ -105,7 +105,7 @@ class CancellationDAOTest {
 
         assertNotNull(results);
         assertTrue(results.stream().anyMatch(
-                item -> item.getCancellation_id() == cancellationId));
+                item -> item.getCancellationId() == cancellationId));
     }
 
     @Test
@@ -129,7 +129,7 @@ class CancellationDAOTest {
 
         assertNotNull(results);
         assertTrue(results.stream().anyMatch(
-                item -> item.getCancellation_id() == cancellationId));
+                item -> item.getCancellationId() == cancellationId));
     }
 
     @Test
@@ -156,8 +156,8 @@ class CancellationDAOTest {
                 "Updated cancellation reason",
                 result.getReason()
         );
-        assertEquals(reservationId, result.getReservation_id());
-        assertEquals(employeeId, result.getEmployee_id());
+        assertEquals(reservationId, result.getReservationId());
+        assertEquals(employeeId, result.getEmployeeId());
     }
 
     @Test

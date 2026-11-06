@@ -1,0 +1,31 @@
+Passenger account logs in
+          |
+          v
+Searches for a flight
+          |
+          v
+Selects a flight and seat
+          |
+          v
+Chooses an existing passenger
+          |
+          +---- Passenger exists? ---- Yes ----+
+          |                                    |
+          No                                   |
+          |                                    |
+          v                                    |
+Adds a passenger profile                       |
+          |                                    |
+          v                                    |
+Receives the new passenger_id                  |
+          |                                    |
+          +------------------------------------+
+                           |
+                           v
+                POST /api/reservations
+                           |
+                           v
+              Backend validates everything
+                           |
+                           v
+                Reservation is created

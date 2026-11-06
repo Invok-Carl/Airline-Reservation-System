@@ -42,7 +42,7 @@ class PassengerDAOTest {
                 "Test Address",
                 "TEST" + passengerId,
                 LocalDate.of(2030, 12, 31),
-                "TestCountry"
+                "TestCountry",0L
         );
     }
 

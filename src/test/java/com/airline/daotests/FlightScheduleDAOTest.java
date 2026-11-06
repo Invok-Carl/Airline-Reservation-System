@@ -61,15 +61,15 @@ public class FlightScheduleDAOTest {
         FlightSchedule actual = flightScheduleDAO.getScheduleById(connection, scheduleId);
 
 
-        assertEquals(scheduleId, actual.getShcedule_id());
-        assertEquals(flightSchedule.getFlight_number(), actual.getFlight_number());
-        assertEquals(flightSchedule.getRoute_id(), actual.getRoute_id());
-        assertEquals(flightSchedule.getDays_of_operation(), actual.getDays_of_operation());
-        assertEquals(flightSchedule.getStart_date(), actual.getStart_date());
-        assertEquals(flightSchedule.getEnd_date(), actual.getEnd_date());
-        assertEquals(flightSchedule.getSchedule_status(), actual.getSchedule_status());
-        assertEquals(flightSchedule.getDeparture_time(), actual.getDeparture_time());
-        assertEquals(flightSchedule.getArrival_time(), actual.getArrival_time());
+        assertEquals(scheduleId, actual.getShceduleId());
+        assertEquals(flightSchedule.getFlightNumber(), actual.getFlightNumber());
+        assertEquals(flightSchedule.getRouteId(), actual.getRouteId());
+        assertEquals(flightSchedule.getDaysOfOperation(), actual.getDaysOfOperation());
+        assertEquals(flightSchedule.getStartDate(), actual.getStartDate());
+        assertEquals(flightSchedule.getEndDate(), actual.getEndDate());
+        assertEquals(flightSchedule.getScheduleStatus(), actual.getScheduleStatus());
+        assertEquals(flightSchedule.getDepartureTime(), actual.getDepartureTime());
+        assertEquals(flightSchedule.getArrivalTime(), actual.getArrivalTime());
 
 
     }

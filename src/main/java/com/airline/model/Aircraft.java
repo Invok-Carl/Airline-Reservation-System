@@ -1,55 +1,55 @@
 package com.airline.model;
 
 public class Aircraft {
-    public long aircraft_id;
-    public String registrantion_number;
-    private String aircraft_model;
+    public long aircraftId;
+    public String registrantionNumber;
+    private String aircraftModel;
     private String manufacturer;
     private long capacity;
     private String status;
 
-    public Aircraft(long aircraft_id, String registrantion_number,
-                    String aircraft_model, String manufacturer,
+    public Aircraft(long aircraftId, String registrantionNumber,
+                    String aircraftModel, String manufacturer,
                     long capacity, String status) {
-        this.aircraft_id = aircraft_id;
-        this.registrantion_number = registrantion_number;
-        this.aircraft_model = aircraft_model;
+        this.aircraftId = aircraftId;
+        this.registrantionNumber = registrantionNumber;
+        this.aircraftModel = aircraftModel;
         this.manufacturer = manufacturer;
         this.capacity = capacity;
         this.status = status;
     }
-    public Aircraft(String registrantion_number,
-                    String aircraft_model, String manufacturer,
+    public Aircraft(String registrantionNumber,
+                    String aircraftModel, String manufacturer,
                     long capacity, String status) {
-        this.registrantion_number = registrantion_number;
-        this.aircraft_model = aircraft_model;
+        this.registrantionNumber = registrantionNumber;
+        this.aircraftModel = aircraftModel;
         this.manufacturer = manufacturer;
         this.capacity = capacity;
         this.status = status;
     }
 
-    public long getAircraft_id() {
-        return aircraft_id;
+    public long getAircraftId() {
+        return aircraftId;
     }
 
-    public void setAircraft_id(long aircraft_id) {
-        this.aircraft_id = aircraft_id;
+    public void setAircraftId(long aircraftId) {
+        this.aircraftId = aircraftId;
     }
 
-    public String getRegistrantion_number() {
-        return registrantion_number;
+    public String getRegistrantionNumber() {
+        return registrantionNumber;
     }
 
-    public void setRegistrantion_number(String registrantion_number) {
-        this.registrantion_number = registrantion_number;
+    public void setRegistrantionNumber(String registrantionNumber) {
+        this.registrantionNumber = registrantionNumber;
     }
 
-    public String getAircraft_model() {
-        return aircraft_model;
+    public String getAircraftModel() {
+        return aircraftModel;
     }
 
-    public void setAircraft_model(String aircraft_model) {
-        this.aircraft_model = aircraft_model;
+    public void setAircraftModel(String aircraftModel) {
+        this.aircraftModel = aircraftModel;
     }
 
     public String getManufacturer() {

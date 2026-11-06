@@ -28,27 +28,27 @@ public class FlightDAO {
                 new String[] {"FLIGHT_ID"}
                 )) {
 
-            statement.setDate(1, Date.valueOf(flight.getFlight_date()));
-            statement.setLong(2, flight.getAircraft_id());
+            statement.setDate(1, Date.valueOf(flight.getFlightDate()));
+            statement.setLong(2, flight.getAircraftId());
 
-            if (flight.getActual_departure() == null) {
+            if (flight.getActualDeparture() == null) {
                 statement.setNull(3, Types.VARCHAR);
             } else {
                 statement.setString(
-                        3, flight.getActual_departure().toString()
+                        3, flight.getActualDeparture().toString()
                 );
             }
 
-            if (flight.getActual_arrival() == null) {
+            if (flight.getActualArrival() == null) {
                 statement.setNull(4, Types.VARCHAR);
             } else {
                 statement.setString(
-                        4, flight.getActual_arrival().toString()
+                        4, flight.getActualArrival().toString()
                 );
             }
 
-            statement.setString(5, flight.getFlight_status().toUpperCase());
-            statement.setLong(6, flight.getSchedule_id());
+            statement.setString(5, flight.getFlightStatus().toUpperCase());
+            statement.setLong(6, flight.getScheduleId());
             int result = statement.executeUpdate();
             if (result == 0) throw new SQLException("Flight insertion didn't affect any rows");
             try(ResultSet resultSet = statement.getGeneratedKeys()){

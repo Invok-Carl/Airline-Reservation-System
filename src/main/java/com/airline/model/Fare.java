@@ -4,65 +4,64 @@ import java.math.BigDecimal;
 
 public class Fare {
 
-    private long fare_id;
-    private long route_id;
-    private String fare_class;
-    private BigDecimal base_fare;
+    private long fareId;
+    private long routeId;
+    private String fareClass;
+    private BigDecimal baseFare;
     private BigDecimal tax;
-    private BigDecimal total_fare;
+    private BigDecimal totalFare;
     private String currency;
 
-    public Fare(long fare_id, long route_id, String fare_class,
-                BigDecimal base_fare, BigDecimal tax, BigDecimal total_fare, String currency) {
-        this.fare_id = fare_id;
-        this.route_id = route_id;
-        this.fare_class = fare_class;
-        this.base_fare = base_fare;
+    public Fare(long fareId, long routeId, String fareClass,
+                BigDecimal baseFare, BigDecimal tax, BigDecimal totalFare, String currency) {
+        this.fareId = fareId;
+        this.routeId = routeId;
+        this.fareClass = fareClass;
+        this.baseFare = baseFare;
         this.tax = tax;
-        this.total_fare = total_fare;
+        this.totalFare = totalFare;
         this.currency = currency;
     }
-    public Fare(long route_id, String fare_class,
-                BigDecimal base_fare, BigDecimal tax,BigDecimal total_fare,
-                String currency) {
-        this.route_id = route_id;
-        this.fare_class = fare_class;
-        this.base_fare = base_fare;
+    public Fare( long routeId, String fareClass,
+                BigDecimal baseFare, BigDecimal tax, BigDecimal totalFare, String currency) {
+        this.routeId = routeId;
+        this.fareClass = fareClass;
+        this.baseFare = baseFare;
         this.tax = tax;
-        this.total_fare = total_fare;
+        this.totalFare = totalFare;
         this.currency = currency;
     }
 
-    public long getFare_id() {
-        return fare_id;
+    public long getFareId() {
+        return fareId;
     }
 
-    public void setFare_id(long fare_id) {
-        this.fare_id = fare_id;
+    public void setFareId(long fareId) {
+        this.fareId = fareId;
     }
 
-    public long getRoute_id() {
-        return route_id;
+    public long getRouteId() {
+        return routeId;
     }
 
-    public void setRoute_id(long route_id) {
-        this.route_id = route_id;
+    public void setRouteId(long routeId) {
+        this.routeId = routeId;
     }
 
-    public String getFare_class() {
-        return fare_class;
+    public BigDecimal getBaseFare() {
+        return baseFare;
     }
 
-    public void setFare_class(String fare_class) {
-        this.fare_class = fare_class;
+    public void setBaseFare(BigDecimal baseFare) {
+        this.baseFare = baseFare;
     }
 
-    public BigDecimal getBase_fare() {
-        return base_fare;
+    public String getFareClass() {
+        return fareClass;
     }
 
-    public void setBase_fare(BigDecimal base_fare) {
-        this.base_fare = base_fare;
+    public void setFareClass(String fareClass) {
+        this.fareClass = fareClass;
     }
 
     public BigDecimal getTax() {
@@ -73,12 +72,12 @@ public class Fare {
         this.tax = tax;
     }
 
-    public BigDecimal getTotal_fare() {
-        return total_fare;
+    public BigDecimal getTotalFare() {
+        return totalFare;
     }
 
-    public void setTotal_fare(BigDecimal total_fare) {
-        this.total_fare = total_fare;
+    public void setTotalFare(BigDecimal totalFare) {
+        this.totalFare = totalFare;
     }
 
     public String getCurrency() {

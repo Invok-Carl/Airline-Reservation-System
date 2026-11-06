@@ -26,8 +26,8 @@ public class AircraftDAO {
                 """;
         try(PreparedStatement statement = connection.prepareStatement(sql,
                 new String[] {"AIRCRAFT_ID"})){
-            statement.setString(1, aircraft.getRegistrantion_number());
-            statement.setString(2, aircraft.getAircraft_model().toUpperCase());
+            statement.setString(1, aircraft.getRegistrantionNumber());
+            statement.setString(2, aircraft.getAircraftModel().toUpperCase());
             statement.setString(3, aircraft.getManufacturer());
             statement.setLong(4, aircraft.getCapacity());
             statement.setString(5, aircraft.getStatus().toUpperCase());

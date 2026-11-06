@@ -24,9 +24,9 @@ public class FareDAO {
                 """;
         try(PreparedStatement statement = connection.prepareStatement(sql,
                 new String[] {"FARE_ID"})){
-            statement.setLong(1, fare.getRoute_id());
-            statement.setString(2, fare.getFare_class().toUpperCase());
-            statement.setBigDecimal(3, fare.getBase_fare());
+            statement.setLong(1, fare.getRouteId());
+            statement.setString(2, fare.getFareClass().toUpperCase());
+            statement.setBigDecimal(3, fare.getBaseFare());
             statement.setBigDecimal(4, fare.getTax());
             statement.setString(5, fare.getCurrency().toUpperCase());
 

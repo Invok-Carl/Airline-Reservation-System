@@ -78,9 +78,9 @@ public class ReservationService {
                  */
                 for (BookingSegment segment : requestedSegments) {
 
-                    long passengerId = segment.getPassenger_id();
-                    long flightId = segment.getFlight_id();
-                    long seatId = segment.getSeat_id();
+                    long passengerId = segment.getPassengerId();
+                    long flightId = segment.getFlightId();
+                    long seatId = segment.getSeatId();
 
                     String pairKey = passengerId + ":" + flightId;
 
@@ -133,27 +133,27 @@ public class ReservationService {
                                         + " on flight " + flightId
                         );
                     }
-                    if(fare.getTotal_fare() == null){
+                    if(fare.getTotalFare() == null){
                         throw new IllegalArgumentException(
-                                "Total fare for " + fare.getFare_id()
+                                "Total fare for " + fare.getFareId()
                                         + "does not exist"
                                 );
                     }
 
-                    segment.setFare_id(fare.getFare_id());
-                    totalAmount = totalAmount.add(fare.getTotal_fare());
+                    segment.setFareId(fare.getFareId());
+                    totalAmount = totalAmount.add(fare.getTotalFare());
 
                 }
 
                 Reservation reservation = new Reservation();
 
-                reservation.setBooking_reference(
+                reservation.setBookingReference(
                         generateBookingReference()
                 );
-                reservation.setReservation_date(LocalDateTime.now());
+                reservation.setReservationDate(LocalDateTime.now());
                 reservation.setStatus("PENDING");
-                reservation.setTotal_amount(totalAmount);
-                reservation.setCreated_by(createdBy);
+                reservation.setTotalAmount(totalAmount);
+                reservation.setCreatedBy(createdBy);
 
                 long reservationId =
                         reservationDAO.createReservation(
@@ -166,7 +166,7 @@ public class ReservationService {
                  */
                 for (BookingSegment segment : requestedSegments) {
 
-                    segment.setReservation_id(reservationId);
+                    segment.setReservationId(reservationId);
 
                     bookingSegmentDAO.addBookingSegment(
                             connection, segment
@@ -203,9 +203,9 @@ public class ReservationService {
         }
 
         if (segment == null
-                || segment.getPassenger_id() <= 0
-                || segment.getFlight_id() <= 0
-                || segment.getSeat_id() <= 0) {
+                || segment.getPassengerId() <= 0
+                || segment.getFlightId() <= 0
+                || segment.getSeatId() <= 0) {
             throw new IllegalArgumentException(
                     "Valid passenger, flight, and seat IDs are required."
             );
@@ -234,9 +234,9 @@ public class ReservationService {
                     );
                 }
 
-                long passengerId = segment.getPassenger_id();
-                long flightId = segment.getFlight_id();
-                long seatId = segment.getSeat_id();
+                long passengerId = segment.getPassengerId();
+                long flightId = segment.getFlightId();
+                long seatId = segment.getSeatId();
 
                 // 3. Verify that the passenger exists.
                 if (!passengerExists(connection, passengerId)) {
@@ -273,21 +273,21 @@ public class ReservationService {
                 // 7. Retrieve the fare for this flight and seat.
                 Fare fare = getFare(connection, flightId, seatId);
 
-                if (fare == null || fare.getTotal_fare() == null) {
+                if (fare == null || fare.getTotalFare() == null) {
                     throw new IllegalStateException(
                             "No valid fare was found for this flight and seat."
                     );
                 }
 
-                if (fare.getTotal_fare().signum() < 0) {
+                if (fare.getTotalFare().signum() < 0) {
                     throw new IllegalStateException(
                             "The fare cannot be negative."
                     );
                 }
 
                 // 8. Associate the new segment with the existing reservation.
-                segment.setReservation_id(reservationId);
-                segment.setFare_id(fare.getFare_id());
+                segment.setReservationId(reservationId);
+                segment.setFareId(fare.getFareId());
 
                 // 9. Insert the segment.
                 bookingSegmentDAO.addBookingSegment(connection, segment);
@@ -297,7 +297,7 @@ public class ReservationService {
                         connection,
                         reservationId,
                         accountId,
-                        fare.getTotal_fare()
+                        fare.getTotalFare()
                 );
 
                 connection.commit();
@@ -381,11 +381,11 @@ public class ReservationService {
                 // 5. Get the fare associated with this segment.
                 Fare fare = getFare(
                         connection,
-                        segment.getFlight_id(),
-                        segment.getSeat_id()
+                        segment.getFlightId(),
+                        segment.getSeatId()
                 );
 
-                if (fare == null || fare.getTotal_fare() == null) {
+                if (fare == null || fare.getTotalFare() == null) {
                     throw new IllegalStateException(
                             "Could not determine the segment fare."
                     );
@@ -401,7 +401,7 @@ public class ReservationService {
                         connection,
                         reservationId,
                         accountId,
-                        fare.getTotal_fare()
+                        fare.getTotalFare()
                 );
 
                 connection.commit();
@@ -524,9 +524,9 @@ public class ReservationService {
                 );
             }
 
-            if (segment.getPassenger_id() <= 0
-                    || segment.getFlight_id() <= 0
-                    || segment.getSeat_id() <= 0) {
+            if (segment.getPassengerId() <= 0
+                    || segment.getFlightId() <= 0
+                    || segment.getSeatId() <= 0) {
                 throw new IllegalArgumentException(
                         "Every segment must contain valid passenger, "
                                 + "flight, and seat IDs."

@@ -5,76 +5,80 @@ import java.time.LocalDateTime;
 
 public class Payment {
 
-    private long payment_id;
-    private long reservation_id;
-    private LocalDateTime payment_date;
+    private long paymentId;
+    private long reservationId;
+    private LocalDateTime paymentDate;
     private BigDecimal amount;
     private String currency;
-    private String payment_method;
-    private String payment_status;
-    private String transaction_ref;
-    private long recorded_by;
+    private String paymentMethod;
+    private String paymentStatus;
+    private String transactionRef;
+    private long recordedBy;
 
-    public Payment(long reservation_id,
-                   LocalDateTime payment_date,
-                   BigDecimal amount,
-                   String currency,
-                   String payment_method,
-                   String payment_status,
-                   String transaction_ref,
-                   long recorded_by) {
-        this.reservation_id = reservation_id;
-        this.payment_date = payment_date;
+    public Payment(
+            long reservationId,
+            LocalDateTime paymentDate,
+            BigDecimal amount,
+            String currency,
+            String paymentMethod,
+            String paymentStatus,
+            String transactionRef,
+            long recordedBy
+    ) {
+        this.reservationId = reservationId;
+        this.paymentDate = paymentDate;
         this.amount = amount;
         this.currency = currency;
-        this.payment_method = payment_method;
-        this.payment_status = payment_status;
-        this.transaction_ref = transaction_ref;
-        this.recorded_by = recorded_by;
+        this.paymentMethod = paymentMethod;
+        this.paymentStatus = paymentStatus;
+        this.transactionRef = transactionRef;
+        this.recordedBy = recordedBy;
     }
 
-    public Payment(long payment_id,
-                   long reservation_id,
-                   LocalDateTime payment_date,
-                   BigDecimal amount,
-                   String currency,
-                   String payment_method,
-                   String payment_status,
-                   String transaction_ref,
-                   long recorded_by) {
-        this.payment_id = payment_id;
-        this.reservation_id = reservation_id;
-        this.payment_date = payment_date;
+    public Payment(
+            long paymentId,
+            long reservationId,
+            LocalDateTime paymentDate,
+            BigDecimal amount,
+            String currency,
+            String paymentMethod,
+            String paymentStatus,
+            String transactionRef,
+            long recordedBy
+    ) {
+        this.paymentId = paymentId;
+        this.reservationId = reservationId;
+        this.paymentDate = paymentDate;
         this.amount = amount;
         this.currency = currency;
-        this.payment_method = payment_method;
-        this.payment_status = payment_status;
-        this.transaction_ref = transaction_ref;
-        this.recorded_by = recorded_by;
+        this.paymentMethod = paymentMethod;
+        this.paymentStatus = paymentStatus;
+        this.transactionRef = transactionRef;
+        this.recordedBy = recordedBy;
     }
 
-    public long getPayment_id() {
-        return payment_id;
+    public long getPaymentId() {
+        return paymentId;
     }
 
-    public void setPayment_id(long payment_id) {
-        this.payment_id = payment_id;
+    public void setPaymentId(long paymentId) {
+        this.paymentId = paymentId;
     }
 
-    public long getReservation_id() {
-        return reservation_id;
+    public long getReservationId() {
+        return reservationId;
     }
 
-    public void setReservation_id(long reservation_id) {
-        this.reservation_id = reservation_id;
+    public void setReservationId(long reservationId) {
+        this.reservationId = reservationId;
     }
 
-    public LocalDateTime getPayment_date() {
-        return payment_date;
+    public LocalDateTime getPaymentDate() {
+        return paymentDate;
     }
 
-    public void setPayment_date(LocalDateTime payment_date) {
-        this.payment_date = payment_date;
+    public void setPaymentDate(LocalDateTime paymentDate) {
+        this.paymentDate = paymentDate;
     }
 
     public BigDecimal getAmount() {
@@ -93,35 +97,35 @@ public class Payment {
         this.currency = currency;
     }
 
-    public String getPayment_method() {
-        return payment_method;
+    public String getPaymentMethod() {
+        return paymentMethod;
     }
 
-    public void setPayment_method(String payment_method) {
-        this.payment_method = payment_method;
+    public void setPaymentMethod(String paymentMethod) {
+        this.paymentMethod = paymentMethod;
     }
 
-    public String getPayment_status() {
-        return payment_status;
+    public String getPaymentStatus() {
+        return paymentStatus;
     }
 
-    public void setPayment_status(String payment_status) {
-        this.payment_status = payment_status;
+    public void setPaymentStatus(String paymentStatus) {
+        this.paymentStatus = paymentStatus;
     }
 
-    public String getTransaction_ref() {
-        return transaction_ref;
+    public String getTransactionRef() {
+        return transactionRef;
     }
 
-    public void setTransaction_ref(String transaction_ref) {
-        this.transaction_ref = transaction_ref;
+    public void setTransactionRef(String transactionRef) {
+        this.transactionRef = transactionRef;
     }
 
-    public long getRecorded_by() {
-        return recorded_by;
+    public long getRecordedBy() {
+        return recordedBy;
     }
 
-    public void setRecorded_by(long recorded_by) {
-        this.recorded_by = recorded_by;
+    public void setRecordedBy(long recordedBy) {
+        this.recordedBy = recordedBy;
     }
 }

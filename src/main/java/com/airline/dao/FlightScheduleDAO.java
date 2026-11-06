@@ -30,14 +30,14 @@ public class FlightScheduleDAO {
                 sql,
                 new String[]{"SCHEDULE_ID"}
         )) {
-            statement.setString(1, flightSchedule.getFlight_number());
-            statement.setLong(2, flightSchedule.getRoute_id());
-            statement.setString(3, flightSchedule.getDays_of_operation());
-            statement.setDate(4, Date.valueOf(flightSchedule.getStart_date()));
-            statement.setDate(5, Date.valueOf(flightSchedule.getEnd_date()));
-            statement.setString(6, flightSchedule.getSchedule_status());
-            statement.setString(7, flightSchedule.getDeparture_time().toString());
-            statement.setString(8, flightSchedule.getArrival_time().toString());
+            statement.setString(1, flightSchedule.getFlightNumber());
+            statement.setLong(2, flightSchedule.getRouteId());
+            statement.setString(3, flightSchedule.getDaysOfOperation());
+            statement.setDate(4, Date.valueOf(flightSchedule.getStartDate()));
+            statement.setDate(5, Date.valueOf(flightSchedule.getEndDate()));
+            statement.setString(6, flightSchedule.getScheduleStatus());
+            statement.setString(7, flightSchedule.getDepartureTime().toString());
+            statement.setString(8, flightSchedule.getArrivalTime().toString());
 
 
 

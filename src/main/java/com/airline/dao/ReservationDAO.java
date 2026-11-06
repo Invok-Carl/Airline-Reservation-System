@@ -26,12 +26,12 @@ public class ReservationDAO {
                     new String[] {"RESERVATION_ID"}
                     )
             ){
-                statement.setString(1, reservation.getBooking_reference());
+                statement.setString(1, reservation.getBookingReference());
                 statement.setTimestamp(2,
-                        Timestamp.valueOf(reservation.getReservation_date()));
+                        Timestamp.valueOf(reservation.getReservationDate()));
                 statement.setString(3, reservation.getStatus().toUpperCase());
-                statement.setBigDecimal(4, reservation.getTotal_amount());
-                statement.setLong(5, reservation.getCreated_by());
+                statement.setBigDecimal(4, reservation.getTotalAmount());
+                statement.setLong(5, reservation.getCreatedBy());
                 long result = statement.executeUpdate();
                 if (result == 0) {
                     throw new SQLException("Adding reservation did not affect any rows");

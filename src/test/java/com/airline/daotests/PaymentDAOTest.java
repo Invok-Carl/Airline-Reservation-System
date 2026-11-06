@@ -82,15 +82,15 @@ class PaymentDAOTest {
                 connection, paymentId);
 
         assertNotNull(payment);
-        assertEquals(paymentId, payment.getPayment_id());
-        assertEquals(reservationId, payment.getReservation_id());
+        assertEquals(paymentId, payment.getPaymentId());
+        assertEquals(reservationId, payment.getReservationId());
         assertEquals(0, new BigDecimal("250.00")
                 .compareTo(payment.getAmount()));
         assertEquals("USD", payment.getCurrency());
-        assertEquals("CARD", payment.getPayment_method());
-        assertEquals("PENDING", payment.getPayment_status());
-        assertEquals(transactionRef, payment.getTransaction_ref());
-        assertEquals(recordedBy, payment.getRecorded_by());
+        assertEquals("CARD", payment.getPaymentMethod());
+        assertEquals("PENDING", payment.getPaymentStatus());
+        assertEquals(transactionRef, payment.getTransactionRef());
+        assertEquals(recordedBy, payment.getRecordedBy());
     }
 
     @Test
@@ -111,7 +111,7 @@ class PaymentDAOTest {
 
         assertNotNull(payments);
         assertTrue(payments.stream().anyMatch(
-                payment -> payment.getPayment_id() == paymentId));
+                payment -> payment.getPaymentId() == paymentId));
     }
 
     @Test
@@ -133,7 +133,7 @@ class PaymentDAOTest {
 
         assertNotNull(payments);
         assertTrue(payments.stream().anyMatch(
-                payment -> payment.getPayment_id() == paymentId));
+                payment -> payment.getPaymentId() == paymentId));
     }
 
     @Test
@@ -148,7 +148,7 @@ class PaymentDAOTest {
                 connection, paymentId);
 
         assertNotNull(payment);
-        assertEquals("FAILED", payment.getPayment_status());
+        assertEquals("FAILED", payment.getPaymentStatus());
     }
 
     @Test

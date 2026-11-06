@@ -66,6 +66,7 @@ class CheckInDAOTest {
     @Test
     void createCheckInShouldGenerateId() {
         assertTrue(checkInId > 0);
+        System.out.println(checkInId);
     }
 
     @Test
@@ -74,11 +75,14 @@ class CheckInDAOTest {
                 checkInDAO.getCheckInById(connection, checkInId);
 
         assertNotNull(result);
-        assertEquals(checkInId, result.getCheckin_id());
-        assertEquals(segmentId, result.getSegment_id());
-        assertEquals(employeeId, result.getEmployee_id());
+        System.out.println(result.getSeatId());
+        System.out.println(result.getSegmentId());
+        System.out.println(result.getCheckinId());
+        assertEquals(checkInId, result.getCheckinId());
+        assertEquals(segmentId, result.getSegmentId());
+        assertEquals(employeeId, result.getEmployeeId());
         assertEquals("CHECKED_IN", result.getStatus());
-        assertNull(result.getSeat_id());
+        assertNull(result.getSeatId());
     }
 
     @Test
@@ -98,7 +102,7 @@ class CheckInDAOTest {
 
         assertNotNull(results);
         assertTrue(results.stream().anyMatch(
-                item -> item.getCheckin_id() == checkInId));
+                item -> item.getCheckinId() == checkInId));
     }
 
     @Test
@@ -119,7 +123,7 @@ class CheckInDAOTest {
 
         assertNotNull(results);
         assertTrue(results.stream().anyMatch(
-                item -> item.getCheckin_id() == checkInId));
+                item -> item.getCheckinId() == checkInId));
     }
 
     @Test

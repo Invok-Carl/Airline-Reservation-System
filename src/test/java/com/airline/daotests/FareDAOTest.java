@@ -48,18 +48,18 @@ public class FareDAOTest {
 
     @Test
     void testAddFare() throws Exception {
-        System.out.println(fare.getTotal_fare());
+        System.out.println(fare.getTotalFare());
         long fareId = fareDAO.InsertFare(connection, fare);
         Fare actual = fareDAO.getFareByFareId(connection, fareId);
         assertTrue(fareId > 0);
         Assertions.assertNotNull(actual);
-        assertEquals(fareId, actual.getFare_id());
-        assertEquals(fare.getRoute_id(), actual.getRoute_id());
-        assertEquals(fare.getFare_class(), actual.getFare_class());
-        assertEquals(fare.getBase_fare(), actual.getBase_fare());
+        assertEquals(fareId, actual.getFareId());
+        assertEquals(fare.getRouteId(), actual.getRouteId());
+        assertEquals(fare.getFareClass(), actual.getFareClass());
+        assertEquals(fare.getBaseFare(), actual.getBaseFare());
         assertEquals(fare.getTax(), actual.getTax());
         assertEquals(0, (new BigDecimal("140"))
-                        .compareTo(actual.getTotal_fare()),
+                        .compareTo(actual.getTotalFare()),
                 "Fare amount does not match numerically");
         assertEquals(fare.getCurrency(), actual.getCurrency());
     }
@@ -69,13 +69,13 @@ public class FareDAOTest {
         Fare actual = fareDAO.getFareByFareId(connection, fareId);
         assertTrue(fareId > 0);
         Assertions.assertNotNull(actual);
-        assertEquals(fareId, actual.getFare_id());
-        assertEquals(fare.getRoute_id(), actual.getRoute_id());
-        assertEquals(fare.getFare_class(), actual.getFare_class());
-        assertEquals(fare.getBase_fare(), actual.getBase_fare());
+        assertEquals(fareId, actual.getFareId());
+        assertEquals(fare.getRouteId(), actual.getRouteId());
+        assertEquals(fare.getFareClass(), actual.getFareClass());
+        assertEquals(fare.getBaseFare(), actual.getBaseFare());
         assertEquals(fare.getTax(), actual.getTax());
         assertEquals(0, (new BigDecimal("140"))
-                        .compareTo(actual.getTotal_fare()),
+                        .compareTo(actual.getTotalFare()),
                 "Fare amount does not match numerically");
         assertEquals(fare.getCurrency(), actual.getCurrency());
 
@@ -93,13 +93,13 @@ public class FareDAOTest {
                 connection, 7, "BUSINESS");
 
         Assertions.assertNotNull(actual);
-        assertEquals(fareId, actual.getFare_id());
-        assertEquals(fare.getRoute_id(), actual.getRoute_id());
-        assertEquals(fare.getFare_class(), actual.getFare_class());
-        assertEquals(fare.getBase_fare(), actual.getBase_fare());
+        assertEquals(fareId, actual.getFareId());
+        assertEquals(fare.getRouteId(), actual.getRouteId());
+        assertEquals(fare.getFareClass(), actual.getFareClass());
+        assertEquals(fare.getBaseFare(), actual.getBaseFare());
         assertEquals(fare.getTax(), actual.getTax());
         assertEquals(0, (new BigDecimal("140"))
-                        .compareTo(actual.getTotal_fare()),
+                        .compareTo(actual.getTotalFare()),
                 "Fare amount does not match numerically");
         assertEquals(fare.getCurrency(), actual.getCurrency());
 
@@ -114,13 +114,13 @@ public class FareDAOTest {
         assertTrue(fares.size() == 11, "not enough fares fetched");
 
         Fare fare = fares.get(fareId);
-        assertEquals(fareId, actual.getFare_id());
-        assertEquals(fare.getRoute_id(), actual.getRoute_id());
-        assertEquals(fare.getFare_class(), actual.getFare_class());
-        assertEquals(fare.getBase_fare(), actual.getBase_fare());
+        assertEquals(fareId, actual.getFareId());
+        assertEquals(fare.getRouteId(), actual.getRouteId());
+        assertEquals(fare.getFareClass(), actual.getFareClass());
+        assertEquals(fare.getBaseFare(), actual.getBaseFare());
         assertEquals(fare.getTax(), actual.getTax());
         assertEquals(0, (new BigDecimal("140"))
-                        .compareTo(actual.getTotal_fare()),
+                        .compareTo(actual.getTotalFare()),
                 "Fare amount does not match numerically");
         assertEquals(fare.getCurrency(), actual.getCurrency());
 
@@ -134,6 +134,6 @@ public class FareDAOTest {
     void testGetFareByFlightIdandSeatId() throws Exception{
         Fare actual = fareDAO.getFareByFlightIdAndSeatId(connection,
                 1, 1623L);
-        assertEquals(2, actual.getFare_id());
+        assertEquals(2, actual.getFareId());
     }
 }

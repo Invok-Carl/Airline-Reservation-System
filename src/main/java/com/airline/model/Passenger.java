@@ -16,13 +16,14 @@ public class Passenger {
     private String passportNumber;
     private LocalDate passportExpiry;
     private String passportCountry;
+    private long createdBy;
 
     // Constructor
     public Passenger(Long passengerId, String firstName, String lastName,
                      LocalDate dateOfBirth, String gender, String nationality,
                      String phone, String email, String address,
                      String passportNumber, LocalDate passportExpiry,
-                     String passportCountry) {
+                     String passportCountry, long createdBy) {
 
         this.passengerId = passengerId;
         this.firstName = firstName;
@@ -39,6 +40,8 @@ public class Passenger {
     }
 
     // Getters
+    public long getCreatedBy(){ return createdBy; }
+    public void setCreatedBy(long createdBy){ this.createdBy = createdBy; }
 
     public Long getPassengerId() {
         return passengerId;

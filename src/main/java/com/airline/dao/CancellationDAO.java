@@ -25,11 +25,11 @@ public class CancellationDAO {
         try (PreparedStatement statement = connection.prepareStatement(
                 sql, new String[]{"CANCELLATION_ID"})) {
 
-            statement.setLong(1, cancellation.getReservation_id());
+            statement.setLong(1, cancellation.getReservationId());
             statement.setTimestamp(
-                    2, Timestamp.valueOf(cancellation.getCancel_date()));
+                    2, Timestamp.valueOf(cancellation.getCancelDate()));
             statement.setString(3, cancellation.getReason());
-            statement.setLong(4, cancellation.getEmployee_id());
+            statement.setLong(4, cancellation.getEmployeeId());
 
             long result = statement.executeUpdate();
 
@@ -150,11 +150,11 @@ public class CancellationDAO {
                 """;
 
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setLong(1, cancellation.getReservation_id());
+            statement.setLong(1, cancellation.getReservationId());
             statement.setTimestamp(
-                    2, Timestamp.valueOf(cancellation.getCancel_date()));
+                    2, Timestamp.valueOf(cancellation.getCancelDate()));
             statement.setString(3, cancellation.getReason());
-            statement.setLong(4, cancellation.getEmployee_id());
+            statement.setLong(4, cancellation.getEmployeeId());
             statement.setLong(5, cancellationId);
 
             return statement.executeUpdate() > 0;

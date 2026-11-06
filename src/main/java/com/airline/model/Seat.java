@@ -2,75 +2,73 @@ package com.airline.model;
 
 import java.util.Comparator;
 
-public class Seat implements Comparable<Seat> {
-    private long seat_id;
-    private long aircraft_id;
-    private String seat_number;
-    private String seat_class;
-    private String seat_type;
+public class Seat  {
+    private long seatId;
+    private long aircraftId;
+    private String seatNumber;
+    private String seatClass;
+    private String seatType;
 
 
     public Seat(
-            long seat_id, long aircraft_id, String seat_number, String seat_class,
-             String seat_type
+            long seatId, long aircraftId, String seatNumber, String seatClass,
+             String seatType
     ) {
-        this.seat_id = seat_id;
-        this.aircraft_id = aircraft_id;
-        this.seat_number = seat_number;
-        this.seat_class = seat_class;
-        this.seat_type = seat_type;
+        this.seatId = seatId;
+        this.aircraftId = aircraftId;
+        this.seatNumber = seatNumber;
+        this.seatClass = seatClass;
+        this.seatType = seatType;
     }
 
-    public Seat(long aircraft_id, String seat_number, String seat_class, String seat_type) {
-        this.aircraft_id = aircraft_id;
-        this.seat_number = seat_number;
-        this.seat_class = seat_class;
-        this.seat_type = seat_type;
+    public Seat(
+            long aircraftId, String seatNumber, String seatClass,
+            String seatType
+    ) {
+        this.aircraftId = aircraftId;
+        this.seatNumber = seatNumber;
+        this.seatClass = seatClass;
+        this.seatType = seatType;
     }
 
-    public long getSeat_id() {
-        return seat_id;
+    public long getSeatId() {
+        return seatId;
     }
 
-    public long getAircraft_id() {
-        return aircraft_id;
+    public void setSeatId(long seatId) {
+        this.seatId = seatId;
     }
 
-    public String getSeat_number() {
-        return seat_number;
+    public long getAircraftId() {
+        return aircraftId;
     }
 
-    public String getSeat_class() {
-        return seat_class;
+    public void setAircraftId(long aircraftId) {
+        this.aircraftId = aircraftId;
     }
 
-    public String getSeat_type() {
-        return seat_type;
+    public String getSeatNumber() {
+        return seatNumber;
     }
 
-    public void setSeat_id(long seat_id) {
-        this.seat_id = seat_id;
+    public void setSeatNumber(String seatNumber) {
+        this.seatNumber = seatNumber;
     }
 
-    public void setAircraft_id(long aircraft_id) {
-        this.aircraft_id = aircraft_id;
+    public String getSeatClass() {
+        return seatClass;
     }
 
-    public void setSeat_number(String seat_number) {
-        this.seat_number = seat_number;
+    public void setSeatClass(String seatClass) {
+        this.seatClass = seatClass;
     }
 
-    public void setSeat_type(String seat_type) {
-        this.seat_type = seat_type;
+    public String getSeatType() {
+        return seatType;
     }
 
-    public void setSeat_class(String seat_class) {
-        this.seat_class = seat_class;
+    public void setSeatType(String seatType) {
+        this.seatType = seatType;
     }
-
-    public int compareTo(Seat other){
-        return Long.compare(this.seat_id, other.seat_id);
-    }
-
 }
 

@@ -1,9 +1,7 @@
 
 package com.airline;
 
-import com.airline.controller.EmployeeAuthenticationController;
-import com.airline.controller.FlightController;
-import com.airline.controller.ReservationController;
+import com.airline.controller.*;
 import com.airline.dao.*;
 import com.airline.model.Employee;
 import com.airline.service.*;
@@ -17,10 +15,10 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.sql.SQLException;
 import java.util.concurrent.Executors;
 import java.util.function.Function;
 
-import com.airline.controller.PassengerAccountController;
 import com.airline.util.security.PassengerSessionManager;
 
 public class AirlineHttpServer {
@@ -31,7 +29,7 @@ public class AirlineHttpServer {
     private static final Path FRONTEND_DIR =
             Path.of("frontend").toAbsolutePath().normalize();
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, SQLException {
 
         HttpServer server = HttpServer.create(
                 new InetSocketAddress(PORT), 0
@@ -55,15 +53,6 @@ public class AirlineHttpServer {
         PassengerSessionManager passengerSessionManager =
                 new PassengerSessionManager(false);
 
-        PassengerAccountController passengerAccountController =
-                new PassengerAccountController(
-                        passengerAccountService,
-                        passengerSessionManager
-                );
-
-
-
-
         EmployeeDAO employeeDAO = new EmployeeDAO();
         SeatDAO seatDAO = new SeatDAO();
         SeatService seatService = new SeatService(DatabaseConnection::getConnection, seatDAO);
@@ -81,13 +70,11 @@ public class AirlineHttpServer {
                 new EmployeeSessionManager(false); // Local HTTP development
         Function<HttpExchange, EmployeeSessionManager.Session> employeeResolver =
                 employeeSessionManager::getSessionFromRequest;
+        Function<HttpExchange, PassengerSessionManager.Session> passengerResolver =
+                passengerSessionManager::getPassengerSession;
+        PassengerService passengerService = new PassengerService(DatabaseConnection::getConnection,
+                passengerDAO);
 
-        FlightController flightController = new FlightController(
-                flightService,
-                seatService,
-                employeeSessionManager,
-                authorizationService
-        );
 
 
         server.createContext(
@@ -95,7 +82,12 @@ public class AirlineHttpServer {
                 new ReservationController(reservationService, passengerSessionManager)
         );
 
-        server.createContext("/api/flights", flightController);
+        server.createContext("/api/flights", new FlightController(
+                flightService,
+                seatService,
+                employeeResolver,
+                authorizationService
+        ));
 
 
         ObjectMapper objectMapper = new ObjectMapper();
@@ -111,11 +103,20 @@ public class AirlineHttpServer {
 
         server.createContext(
                 "/api/auth",
-                passengerAccountController
+                new PassengerAccountController(
+                        passengerAccountService,
+                        passengerSessionManager
+                )
         );
-
-
-
+        server.createContext(
+                "/api/passengers",
+                new PassengerController(
+                        passengerService,
+                        objectMapper,
+                        passengerResolver,
+                        employeeResolver
+                )
+        );
 
 
         // Serve HTML, CSS, JavaScript, and other static files.

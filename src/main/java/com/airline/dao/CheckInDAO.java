@@ -25,18 +25,18 @@ public class CheckInDAO {
         try (PreparedStatement statement = connection.prepareStatement(
                 sql, new String[]{"CHECKIN_ID"})) {
 
-            statement.setLong(1, checkIn.getSegment_id());
+            statement.setLong(1, checkIn.getSegmentId());
             statement.setTimestamp(
-                    2, Timestamp.valueOf(checkIn.getCheckin_time()));
+                    2, Timestamp.valueOf(checkIn.getCheckinTime()));
 
-            if (checkIn.getSeat_id() == null) {
+            if (checkIn.getSeatId() == null) {
                 statement.setNull(3, Types.NUMERIC);
             } else {
-                statement.setLong(3, checkIn.getSeat_id());
+                statement.setLong(3, checkIn.getSeatId());
             }
 
             statement.setString(4, checkIn.getStatus().toUpperCase());
-            statement.setLong(5, checkIn.getEmployee_id());
+            statement.setLong(5, checkIn.getEmployeeId());
 
             long result = statement.executeUpdate();
 
@@ -172,8 +172,7 @@ public class CheckInDAO {
     private CheckIn mapResultSetToCheckIn(ResultSet resultSet)
             throws SQLException {
 
-        long seatIdValue = resultSet.getLong("SEAT_ID");
-        Long seatId = resultSet.wasNull() ? null : seatIdValue;
+        Long seatId = resultSet.getObject("SEAT_ID", Long.class);
 
         return new CheckIn(
                 resultSet.getLong("CHECKIN_ID"),

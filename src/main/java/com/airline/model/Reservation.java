@@ -4,61 +4,61 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 public class Reservation {
-    private long reservation_id;
-    private String booking_reference;
-    private LocalDateTime  reservation_date;
+    private long reservationId;
+    private String bookingReference;
+    private LocalDateTime  reservationDate;
     private String status;
-    private BigDecimal total_amount;
-    private long created_by;
+    private BigDecimal totalAmount;
+    private long createdBy;
 
 
     public Reservation(){}
     public Reservation(
-            long reservation_id, String booking_reference,
-            LocalDateTime reservation_date, String status,
-            BigDecimal total_amount, long created_by
+            long reservationId, String bookingReference,
+            LocalDateTime reservationDate, String status,
+            BigDecimal totalAmount, long createdBy
     ) {
-        this.reservation_id = reservation_id;
-        this.booking_reference = booking_reference;
-        this.reservation_date = reservation_date;
+        this.reservationId = reservationId;
+        this.bookingReference = bookingReference;
+        this.reservationDate = reservationDate;
         this.status = status;
-        this.total_amount = total_amount;
-        this.created_by = created_by;
+        this.totalAmount = totalAmount;
+        this.createdBy = createdBy;
     }
     public Reservation(
-            String booking_reference,
-            LocalDateTime reservation_date, String status,
-            BigDecimal total_amount, long created_by
+            String bookingReference,
+            LocalDateTime reservationDate, String status,
+            BigDecimal totalAmount, long createdBy
     ) {
-        this.booking_reference = booking_reference;
-        this.reservation_date = reservation_date;
+        this.bookingReference = bookingReference;
+        this.reservationDate = reservationDate;
         this.status = status;
-        this.total_amount = total_amount;
-        this.created_by = created_by;
+        this.totalAmount = totalAmount;
+        this.createdBy = createdBy;
     }
 
-    public long getReservation_id() {
-        return reservation_id;
+    public long getReservationId() {
+        return reservationId;
     }
 
-    public void setReservation_id(long reservation_id) {
-        this.reservation_id = reservation_id;
+    public void setReservationId(long reservationId) {
+        this.reservationId = reservationId;
     }
 
-    public String getBooking_reference() {
-        return booking_reference;
+    public String getBookingReference() {
+        return bookingReference;
     }
 
-    public void setBooking_reference(String booking_reference) {
-        this.booking_reference = booking_reference;
+    public void setBookingReference(String bookingReference) {
+        this.bookingReference = bookingReference;
     }
 
-    public LocalDateTime getReservation_date() {
-        return reservation_date;
+    public LocalDateTime getReservationDate() {
+        return reservationDate;
     }
 
-    public void setReservation_date(LocalDateTime reservation_date) {
-        this.reservation_date = reservation_date;
+    public void setReservationDate(LocalDateTime reservationDate) {
+        this.reservationDate = reservationDate;
     }
 
     public String getStatus() {
@@ -69,19 +69,19 @@ public class Reservation {
         this.status = status;
     }
 
-    public BigDecimal getTotal_amount() {
-        return total_amount;
+    public BigDecimal getTotalAmount() {
+        return totalAmount;
     }
 
-    public void setTotal_amount(BigDecimal total_amount) {
-        this.total_amount = total_amount;
+    public void setTotalAmount(BigDecimal totalAmount) {
+        this.totalAmount = totalAmount;
     }
 
-    public long getCreated_by() {
-        return created_by;
+    public long getCreatedBy() {
+        return createdBy;
     }
 
-    public void setCreated_by(long created_by) {
-        this.created_by = created_by;
+    public void setCreatedBy(long createdBy) {
+        this.createdBy = createdBy;
     }
 }

@@ -233,7 +233,7 @@ public class EmployeeAuthenticationController implements HttpHandler {
 
     private void logout(HttpExchange exchange) throws IOException {
 
-        String token = getSessionToken(exchange);
+        String token = getSessionToken(exchange, EmployeeSessionManager.COOKIE_NAME);
 
         // Invalidate the current session, if the token identifies one.
         sessionManager.invalidateSession(token);
@@ -254,7 +254,7 @@ public class EmployeeAuthenticationController implements HttpHandler {
     private void getCurrentEmployee(HttpExchange exchange)
             throws IOException {
 
-        String token = getSessionToken(exchange);
+        String token = getSessionToken(exchange, EmployeeSessionManager.COOKIE_NAME);
 
         EmployeeSessionManager.Session session =
                 sessionManager.getSession(token);
@@ -335,7 +335,7 @@ public class EmployeeAuthenticationController implements HttpHandler {
         return employee;
     }
 
-    private String getSessionToken(HttpExchange exchange) {
+    private String getSessionToken(HttpExchange exchange, String cookieName) {
 
         String cookieHeader =
                 exchange.getRequestHeaders().getFirst("Cookie");
@@ -349,7 +349,7 @@ public class EmployeeAuthenticationController implements HttpHandler {
             String[] parts = cookie.trim().split("=", 2);
 
             if (parts.length == 2
-                    && EmployeeSessionManager.COOKIE_NAME.equals(parts[0])) {
+                    && cookieName.equals(parts[0])) {
                 return parts[1];
             }
         }

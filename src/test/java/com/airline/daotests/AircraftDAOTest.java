@@ -50,10 +50,10 @@ public class AircraftDAOTest {
         assertTrue(aircraftId > 0, "Aircraft ID not fetched");
         assertNotNull(actual);
 
-        assertEquals(aircraftId, actual.getAircraft_id());
-        assertEquals(aircraft.getRegistrantion_number(),
-                actual.getRegistrantion_number());
-        assertEquals(aircraft.getAircraft_model(), actual.getAircraft_model());
+        assertEquals(aircraftId, actual.getAircraftId());
+        assertEquals(aircraft.getRegistrantionNumber(),
+                actual.getRegistrantionNumber());
+        assertEquals(aircraft.getAircraftModel(), actual.getAircraftModel());
         assertEquals(aircraft.getManufacturer(), actual.getManufacturer());
         assertEquals(aircraft.getCapacity(), actual.getCapacity());
         assertEquals(aircraft.getStatus(), actual.getStatus());
@@ -89,10 +89,10 @@ public class AircraftDAOTest {
         Aircraft actual = aircrafts.get(aircraftId);
         assertNotNull(actual);
 
-        assertEquals(aircraftId, actual.getAircraft_id());
-        assertEquals(aircraft.getRegistrantion_number(),
-                actual.getRegistrantion_number());
-        assertEquals(aircraft.getAircraft_model(), actual.getAircraft_model());
+        assertEquals(aircraftId, actual.getAircraftId());
+        assertEquals(aircraft.getRegistrantionNumber(),
+                actual.getRegistrantionNumber());
+        assertEquals(aircraft.getAircraftModel(), actual.getAircraftModel());
         assertEquals(aircraft.getManufacturer(), actual.getManufacturer());
         assertEquals(aircraft.getCapacity(), actual.getCapacity());
         assertEquals(aircraft.getStatus(), actual.getStatus());

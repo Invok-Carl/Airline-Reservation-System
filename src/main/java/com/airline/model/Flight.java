@@ -6,141 +6,140 @@ import java.time.LocalTime;
 
 public class Flight {
 
-    private long flight_id;
-    private LocalDate flight_date;
-    private String departure_airport;
-    private String arrival_airport;
-    private long aircraft_id;
-    private LocalTime sched_departure;
-    private LocalTime sched_arrival;
-    private LocalTime actual_departure;
-    private LocalTime actual_arrival;
-    private String flight_status;
-    private long schedule_id;
+    private long flightId;
+    private LocalDate flightDate;
+    private String departureAirport;
+    private String arrivalAirport;
+    private long aircraftId;
+    private LocalTime schedDeparture;
+    private LocalTime schedArrival;
+    private LocalTime actualDeparture;
+    private LocalTime actualArrival;
+    private String flightStatus;
+    private long scheduleId;
 
 
     public Flight(
-            long flight_id, LocalDate flight_date, String departure_airport,
-            String arrival_airport , long aircraft_id,
-            LocalTime sched_departure,
-            LocalTime sched_arrival, LocalTime actual_departure,
-            LocalTime actual_arrival, String flight_status,
-            long schedule_id
+            long flightId, LocalDate flightDate, String departureAirport,
+            String arrivalAirport , long aircraftId,
+            LocalTime schedDeparture,
+            LocalTime schedArrival, LocalTime actualDeparture,
+            LocalTime actualArrival, String flightStatus,
+            long scheduleId
     ) {
-        this.flight_id = flight_id;
-        this.flight_date = flight_date;
-        this.departure_airport = departure_airport;
-        this.arrival_airport = arrival_airport;
-        this.aircraft_id = aircraft_id;
-        this.sched_departure = sched_departure;
-        this.sched_arrival = sched_arrival;
-        this.actual_departure = actual_departure;
-        this.actual_arrival = actual_arrival;
-        this.flight_status = flight_status;
-        this.schedule_id = schedule_id;
+        this.flightId = flightId;
+        this.flightDate = flightDate;
+        this.departureAirport = departureAirport;
+        this.arrivalAirport = arrivalAirport;
+        this.aircraftId = aircraftId;
+        this.schedDeparture = schedDeparture;
+        this.schedArrival = schedArrival;
+        this.actualDeparture = actualDeparture;
+        this.actualArrival = actualArrival;
+        this.flightStatus = flightStatus;
+        this.scheduleId = scheduleId;
     }
     public Flight(
-            LocalDate flight_date,
-            long aircraft_id,
-            LocalTime actual_departure,
-            LocalTime actual_arrival,
-            String flight_status,
+            LocalDate flightDate,
+            long aircraftId,
+            LocalTime actualDeparture,
+            LocalTime actualArrival,
+            String flightStatus,
             Long schedule_id
     ) {
-        this.flight_date = flight_date;
-        this.aircraft_id = aircraft_id;
-        this.actual_departure = actual_departure;
-        this.actual_arrival = actual_arrival;
-        this.flight_status = flight_status;
-        this.schedule_id = schedule_id;
+        this.flightDate = flightDate;
+        this.aircraftId = aircraftId;
+        this.actualDeparture = actualDeparture;
+        this.actualArrival = actualArrival;
+        this.flightStatus = flightStatus;
+        this.scheduleId = scheduleId;
     }
 
-
-    public long getFlight_id() {
-        return flight_id;
+    public long getFlightId() {
+        return flightId;
     }
 
-    public void setFlight_id(long flight_id) {
-        this.flight_id = flight_id;
+    public void setFlightId(long flightId) {
+        this.flightId = flightId;
     }
 
-    public LocalDate getFlight_date() {
-        return flight_date;
+    public LocalDate getFlightDate() {
+        return flightDate;
     }
 
-    public void setFlight_date(LocalDate flight_date) {
-        this.flight_date = flight_date;
+    public void setFlightDate(LocalDate flightDate) {
+        this.flightDate = flightDate;
     }
 
-    public String getDeparture_airport() {
-        return departure_airport;
+    public String getArrivalAirport() {
+        return arrivalAirport;
     }
 
-    public void setDeparture_airport(String departure_airport) {
-        this.departure_airport = departure_airport;
+    public void setArrivalAirport(String arrivalAirport) {
+        this.arrivalAirport = arrivalAirport;
     }
 
-    public String getArrival_airport() {
-        return arrival_airport;
+    public String getDepartureAirport() {
+        return departureAirport;
     }
 
-    public void setArrival_airport(String arrival_airport) {
-        this.arrival_airport = arrival_airport;
+    public void setDepartureAirport(String departureAirport) {
+        this.departureAirport = departureAirport;
     }
 
-    public long getAircraft_id() {
-        return aircraft_id;
+    public long getAircraftId() {
+        return aircraftId;
     }
 
-    public void setAircraft_id(long aircraft_id) {
-        this.aircraft_id = aircraft_id;
+    public void setAircraftId(long aircraftId) {
+        this.aircraftId = aircraftId;
     }
 
-    public LocalTime getSched_departure() {
-        return sched_departure;
+    public LocalTime getSchedDeparture() {
+        return schedDeparture;
     }
 
-    public void setSched_departure(LocalTime sched_departure) {
-        this.sched_departure = sched_departure;
+    public void setSchedDeparture(LocalTime schedDeparture) {
+        this.schedDeparture = schedDeparture;
     }
 
-    public LocalTime getSched_arrival() {
-        return sched_arrival;
+    public LocalTime getSchedArrival() {
+        return schedArrival;
     }
 
-    public void setSched_arrival(LocalTime sched_arrival) {
-        this.sched_arrival = sched_arrival;
+    public void setSchedArrival(LocalTime schedArrival) {
+        this.schedArrival = schedArrival;
     }
 
-    public LocalTime getActual_departure() {
-        return actual_departure;
+    public LocalTime getActualDeparture() {
+        return actualDeparture;
     }
 
-    public void setActual_departure(LocalTime actual_departure) {
-        this.actual_departure = actual_departure;
+    public void setActualDeparture(LocalTime actualDeparture) {
+        this.actualDeparture = actualDeparture;
     }
 
-    public LocalTime getActual_arrival() {
-        return actual_arrival;
+    public String getFlightStatus() {
+        return flightStatus;
     }
 
-    public void setActual_arrival(LocalTime actual_arrival) {
-        this.actual_arrival = actual_arrival;
+    public void setFlightStatus(String flightStatus) {
+        this.flightStatus = flightStatus;
     }
 
-    public String getFlight_status() {
-        return flight_status;
+    public LocalTime getActualArrival() {
+        return actualArrival;
     }
 
-    public void setFlight_status(String flight_status) {
-        this.flight_status = flight_status;
+    public void setActualArrival(LocalTime actualArrival) {
+        this.actualArrival = actualArrival;
     }
 
-    public long getSchedule_id() {
-        return schedule_id;
+    public long getScheduleId() {
+        return scheduleId;
     }
 
-    public void setSchedule_id(long schedule_id) {
-        this.schedule_id = schedule_id;
+    public void setScheduleId(long scheduleId) {
+        this.scheduleId = scheduleId;
     }
 }

@@ -24,9 +24,9 @@ public class BaggageDAO {
         try (PreparedStatement statement = connection.prepareStatement(
                 sql, new String[]{"BAGGAGE_ID"})) {
 
-            statement.setString(1, baggage.getTag_number());
-            statement.setLong(2, baggage.getSegment_id());
-            statement.setBigDecimal(3, baggage.getWeight_kg());
+            statement.setString(1, baggage.getTagNumber());
+            statement.setLong(2, baggage.getSegmentId());
+            statement.setBigDecimal(3, baggage.getWeightKg());
             statement.setString(4, baggage.getStatus().toUpperCase());
 
             int result = statement.executeUpdate();

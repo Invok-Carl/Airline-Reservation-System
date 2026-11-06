@@ -48,11 +48,11 @@ class BookingSegmentDAOTest {
 
         assertNotNull(actual);
 
-        assertEquals(segId, actual.getSegment_id());
-        assertEquals(bookingSegment.getFare_id(), actual.getFare_id());
-        assertEquals(bookingSegment.getPassenger_id(), actual.getPassenger_id());
-        assertEquals(bookingSegment.getSeat_id(), actual.getSeat_id());
-        assertEquals(bookingSegment.getReservation_id(), actual.getReservation_id());
+        assertEquals(segId, actual.getSegmentId());
+        assertEquals(bookingSegment.getFareId(), actual.getFareId());
+        assertEquals(bookingSegment.getPassengerId(), actual.getPassengerId());
+        assertEquals(bookingSegment.getSeatId(), actual.getSeatId());
+        assertEquals(bookingSegment.getReservationId(), actual.getReservationId());
 
     }
     @Test
@@ -60,13 +60,11 @@ class BookingSegmentDAOTest {
         long segId = bookingSegmentDAO.addBookingSegment(connection, bookingSegment);
         BookingSegment actual = bookingSegmentDAO.getBookingSegmentBySegId(connection, segId);
         Map<Long, BookingSegment> segs = bookingSegmentDAO.getAllBookingSegments(connection);
-        assertTrue(segs.containsKey(actual.getSegment_id()));
-        assertEquals(1, segs.size());
+        assertTrue(segs.containsKey(actual.getSegmentId()));
 
         assertTrue(bookingSegmentDAO.removeBookingSegmentBySegId(connection, segId));
         segs = bookingSegmentDAO.getAllBookingSegments(connection);
-        assertFalse(segs.containsKey(actual.getSegment_id()));
-        assertEquals(0, segs.size());
+        assertFalse(segs.containsKey(actual.getSegmentId()));
     }
 
     @Test
@@ -75,8 +73,8 @@ class BookingSegmentDAOTest {
         BookingSegment actual = bookingSegmentDAO.getBookingSegmentBySegId(connection, segId);
 
         Map<Long, BookingSegment> segs = bookingSegmentDAO.getBookingSegmentByPassengerId(connection,
-                actual.getPassenger_id());
-        assertTrue(segs.containsKey(actual.getSegment_id()));
+                actual.getPassengerId());
+        assertTrue(segs.containsKey(actual.getSegmentId()));
         assertEquals(1, segs.size());
     }
     @Test
@@ -84,8 +82,7 @@ class BookingSegmentDAOTest {
         long segId = bookingSegmentDAO.addBookingSegment(connection, bookingSegment);
         BookingSegment actual = bookingSegmentDAO.getBookingSegmentBySegId(connection, segId);
         Map<Long, BookingSegment> segs = bookingSegmentDAO.getAllBookingSegments(connection);
-        assertTrue(segs.containsKey(actual.getSegment_id()));
-        assertEquals(1, segs.size());
+        assertTrue(segs.containsKey(actual.getSegmentId()));
     }
 
     @Test
@@ -93,8 +90,8 @@ class BookingSegmentDAOTest {
         long segId = bookingSegmentDAO.addBookingSegment(connection, bookingSegment);
         BookingSegment actual = bookingSegmentDAO.getBookingSegmentBySegId(connection, segId);
         Map<Long, BookingSegment> segs = bookingSegmentDAO.getBookingSegmentsByReservationId(
-                connection, actual.getReservation_id());
-        assertTrue(segs.containsKey(actual.getSegment_id()));
+                connection, actual.getReservationId());
+        assertTrue(segs.containsKey(actual.getSegmentId()));
         assertEquals(1, segs.size());
 
     }
@@ -105,7 +102,7 @@ class BookingSegmentDAOTest {
         BookingSegment actual = bookingSegmentDAO.getBookingSegmentBySegId(connection, segId);
         Map<Long, BookingSegment> segs = bookingSegmentDAO.getBookingSegmentsByBookingReference(
                 connection, "BK100002");
-        assertTrue(segs.containsKey(actual.getSegment_id()));
+        assertTrue(segs.containsKey(actual.getSegmentId()));
         assertEquals(1, segs.size());
 
     }

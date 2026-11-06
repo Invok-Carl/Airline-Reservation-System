@@ -1,6 +1,7 @@
 
 package com.airline.util.security;
 
+import com.sun.net.httpserver.HttpExchange;
 import java.security.SecureRandom;
 import java.time.Instant;
 import java.util.Base64;
@@ -72,6 +73,31 @@ public class PassengerSessionManager {
 
         return session;
     }
+
+
+
+
+
+    public Session getPassengerSession(HttpExchange exchange) {
+        String cookieHeader = exchange.getRequestHeaders()
+                .getFirst("Cookie");
+
+        if (cookieHeader == null || cookieHeader.isBlank()) {
+            return null;
+        }
+
+        for (String cookie : cookieHeader.split(";")) {
+            String[] parts = cookie.trim().split("=", 2);
+
+            if (parts.length == 2
+                    && COOKIE_NAME.equals(parts[0].trim())) {
+                return getSession(parts[1].trim());
+            }
+        }
+
+        return null;
+    }
+
 
     public void invalidateSession(String token) {
         if (token != null) {

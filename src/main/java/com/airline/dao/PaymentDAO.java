@@ -29,21 +29,21 @@ public class PaymentDAO {
         try (PreparedStatement statement = connection.prepareStatement(
                 sql, new String[]{"PAYMENT_ID"})) {
 
-            statement.setLong(1, payment.getReservation_id());
+            statement.setLong(1, payment.getReservationId());
             statement.setTimestamp(
-                    2, Timestamp.valueOf(payment.getPayment_date()));
+                    2, Timestamp.valueOf(payment.getPaymentDate()));
             statement.setBigDecimal(3, payment.getAmount());
             statement.setString(4, payment.getCurrency().toUpperCase());
             statement.setString(
-                    5, payment.getPayment_method().toUpperCase());
+                    5, payment.getPaymentMethod().toUpperCase());
             statement.setString(
-                    6, payment.getPayment_status().toUpperCase());
-            if(payment.getTransaction_ref() == null){
+                    6, payment.getPaymentStatus().toUpperCase());
+            if(payment.getTransactionRef() == null){
                 statement.setNull(7, Types.VARCHAR);
             }else{
-                statement.setString(7, payment.getTransaction_ref());
+                statement.setString(7, payment.getTransactionRef());
             }
-            statement.setLong(8, payment.getRecorded_by());
+            statement.setLong(8, payment.getRecordedBy());
 
             long result = statement.executeUpdate();
 

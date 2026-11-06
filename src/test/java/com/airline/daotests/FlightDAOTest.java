@@ -32,7 +32,7 @@ class FlightDAOTest {
         connection.setAutoCommit(false);
         bookingSegment = new BookingSegment(
                 26, 11111111111118L,
-                1, 1811, 1, 1);
+                1, 1811, 1);
 
         connection.setAutoCommit(false);
         flightDAO = new FlightDAO();
@@ -66,13 +66,13 @@ class FlightDAOTest {
 
         Flight actual = flightDAO.findFlightById(connection, flightId);
         assertNotNull(actual);
-        assertEquals(flightId, actual.getFlight_id());
-        assertEquals(flight.getFlight_date(), actual.getFlight_date());
-        assertEquals(flight.getAircraft_id(), actual.getAircraft_id());
-        assertEquals(flight.getActual_departure(), actual.getActual_departure());
-        assertEquals(flight.getActual_arrival(), actual.getActual_arrival());
-        assertEquals(flight.getFlight_status(), actual.getFlight_status());
-        assertEquals(flight.getSchedule_id(), actual.getSchedule_id());
+        assertEquals(flightId, actual.getFlightId());
+        assertEquals(flight.getFlightDate(), actual.getFlightDate());
+        assertEquals(flight.getAircraftId(), actual.getAircraftId());
+        assertEquals(flight.getActualDeparture(), actual.getActualDeparture());
+        assertEquals(flight.getActualArrival(), actual.getActualArrival());
+        assertEquals(flight.getFlightStatus(), actual.getFlightStatus());
+        assertEquals(flight.getScheduleId(), actual.getScheduleId());
     }
     @Test
     void testGetFlightById_returnsNullWhenDNE() throws Exception{
@@ -93,18 +93,18 @@ class FlightDAOTest {
         assertFalse(flights.isEmpty(), "Passenger list is empty");
 
         boolean found = flights.stream().anyMatch(p ->
-                Long.valueOf(p.getFlight_id())
+                Long.valueOf(p.getFlightId())
                         .equals(Long.valueOf(flightId))
         );
 
 
         assertTrue(
                 found,
-                "Flight ID " + flight.getFlight_id()
+                "Flight ID " + flight.getFlightId()
                         + " was not found in getAllPassengers(). "
                         + "Returned IDs: "
                         + flights.stream()
-                        .map(Flight::getFlight_id)
+                        .map(Flight::getFlightId)
                         .toList()
         );
     }
@@ -117,7 +117,7 @@ class FlightDAOTest {
         assertTrue(BSid > 0, "No id returned for the booking");
         flights = flightDAO.findFlightsByPassengerId(connection, 11111111111118L);
         assertFalse(flights.isEmpty(), "Flights should have one entry");
-        assertEquals(1L, flights.get(1L).getFlight_id() );
+        assertEquals(1L, flights.get(1L).getFlightId() );
     }
 
     @Test
@@ -139,7 +139,7 @@ class FlightDAOTest {
         Flight actual = flightDAO.findFlightById(connection, 1L);
         assertEquals(
                 LocalTime.of(01, 30).toString(),
-                actual.getActual_arrival().toString());
+                actual.getActualArrival().toString());
     }
     @Test
     void testUpdateActualDeparture() throws Exception{
@@ -149,7 +149,7 @@ class FlightDAOTest {
         Flight actual = flightDAO.findFlightById(connection, 1L);
         assertEquals(
                 LocalTime.of(02, 30).toString(),
-                actual.getActual_departure().toString());
+                actual.getActualDeparture().toString());
     }
 
     @Test
@@ -158,6 +158,6 @@ class FlightDAOTest {
                 connection, 1L, "DEPARTED");
         assertTrue(updated, "flight status not updated");
         Flight actual = flightDAO.findFlightById(connection, 1L);
-        assertEquals("DEPARTED", actual.getFlight_status());
+        assertEquals("DEPARTED", actual.getFlightStatus());
     }
 }

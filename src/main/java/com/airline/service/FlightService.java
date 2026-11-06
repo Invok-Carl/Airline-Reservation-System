@@ -107,7 +107,7 @@ public class FlightService {
             // Verify that the referenced schedule exists.
             FlightSchedule schedule = flightScheduleDAO.getScheduleById(
                     connection,
-                    flight.getSchedule_id()
+                    flight.getScheduleId()
             );
 
             if (schedule == null) {
@@ -117,10 +117,10 @@ public class FlightService {
             }
 
             // The flight date must be within the schedule's date range.
-            LocalDate flightDate = flight.getFlight_date();
+            LocalDate flightDate = flight.getFlightDate();
 
-            if (flightDate.isBefore(schedule.getStart_date())
-                    || flightDate.isAfter(schedule.getEnd_date())) {
+            if (flightDate.isBefore(schedule.getStartDate())
+                    || flightDate.isAfter(schedule.getEndDate())) {
                 throw new IllegalArgumentException(
                         "The flight date must fall within the schedule's "
                                 + "start and end dates."
@@ -139,36 +139,36 @@ public class FlightService {
             );
         }
 
-        if (flight.getFlight_date() == null) {
+        if (flight.getFlightDate() == null) {
             throw new IllegalArgumentException(
                     "Flight date is required."
             );
         }
 
-        if (flight.getSchedule_id() <= 0) {
+        if (flight.getScheduleId() <= 0) {
             throw new IllegalArgumentException(
                     "A valid schedule ID is required."
             );
         }
 
-        if (flight.getFlight_status() == null
-                || flight.getFlight_status().isBlank()) {
+        if (flight.getFlightStatus() == null
+                || flight.getFlightStatus().isBlank()) {
             throw new IllegalArgumentException(
                     "Flight status is required."
             );
         }
 
-        if (flight.getActual_arrival() != null
-                && flight.getActual_departure() == null) {
+        if (flight.getActualArrival() != null
+                && flight.getActualDeparture() == null) {
             throw new IllegalArgumentException(
                     "Actual arrival cannot be set without actual departure."
             );
         }
 
-        if (flight.getActual_departure() != null
-                && flight.getActual_arrival() != null
-                && !flight.getActual_arrival()
-                .isAfter(flight.getActual_departure())) {
+        if (flight.getActualDeparture() != null
+                && flight.getActualArrival() != null
+                && !flight.getActualArrival()
+                .isAfter(flight.getActualDeparture())) {
             throw new IllegalArgumentException(
                     "Actual arrival must be later than actual departure."
             );

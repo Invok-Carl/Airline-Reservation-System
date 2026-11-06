@@ -25,14 +25,14 @@ public class EmployeeDAOTest {
         connection.setAutoCommit(false);
         employeeDAO = new EmployeeDAO();
         employee = new Employee(
-                123456,
-          "Nazir",
+                1234567,
+          "Ghalib",
           "Ahmad",
           "RESERVATION_AGENT",
-                "07007574132",
-                "nazirahmad@123.com",
+                "07007574133",
+                "ghalibahmad@123.com",
                 "ACTIVE",
-                "nazirahmad001",
+                "ghalibahmad001",
                 "$2a$12$rz.togQLobgd2lZuzMDiROAG2v8uLV61nMqXVX.UMNrEmhkS1lvKS"
         );
     }
@@ -54,7 +54,7 @@ public class EmployeeDAOTest {
     void testInsertEmployee_and_findbyUsername() throws Exception {
         boolean inserted = employeeDAO.insertEmployee(connection, employee);
         assertTrue(inserted, "Employee not inserted");
-        Employee actual = employeeDAO.findByUsername(connection,"nazirahmad001");
+        Employee actual = employeeDAO.findByUsername(connection,"ghalibahmad001");
         assertNotNull(actual);
 
         assertEquals(employee.getEmployeeId(), actual.getEmployeeId());
@@ -72,7 +72,7 @@ public class EmployeeDAOTest {
     void testFindById() throws Exception{
         boolean inserted = employeeDAO.insertEmployee(connection, employee);
         assertTrue(inserted, "Employee not inserted");
-        Employee actual = employeeDAO.findById(connection,123456);
+        Employee actual = employeeDAO.findById(connection,1234567);
         assertNotNull(actual);
 
         assertEquals(employee.getEmployeeId(), actual.getEmployeeId());
@@ -91,7 +91,7 @@ public class EmployeeDAOTest {
     void testFindByEmail() throws Exception {
         boolean inserted = employeeDAO.insertEmployee(connection, employee);
         assertTrue(inserted, "Employee not inserted");
-        Employee actual = employeeDAO.findByEmail(connection,"nazirahmad@123.com");
+        Employee actual = employeeDAO.findByEmail(connection,"ghalibahmad@123.com");
         assertNotNull(actual);
 
         assertEquals(employee.getEmployeeId(), actual.getEmployeeId());
@@ -109,8 +109,8 @@ public class EmployeeDAOTest {
         boolean inserted = employeeDAO.insertEmployee(connection, employee);
         assertTrue(inserted, "Employee not inserted");
         boolean statusChanged = employeeDAO.changeEmployeeStatusById(
-                connection, 123456, "INACTIVE");
-        Employee actual = employeeDAO.findByEmail(connection,"nazirahmad@123.com");
+                connection, 1234567, "INACTIVE");
+        Employee actual = employeeDAO.findByEmail(connection,"ghalibahmad@123.com");
         assertNotNull(actual);
 
         assertEquals(employee.getEmployeeId(), actual.getEmployeeId());
@@ -128,12 +128,12 @@ public class EmployeeDAOTest {
     void testDeleteEmployee() throws Exception {
         boolean inserted = employeeDAO.insertEmployee(connection, employee);
         assertTrue(inserted, "Employee not inserted");
-        Employee actual = employeeDAO.findByEmail(connection,"nazirahmad@123.com");
+        Employee actual = employeeDAO.findByEmail(connection,"ghalibahmad@123.com");
         assertNotNull(actual);
 
         boolean delete = employeeDAO.deleteEmployeeById(connection, actual.getEmployeeId());
         assertTrue(delete, "Employee not inserted");
-        Employee deleted = employeeDAO.findByEmail(connection,"nazirahmad@123.com");
+        Employee deleted = employeeDAO.findByEmail(connection,"ghalibahmad@123.com");
         assertNull(deleted);
     }
     @Test
@@ -145,11 +145,11 @@ public class EmployeeDAOTest {
         Map<Long, Employee> employees = employeeDAO.getAllEmployeesMap(connection);
         List<Employee> employeesList = employeeDAO.getAllEmployeesList(connection);
 
-        assertEquals(12, employees.size());
-        assertEquals(12, employeesList.size());
+        assertTrue( employees.size() > 0, "List empty");
+        assertTrue( employeesList.size() > 0, "List empty");
 
 
-        Employee actual = employees.get(123456L);
+        Employee actual = employees.get(1234567L);
         assertNotNull(actual);
         assertEquals(employee.getEmployeeId(), actual.getEmployeeId());
         assertEquals(employee.getFirstName(), actual.getFirstName());

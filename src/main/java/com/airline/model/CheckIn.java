@@ -5,69 +5,69 @@ import java.time.LocalDateTime;
 
 public class CheckIn {
 
-    private long checkin_id;
-    private long segment_id;
-    private LocalDateTime checkin_time;
-    private Long seat_id;
+    private long checkinId;
+    private long segmentId;
+    private LocalDateTime checkinTime;
+    private Long seatId;
     private String status;
-    private long employee_id;
+    private long employeeId;
 
-    public CheckIn(long segment_id,
-                   LocalDateTime checkin_time,
-                   Long seat_id,
+    public CheckIn(long segmentId,
+                   LocalDateTime checkinTime,
+                   Long seatId,
                    String status,
-                   long employee_id) {
-        this.segment_id = segment_id;
-        this.checkin_time = checkin_time;
-        this.seat_id = seat_id;
+                   long employeeId) {
+        this.segmentId = segmentId;
+        this.checkinTime = checkinTime;
+        this.seatId = seatId;
         this.status = status;
-        this.employee_id = employee_id;
+        this.employeeId = employeeId;
     }
 
-    public CheckIn(long checkin_id,
-                   long segment_id,
-                   LocalDateTime checkin_time,
-                   Long seat_id,
+    public CheckIn(long checkinId,
+                   long segmentId,
+                   LocalDateTime checkinTime,
+                   Long seatId,
                    String status,
-                   long employee_id) {
-        this.checkin_id = checkin_id;
-        this.segment_id = segment_id;
-        this.checkin_time = checkin_time;
-        this.seat_id = seat_id;
+                   long employeeId) {
+        this.checkinId = checkinId;
+        this.segmentId = segmentId;
+        this.checkinTime = checkinTime;
+        this.seatId = seatId;
         this.status = status;
-        this.employee_id = employee_id;
+        this.employeeId = employeeId;
     }
 
-    public long getCheckin_id() {
-        return checkin_id;
+    public long getCheckinId() {
+        return checkinId;
     }
 
-    public void setCheckin_id(long checkin_id) {
-        this.checkin_id = checkin_id;
+    public void setCheckinId(long checkinId) {
+        this.checkinId = checkinId;
     }
 
-    public long getSegment_id() {
-        return segment_id;
+    public long getSegmentId() {
+        return segmentId;
     }
 
-    public void setSegment_id(long segment_id) {
-        this.segment_id = segment_id;
+    public void setSegmentId(long segmentId) {
+        this.segmentId = segmentId;
     }
 
-    public LocalDateTime getCheckin_time() {
-        return checkin_time;
+    public LocalDateTime getCheckinTime() {
+        return checkinTime;
     }
 
-    public void setCheckin_time(LocalDateTime checkin_time) {
-        this.checkin_time = checkin_time;
+    public void setCheckinTime(LocalDateTime checkinTime) {
+        this.checkinTime = checkinTime;
     }
 
-    public Long getSeat_id() {
-        return seat_id;
+    public Long getSeatId() {
+        return seatId;
     }
 
-    public void setSeat_id(Long seat_id) {
-        this.seat_id = seat_id;
+    public void setSeatId(Long seatId) {
+        this.seatId = seatId;
     }
 
     public String getStatus() {
@@ -78,11 +78,11 @@ public class CheckIn {
         this.status = status;
     }
 
-    public long getEmployee_id() {
-        return employee_id;
+    public long getEmployeeId() {
+        return employeeId;
     }
 
-    public void setEmployee_id(long employee_id) {
-        this.employee_id = employee_id;
+    public void setEmployeeId(long employeeId) {
+        this.employeeId = employeeId;
     }
 }

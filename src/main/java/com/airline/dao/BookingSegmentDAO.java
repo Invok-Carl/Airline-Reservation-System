@@ -25,11 +25,11 @@ public class BookingSegmentDAO {
         try (PreparedStatement statement = connection.prepareStatement(sql,
              new String[] {"SEGMENT_ID"}   )
         ){
-            statement.setLong(1, bookingSegment.getReservation_id());
-            statement.setLong(2, bookingSegment.getPassenger_id());
-            statement.setLong(3, bookingSegment.getFlight_id());
-            statement.setLong(4, bookingSegment.getSeat_id());
-            statement.setLong(5, bookingSegment.getFare_id());
+            statement.setLong(1, bookingSegment.getReservationId());
+            statement.setLong(2, bookingSegment.getPassengerId());
+            statement.setLong(3, bookingSegment.getFlightId());
+            statement.setLong(4, bookingSegment.getSeatId());
+            statement.setLong(5, bookingSegment.getFareId());
             long result = statement.executeUpdate();
             if (result == 0) throw new SQLException("Adding Segment did not Affect Any rows");
             try(ResultSet resultSet = statement.getGeneratedKeys()){

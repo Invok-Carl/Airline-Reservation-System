@@ -24,6 +24,8 @@ public class ReservationController implements HttpHandler {
     private static final String BASE_PATH = "/api/reservations";
     private static final String COOKIE_NAME = "AIRLINE_SESSION";
 
+
+    // i.e. /api/reservations/14/segments -> add segments to reservation 14
     private static final Pattern ADD_SEGMENT_PATH =
             Pattern.compile("^/api/reservations/(\\d+)/segments$");
 
@@ -169,6 +171,22 @@ public class ReservationController implements HttpHandler {
             HttpExchange exchange,
             long accountId
     ) throws IOException, SQLException {
+        /*
+        * {
+              "segments": [
+                {
+                  "passenger_id": 12,
+                  "flight_id": 1,
+                  "seat_id": 1653
+                },
+                {
+                  "passenger_id": 13,
+                  "flight_id": 4,
+                  "seat_id": 1532
+                }...
+              ]
+           }
+        */
 
         JsonNode body = objectMapper.readTree(
                 exchange.getRequestBody()
@@ -200,15 +218,15 @@ public class ReservationController implements HttpHandler {
 
             BookingSegment segment = new BookingSegment();
 
-            segment.setPassenger_id(
+            segment.setPassengerId(
                     requirePositiveLong(node, "passenger_id")
             );
 
-            segment.setFlight_id(
+            segment.setFlightId(
                     requirePositiveLong(node, "flight_id")
             );
 
-            segment.setSeat_id(
+            segment.setSeatId(
                     requirePositiveLong(node, "seat_id")
             );
 
@@ -249,15 +267,15 @@ public class ReservationController implements HttpHandler {
 
         BookingSegment segment = new BookingSegment();
 
-        segment.setPassenger_id(
+        segment.setPassengerId(
                 requirePositiveLong(body, "passenger_id")
         );
 
-        segment.setFlight_id(
+        segment.setFlightId(
                 requirePositiveLong(body, "flight_id")
         );
 
-        segment.setSeat_id(
+        segment.setSeatId(
                 requirePositiveLong(body, "seat_id")
         );
 
