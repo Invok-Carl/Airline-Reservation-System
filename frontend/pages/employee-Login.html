@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Employee Login</title>
+    <link rel="stylesheet" href="../css/main.css">
+    <style>
+        .login-box { max-width: 380px; margin: 60px auto; padding: 28px; background: #fff;
+                     border-radius: 10px; box-shadow: 0 2px 12px rgba(0,0,0,.15); }
+        .login-box h1 { text-align: center; margin-top: 0; }
+        .login-box label { display: block; margin-top: 14px; }
+        .login-box input { width: 100%; padding: 10px; margin-top: 6px; box-sizing: border-box; }
+        .login-box button { width: 100%; padding: 12px; margin-top: 20px; cursor: pointer; }
+        #msg { color: #c00; margin-top: 12px; text-align: center; }
+    </style>
+</head>
+<body>
+<div class="login-box">
+    <h1>Employee Login</h1>
+    <form id="employeeLoginForm">
+        <label for="employeeId">Employee ID</label>
+        <input type="text" id="employeeId" required>
+
+        <label for="password">Password</label>
+        <input type="password" id="password" required>
+
+        <button type="submit">Login</button>
+        <div id="msg"></div>
+    </form>
+</div>
+<script src="../js/employee-login.js"></script>
+</body>
+</html>
