@@ -12,7 +12,7 @@ document.getElementById("employeeLoginForm").addEventListener("submit", async fu
     const res = await fetch(API_URL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ employeeId: employeeId, password: password })
+      body: JSON.stringify({ username: employeeId, password: password })
     });
 
     if (!res.ok) {
