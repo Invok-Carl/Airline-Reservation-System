@@ -162,7 +162,22 @@ public class EmployeeAuthenticationController implements HttpHandler {
                     "First name, last name, username and a password of at least 8 characters are required.");
             return;
         }
-        sendJson(exchange, 200, Map.of("message", "Register endpoint reached."));
+
+        try {
+            Employee employee = authenticationService.register(
+                    firstName, lastName, username, password);
+
+            if (employee == null) {
+                sendError(exchange, 409, "Username already exists.");
+                return;
+            }
+
+            sendJson(exchange, 201, Map.of("message", "Registration successful."));
+
+        } catch (SQLException exception) {
+            LOGGER.log(Level.SEVERE, "Database error during employee registration.", exception);
+            sendError(exchange, 500, "Registration service unavailable.");
+        }
     }
 
 
