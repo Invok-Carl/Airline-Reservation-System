@@ -10,6 +10,8 @@ public class Employee {
     private String employmentStatus;
     private String userName;
     private String passwordHash;
+
+    public Employee(){};
     public Employee(
             long employeeId, String firstName, String lastName, String position,
             String phone, String email, String employmentStatus, String userName, String passwordHash
