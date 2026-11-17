@@ -124,8 +124,7 @@ public class EmployeeDAO {
                 EMAIL,
                 EMPLOYMENT_STATUS,
                 USERNAME,
-                PASSWORD_HASH,
-                role
+                PASSWORD_HASH
             FROM EMPLOYEE
             WHERE USERNAME = ?
             """;
