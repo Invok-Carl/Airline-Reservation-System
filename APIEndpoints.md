@@ -107,10 +107,12 @@ Passenger Account auth:
 Passengers API:
 ==============================================================
 /api/passengers
-    POST    api/passengers -> only admin/passengers with accounts are allowed
-    POST    api/passengers/{passenger_id} -> admins or passenger 
+    POST    api/passengers{passengerId} -> only admin/passengers with accounts are allowed
+    PUT    api/passengers/{passengerId} -> admins/reservation agents, or passengers with accounts
+                    (who have created the passenger in the first place) are allowed.
     accounts to whom the passenger belongs
 
+    NOTE: passenger ID must be provided in the URL.
     public Passenger(Long passengerId, String firstName, String lastName,
     LocalDate dateOfBirth, String gender, String nationality,
     String phone, String email, String address,
