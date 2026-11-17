@@ -2,26 +2,26 @@ package com.airline.model;
 
 public class Aircraft {
     public long aircraftId;
-    public String registrantionNumber;
+    public String registrationNumber;
     private String aircraftModel;
     private String manufacturer;
     private long capacity;
     private String status;
 
-    public Aircraft(long aircraftId, String registrantionNumber,
+    public Aircraft(long aircraftId, String registrationNumber,
                     String aircraftModel, String manufacturer,
                     long capacity, String status) {
         this.aircraftId = aircraftId;
-        this.registrantionNumber = registrantionNumber;
+        this.registrationNumber = registrationNumber;
         this.aircraftModel = aircraftModel;
         this.manufacturer = manufacturer;
         this.capacity = capacity;
         this.status = status;
     }
-    public Aircraft(String registrantionNumber,
+    public Aircraft(String registrationNumber,
                     String aircraftModel, String manufacturer,
                     long capacity, String status) {
-        this.registrantionNumber = registrantionNumber;
+        this.registrationNumber = registrationNumber;
         this.aircraftModel = aircraftModel;
         this.manufacturer = manufacturer;
         this.capacity = capacity;
@@ -36,12 +36,12 @@ public class Aircraft {
         this.aircraftId = aircraftId;
     }
 
-    public String getRegistrantionNumber() {
-        return registrantionNumber;
+    public String getRegistrationNumber() {
+        return registrationNumber;
     }
 
-    public void setRegistrantionNumber(String registrantionNumber) {
-        this.registrantionNumber = registrantionNumber;
+    public void setRegistrationNumber(String registrantionNumber) {
+        this.registrationNumber = registrantionNumber;
     }
 
     public String getAircraftModel() {

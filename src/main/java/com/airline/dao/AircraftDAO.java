@@ -1,6 +1,7 @@
 package com.airline.dao;
 
 import com.airline.model.Aircraft;
+import oracle.jdbc.proxy.annotation.Pre;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -26,7 +27,7 @@ public class AircraftDAO {
                 """;
         try(PreparedStatement statement = connection.prepareStatement(sql,
                 new String[] {"AIRCRAFT_ID"})){
-            statement.setString(1, aircraft.getRegistrantionNumber());
+            statement.setString(1, aircraft.getRegistrationNumber());
             statement.setString(2, aircraft.getAircraftModel().toUpperCase());
             statement.setString(3, aircraft.getManufacturer());
             statement.setLong(4, aircraft.getCapacity());
@@ -114,6 +115,29 @@ public class AircraftDAO {
                 }
                 return aircrafts;
             }
+        }
+    }
+
+    public boolean updateAircraft(Connection connection, Aircraft aircraft, long aircraftId)
+    throws SQLException {
+        String sql = """
+                UPDATE AIRCRAFT
+                SET 
+                    REGISTRATION_NUMBER = ?,
+                    AIRCRAFT_MODEL = ?,
+                    MANUFACTURER = ?,
+                    AIRCRAFT_CAPACITY = ?,
+                    STATUS = ?
+                WHERE AIRCRAFT_ID = ?
+                """;
+        try(PreparedStatement statement = connection.prepareStatement(sql)){
+            statement.setString(1, aircraft.getRegistrationNumber());
+            statement.setString(2, aircraft.getAircraftModel());
+            statement.setString(3, aircraft.getManufacturer());
+            statement.setLong(4, aircraft.getCapacity());
+            statement.setString(5, aircraft.getStatus());
+            statement.setLong(6, aircraftId);
+            return statement.executeUpdate() > 0;
         }
     }
 

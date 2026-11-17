@@ -45,4 +45,14 @@ public class AuthorizationService {
         return isAdministrator(employee)
                 || isAirportStaff(employee);
     }
+
+    public boolean canAddAircraft(Employee employee){
+        return isAdministrator(employee);
+    }
+    public boolean canUpdateAircraft(Employee employee){
+        return isAdministrator(employee);
+    }
+    public boolean canSeeAircraft(Employee employee){
+        return isAdministrator(employee);
+    }
 }
