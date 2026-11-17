@@ -8,6 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
@@ -51,8 +52,8 @@ public class AircraftDAOTest {
         assertNotNull(actual);
 
         assertEquals(aircraftId, actual.getAircraftId());
-        assertEquals(aircraft.getRegistrantionNumber(),
-                actual.getRegistrantionNumber());
+        assertEquals(aircraft.getRegistrationNumber(),
+                actual.getRegistrationNumber());
         assertEquals(aircraft.getAircraftModel(), actual.getAircraftModel());
         assertEquals(aircraft.getManufacturer(), actual.getManufacturer());
         assertEquals(aircraft.getCapacity(), actual.getCapacity());
@@ -90,14 +91,36 @@ public class AircraftDAOTest {
         assertNotNull(actual);
 
         assertEquals(aircraftId, actual.getAircraftId());
-        assertEquals(aircraft.getRegistrantionNumber(),
-                actual.getRegistrantionNumber());
+        assertEquals(aircraft.getRegistrationNumber(),
+                actual.getRegistrationNumber());
         assertEquals(aircraft.getAircraftModel(), actual.getAircraftModel());
         assertEquals(aircraft.getManufacturer(), actual.getManufacturer());
         assertEquals(aircraft.getCapacity(), actual.getCapacity());
         assertEquals(aircraft.getStatus(), actual.getStatus());
+    }
 
+    @Test
+    void testUpdateAircraft() throws Exception {
+        long aircraftId = aircraftDAO.insertAircraft(connection, aircraft);
+        assertTrue(aircraftId > 0, "Aircraft ID not fetched");
 
+        aircraft.setRegistrationNumber("NUMBER");
+        aircraft.setAircraftModel("NEW_AIRCRAFT_MODEL");
+        aircraft.setCapacity(220);
+        aircraft.setStatus("MAINTENANCE");
+        aircraft.setManufacturer("NEW_MANUFACTURER");
+
+        boolean hasUpdated = aircraftDAO.updateAircraft(connection, aircraft, aircraftId);
+        assertTrue(hasUpdated, "The aircraft did not update successfully");
+
+        Aircraft actual = aircraftDAO.getAircraftById(connection, aircraftId);
+        assertNotNull(actual);
+
+        assertEquals(aircraft.getRegistrationNumber(), actual.getRegistrationNumber());
+        assertEquals(aircraft.getAircraftModel(), actual.getAircraftModel());
+        assertEquals(aircraft.getCapacity(), actual.getCapacity());
+        assertEquals(aircraft.getStatus(), actual.getStatus());
+        assertEquals(aircraft.getManufacturer(), actual.getManufacturer());
     }
 
 

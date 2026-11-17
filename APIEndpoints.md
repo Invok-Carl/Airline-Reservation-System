@@ -108,7 +108,7 @@ Passengers API:
 ==============================================================
 /api/passengers
     POST    api/passengers{passengerId} -> only admin/passengers with accounts are allowed
-    PUT    api/passengers/{passengerId} -> admins/reservation agents, or passengers with accounts
+    PUT     api/passengers/{passengerId} -> admins/reservation agents, or passengers with accounts
                     (who have created the passenger in the first place) are allowed.
     accounts to whom the passenger belongs
 
@@ -132,5 +132,12 @@ Passengers API:
         this.passportExpiry = passportExpiry;
         this.passportCountry = passportCountry;
     }
+===================================================================================
+aircraft API
+===========================================================================
+GET	     /api/aircraft	     Retrieve all aircraft
+GET	     /api/aircraft/{id}	 Retrieve one aircraft
+POST	 /api/aircraft	     Register a new aircraft
+PUT	     /api/aircraft/{id}	 Update aircraft information
     
     
