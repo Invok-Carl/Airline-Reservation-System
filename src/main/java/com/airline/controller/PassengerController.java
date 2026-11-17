@@ -71,53 +71,9 @@ public class PassengerController implements HttpHandler {
 
         try {
             // POST /api/passengers/{id}
-            Matcher addMatcher = PASSENGER_PATH.matcher(path);
-            if (addMatcher.matches()) {
-
-                if (!"POST".equals(method)) {
-                    responseUtil.sendMethodNotAllowed(
-                            exchange,
-                            "POST"
-                    );
-                    return;
-                }
-                long passengerId;
-                try {
-                    passengerId = Long.parseLong(addMatcher.group(1));
-
-                    if (passengerId <= 0) {
-                        responseUtil.sendError(
-                                exchange,
-                                400,
-                                "Passenger ID must be positive."
-                        );
-                        return;
-                    }
-
-                } catch (NumberFormatException exception) {
-                    responseUtil.sendError(
-                            exchange,
-                            400,
-                            "Invalid passenger ID."
-                    );
-                    return;
-                }
-                handleCreatePassenger(exchange, passengerId);
-                return;
-            }
-
-            // PUT /api/passengers/{id}
             Matcher matcher = PASSENGER_PATH.matcher(path);
 
             if (matcher.matches()) {
-
-                if (!"PUT".equals(method)) {
-                    responseUtil.sendMethodNotAllowed(
-                            exchange,
-                            "PUT"
-                    );
-                    return;
-                }
 
                 long passengerId;
 
@@ -142,10 +98,22 @@ public class PassengerController implements HttpHandler {
                     return;
                 }
 
-                handleUpdatePassenger(exchange, passengerId);
+                switch (method) {
+                    case "POST" ->
+                            handleCreatePassenger(exchange, passengerId);
+
+                    case "PUT" ->
+                            handleUpdatePassenger(exchange, passengerId);
+
+                    default ->
+                            responseUtil.sendMethodNotAllowed(
+                                    exchange,
+                                    "POST, PUT"
+                            );
+                }
+
                 return;
             }
-
             responseUtil.sendError(
                     exchange,
                     404,
