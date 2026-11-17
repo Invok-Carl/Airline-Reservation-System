@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Employee Register</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #eef1f6; margin: 0; }
+        .box { max-width: 380px; margin: 50px auto; padding: 28px; background: #fff;
+               border-radius: 10px; box-shadow: 0 2px 12px rgba(0,0,0,.15); }
+        h1 { text-align: center; margin-top: 0; }
+        label { display: block; margin-top: 14px; }
+        input { width: 100%; padding: 10px; margin-top: 6px; box-sizing: border-box; }
+        button { width: 100%; padding: 12px; margin-top: 20px; cursor: pointer; font-size: 16px; }
+        #msg { margin-top: 12px; text-align: center; color: #c00; }
+        .link { text-align: center; margin-top: 14px; }
+    </style>
+</head>
+<body>
+<div class="box">
+    <h1>Employee Register</h1>
+    <form id="registerForm">
+        <label for="firstName">First name</label>
+        <input type="text" id="firstName" required>
+
+        <label for="lastName">Last name</label>
+        <input type="text" id="lastName" required>
+
+        <label for="username">Username</label>
+        <input type="text" id="username" required>
+
+        <label for="password">Password (min 8 characters)</label>
+        <input type="password" id="password" minlength="8" required>
+
+        <button type="submit">Register</button>
+        <div id="msg"></div>
+    </form>
+    <div class="link"><a href="employee-Login.html">Back to login</a></div>
+</div>
+
+<script>
+    document.getElementById("registerForm").addEventListener("submit", async function (e) {
+      e.preventDefault();
+      const msg = document.getElementById("msg");
+      msg.style.color = "#c00";
+      msg.textContent = "";
+
+      const body = {
+        firstName: document.getElementById("firstName").value.trim(),
+        lastName: document.getElementById("lastName").value.trim(),
+        username: document.getElementById("username").value.trim(),
+        password: document.getElementById("password").value
+      };
+
+      try {
+        const res = await fetch("/api/employee-auth/register", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body)
+        });
+
+        if (res.status === 409) {
+          msg.textContent = "This username is already taken.";
+          return;
+        }
+        if (!res.ok) {
+          msg.textContent = "Registration failed. Check your information.";
+          return;
+        }
+
+        msg.style.color = "green";
+        msg.textContent = "Registered! Redirecting to login...";
+        setTimeout(function () { window.location.href = "employee-Login.html"; }, 1500);
+      } catch (err) {
+        msg.textContent = "Cannot reach the server.";
+      }
+    });
+</script>
+</body>
+</html>
