@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Manage Routes</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #eef1f6; margin: 0; padding: 20px; }
+        .box { max-width: 800px; margin: 0 auto; background: #fff; padding: 24px;
+               border-radius: 10px; box-shadow: 0 2px 12px rgba(0,0,0,.15); }
+        h1, h2 { margin-top: 0; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 24px; }
+        th, td { border-bottom: 1px solid #ddd; padding: 8px; text-align: left; }
+        form { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        label { display: block; font-size: 14px; }
+        input, select { width: 100%; padding: 8px; box-sizing: border-box; margin-top: 4px; }
+        button { grid-column: span 2; padding: 12px; cursor: pointer; font-size: 16px; }
+        #msg { margin-top: 12px; text-align: center; color: #c00; }
+        a { display: inline-block; margin-bottom: 12px; }
+    </style>
+</head>
+<body>
+<div class="box">
+    <a href="employee-dashboard.html">&larr; Back to dashboard</a>
+    <h1>Manage Routes</h1>
+
+    <table>
+        <thead>
+        <tr><th>ID</th><th>Origin</th><th>Destination</th><th>Km</th><th>Minutes</th><th>Status</th></tr>
+        </thead>
+        <tbody id="routeBody"></tbody>
+    </table>
+
+    <h2>Add a new route</h2>
+    <form id="routeForm">
+        <div><label>Origin airport ID</label><input type="number" id="origin" min="1" required></div>
+        <div><label>Destination airport ID</label><input type="number" id="dest" min="1" required></div>
+        <div><label>Distance (km)</label><input type="number" id="km" min="1" step="any" required></div>
+        <div><label>Duration (minutes)</label><input type="number" id="min" min="1" required></div>
+        <div>
+            <label>Status</label>
+            <select id="status">
+                <option value="ACTIVE">ACTIVE</option>
+                <option value="INACTIVE">INACTIVE</option>
+            </select>
+        </div>
+        <button type="submit">Add route</button>
+    </form>
+    <div id="msg"></div>
+</div>
+
+<script>
+    const msg = document.getElementById("msg");
+
+    async function loadRoutes() {
+      const res = await fetch("/api/routes");
+      if (res.status === 401) { window.location.href = "employee-Login.html"; return; }
+      if (res.status === 403) {
+        document.querySelector(".box").innerHTML =
+          '<a href="employee-dashboard.html">&larr; Back</a><h1>Access denied</h1><p>Only an administrator can manage routes.</p>';
+        return;
+      }
+      const routes = await res.json();
+      const body = document.getElementById("routeBody");
+      body.innerHTML = "";
+      routes.forEach(function (r) {
+        const tr = document.createElement("tr");
+        [r.routeId, r.originAirportId, r.destAirportId, r.distanceKm, r.estDurationMin, r.routeStatus]
+          .forEach(function (v) {
+            const td = document.createElement("td");
+            td.textContent = v;
+            tr.appendChild(td);
+          });
+        body.appendChild(tr);
+      });
+    }
+
+    document.getElementById("routeForm").addEventListener("submit", async function (e) {
+      e.preventDefault();
+      msg.style.color = "#c00";
+      msg.textContent = "";
+
+      const body = {
+        originAirportId: Number(document.getElementById("origin").value),
+        destAirportId: Number(document.getElementById("dest").value),
+        distanceKm: Number(document.getElementById("km").value),
+        estDurationMin: Number(document.getElementById("min").value),
+        routeStatus: document.getElementById("status").value
+      };
+
+      const res = await fetch("/api/routes", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body)
+      });
+
+      if (res.ok) {
+        msg.style.color = "green";
+        msg.textContent = "Route added.";
+        e.target.reset();
+        loadRoutes();
+      } else {
+        const data = await res.json().catch(function () { return {}; });
+        msg.textContent = data.error || "Could not add route.";
+      }
+    });
+
+    loadRoutes();
+</script>
+</body>
+</html>
