@@ -57,9 +57,21 @@ public class RouteController implements HttpHandler {
                 send(exchange, 200, routes);
             } else if ("POST".equals(method)) {
                 AddRouteRequest request = objectMapper.readValue(exchange.getRequestBody(), AddRouteRequest.class);
+
                 Route route = new Route(request.originAirportId(), request.destAirportId(),
-                        request.distanceKm(), request.estDurationMin(), request.routeStatus());                routeService.createRoute(route);
+                        request.distanceKm(), request.estDurationMin(), request.routeStatus());
+                routeService.createRoute(route);
+
                 send(exchange, 201, Map.of("message", "Route created."));
+            } else if ("PUT".equals(method)) {
+                UpdateRouteRequest request = objectMapper.readValue(exchange.getRequestBody(), UpdateRouteRequest.class);
+                Route route = new Route(request.routeId(), request.originAirportId(), request.destAirportId(),
+                        request.distanceKm(), request.estDurationMin(), request.routeStatus());
+                if (routeService.updateRoute(route)) {
+                    send(exchange, 200, Map.of("message", "Route updated."));
+                } else {
+                    send(exchange, 404, Map.of("error", "Route not found."));
+                }
             } else {
                 send(exchange, 405, Map.of("error", "Method not allowed."));
             }
@@ -81,6 +93,15 @@ public class RouteController implements HttpHandler {
         exchange.close();
     }
     public record AddRouteRequest(
+            long originAirportId,
+            long destAirportId,
+            double distanceKm,
+            int estDurationMin,
+            String routeStatus) {
+    }
+
+    public record UpdateRouteRequest(
+            long routeId,
             long originAirportId,
             long destAirportId,
             double distanceKm,

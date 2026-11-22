@@ -26,7 +26,7 @@
 
     <table>
         <thead>
-        <tr><th>ID</th><th>Origin</th><th>Destination</th><th>Km</th><th>Minutes</th><th>Status</th></tr>
+        <tr><th>ID</th><th>Origin</th><th>Destination</th><th>Km</th><th>Minutes</th><th>Status</th><th>Action</th></tr>
         </thead>
         <tbody id="routeBody"></tbody>
     </table>
@@ -51,6 +51,19 @@
 
 <script>
     const msg = document.getElementById("msg");
+        let editingId = null;
+
+    function startEdit(r) {
+      editingId = r.routeId;
+      document.getElementById("origin").value = r.originAirportId;
+      document.getElementById("dest").value = r.destAirportId;
+      document.getElementById("km").value = r.distanceKm;
+      document.getElementById("min").value = r.estDurationMin;
+      document.getElementById("status").value = r.routeStatus;
+      document.querySelector("#routeForm button").textContent = "Save changes";
+      document.querySelector(".box h2").textContent = "Edit route #" + r.routeId;
+      window.scrollTo(0, document.body.scrollHeight);
+    }
 
     async function loadRoutes() {
       const res = await fetch("/api/routes");
@@ -71,6 +84,14 @@
             td.textContent = v;
             tr.appendChild(td);
           });
+               const actionTd = document.createElement("td");
+        const editBtn = document.createElement("button");
+        editBtn.type = "button";
+        editBtn.textContent = "Edit";
+        editBtn.style.cssText = "padding:4px 10px;font-size:14px;";
+        editBtn.addEventListener("click", function () { startEdit(r); });
+        actionTd.appendChild(editBtn);
+        tr.appendChild(actionTd);
         body.appendChild(tr);
       });
     }
@@ -88,17 +109,23 @@
         routeStatus: document.getElementById("status").value
       };
 
+           if (editingId !== null) { body.routeId = editingId; }
+
       const res = await fetch("/api/routes", {
-        method: "POST",
+        method: editingId !== null ? "PUT" : "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body)
       });
 
-      if (res.ok) {
+            if (res.ok) {
         msg.style.color = "green";
-        msg.textContent = "Route added.";
+        msg.textContent = editingId !== null ? "Route updated." : "Route added.";
+        editingId = null;
         e.target.reset();
+        document.querySelector("#routeForm button").textContent = "Add route";
+        document.querySelector(".box h2").textContent = "Add a new route";
         loadRoutes();
+
       } else {
         const data = await res.json().catch(function () { return {}; });
         msg.textContent = data.error || "Could not add route.";

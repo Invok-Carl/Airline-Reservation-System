@@ -39,4 +39,22 @@ public class RouteService {
             return routeDAO.createRoute(connection, route);
         }
     }
+    public boolean updateRoute(Route route) throws SQLException {
+        if (route.getRouteId() <= 0) {
+            throw new IllegalArgumentException("Route ID is required.");
+        }
+        if (route.getOriginAirportId() <= 0 || route.getDestAirportId() <= 0) {
+            throw new IllegalArgumentException("Origin and destination airports are required.");
+        }
+        if (route.getOriginAirportId() == route.getDestAirportId()) {
+            throw new IllegalArgumentException("Origin and destination must be different.");
+        }
+        if (route.getRouteStatus() == null || route.getRouteStatus().isBlank()) {
+            throw new IllegalArgumentException("Route status is required.");
+        }
+
+        try (Connection connection = connectionProvider.getConnection()) {
+            return routeDAO.updateRoute(connection, route);
+        }
+    }
 }
