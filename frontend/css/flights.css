@@ -1,4 +1,4 @@
-```css
+
 /* ============================
    Global styles
 ============================ */
@@ -341,4 +341,242 @@ a {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-height: 34px
+        min-height: 34px;
+        padding: 4px 14px;
+        border-radius: 999px;
+        background: #eef2f8;
+        color: var(--primary);
+        font-size: 0.85rem;
+        font-weight: 700;
+    }
+
+
+    /* ============================
+       Flight cards
+    ============================ */
+
+    .flight-list {
+        display: grid;
+        gap: 16px;
+    }
+
+    .flight-card {
+        display: flex;
+        justify-content: space-between;
+        gap: 24px;
+        padding: 22px 24px;
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        background: var(--surface);
+        box-shadow: var(--shadow);
+        transition: box-shadow 0.2s ease, transform 0.2s ease;
+    }
+
+    .flight-card:hover {
+        box-shadow: var(--shadow-hover);
+        transform: translateY(-2px);
+    }
+
+    .flight-card-main {
+        flex: 1;
+    }
+
+    .flight-card-top {
+        display: flex;
+        gap: 16px;
+        margin-bottom: 14px;
+    }
+
+    .flight-number {
+        color: var(--primary);
+        font-weight: 800;
+    }
+
+    .flight-date {
+        color: var(--muted);
+    }
+
+    .flight-route {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+    }
+
+    .route-point {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .route-time {
+        color: var(--primary);
+        font-size: 1.5rem;
+        font-weight: 800;
+    }
+
+    .route-airport {
+        color: var(--muted);
+        font-size: 0.9rem;
+    }
+
+    .route-line {
+        flex: 1;
+        position: relative;
+        height: 2px;
+        min-width: 60px;
+        background: var(--border);
+    }
+
+    .route-plane {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        padding: 0 8px;
+        background: var(--surface);
+        color: var(--accent);
+    }
+
+    .flight-card-side {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 10px;
+    }
+
+    .aircraft-info {
+        color: var(--muted);
+        font-size: 0.85rem;
+    }
+
+
+/* ============================
+   Status, messages, states
+============================ */
+
+.status-badge {
+    padding: 4px 12px;
+    border-radius: 999px;
+    background: #eef2f8;
+    color: var(--primary);
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: capitalize;
+}
+
+.status-scheduled,
+.status-confirmed,
+.status-active {
+    background: var(--success-bg);
+    color: var(--success);
+}
+
+.status-cancelled {
+    background: var(--danger-bg);
+    color: var(--danger);
+}
+
+.status-delayed {
+    background: #fff7ed;
+    color: #c2410c;
+}
+
+.message {
+    margin-bottom: 18px;
+    padding: 12px 16px;
+    border-radius: 9px;
+    background: var(--danger-bg);
+    color: var(--danger);
+    font-size: 0.95rem;
+}
+
+.loading-state {
+    padding: 30px;
+    text-align: center;
+    color: var(--muted);
+}
+
+.empty-state {
+    padding: 40px 20px;
+    text-align: center;
+    color: var(--muted);
+}
+
+.empty-state h3 {
+    margin: 8px 0 4px;
+    color: var(--primary);
+}
+
+.empty-icon {
+    font-size: 2.5rem;
+    color: var(--accent);
+}
+
+
+/* ============================
+   Seats, booking, footer
+============================ */
+
+.seat-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+    gap: 10px;
+    margin-bottom: 24px;
+}
+
+.seat-button {
+    padding: 10px 0;
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    background: #ffffff;
+    color: var(--primary);
+    font-weight: 700;
+    transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.seat-button:hover {
+    border-color: var(--accent);
+}
+
+.seat-button.selected {
+    background: var(--accent);
+    border-color: var(--accent);
+}
+
+.booking-summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+}
+
+.booking-summary p {
+    margin: 0;
+}
+
+.site-footer {
+    padding: 24px 7%;
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.9rem;
+}
+
+@media (max-width: 760px) {
+    .form-fields {
+        grid-template-columns: 1fr;
+    }
+
+    .flight-card {
+        flex-direction: column;
+    }
+
+    .flight-card-side {
+        align-items: flex-start;
+    }
+
+    .hero {
+        padding: 30px 24px;
+    }
+ }

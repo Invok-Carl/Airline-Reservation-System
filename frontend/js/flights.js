@@ -83,7 +83,16 @@ async function fetchFlights(url = API_URL) {
             );
         }
 
-        displayFlights(data);
+               displayFlights(data.map(f => ({
+                   flight_id: f.flightId,
+                   flight_date: f.flightDate,
+                   departure_airport: f.departureAirport,
+                   arrival_airport: f.arrivalAirport,
+                   aircraft_id: f.aircraftId,
+                   sched_departure: f.schedDeparture,
+                   sched_arrival: f.schedArrival,
+                   flight_status: f.flightStatus
+               })));
 
     } catch (error) {
         console.error("Failed to load flights:", error);
