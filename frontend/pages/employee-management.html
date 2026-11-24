@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Manage Employees</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #eef1f6; margin: 0; padding: 20px; }
+        .box { max-width: 1000px; margin: 0 auto; background: #fff; padding: 24px;
+               border-radius: 10px; box-shadow: 0 2px 12px rgba(0,0,0,.15); }
+        h1 { margin-top: 0; }
+        .table-wrap { overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { border-bottom: 1px solid #ddd; padding: 8px; text-align: left; font-size: 14px; }
+        th { background: #f4f6fa; }
+        .inactive { color: #b91c1c; font-weight: bold; }
+        a { display: inline-block; margin-bottom: 12px; }
+        #msg { margin-top: 12px; text-align: center; color: #c00; }
+    </style>
+</head>
+<body>
+<div class="box">
+    <a href="employee-dashboard.html">&larr; Back to dashboard</a>
+    <h1>Manage Employees</h1>
+
+    <div class="table-wrap">
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th><th>Name</th><th>Position</th><th>Phone</th>
+                <th>Email</th><th>Username</th><th>Status</th>
+            </tr>
+            </thead>
+            <tbody id="empBody"></tbody>
+        </table>
+    </div>
+    <div id="msg"></div>
+</div>
+
+<script>
+    async function loadEmployees() {
+      const res = await fetch("/api/employees");
+      if (res.status === 401) { window.location.href = "employee-Login.html"; return; }
+      if (res.status === 403) {
+        document.querySelector(".box").innerHTML =
+          '<a href="employee-dashboard.html">&larr; Back</a><h1>Access denied</h1><p>Only an administrator can manage employees.</p>';
+        return;
+      }
+      if (!res.ok) {
+        document.getElementById("msg").textContent = "Could not load employees.";
+        return;
+      }
+      const employees = await res.json();
+      const body = document.getElementById("empBody");
+      body.innerHTML = "";
+      employees.forEach(function (e) {
+        const tr = document.createElement("tr");
+        const values = [
+          e.employeeId,
+          (e.firstName || "") + " " + (e.lastName || ""),
+          e.position,
+          e.phone || "-",
+          e.email || "-",
+          e.userName || "-",
+          e.employmentStatus
+        ];
+        values.forEach(function (v, i) {
+          const td = document.createElement("td");
+          td.textContent = v;
+          if (i === 6 && v === "INACTIVE") { td.className = "inactive"; }
+          tr.appendChild(td);
+        });
+        body.appendChild(tr);
+      });
+    }
+
+    loadEmployees();
+</script>
+</body>
+</html>

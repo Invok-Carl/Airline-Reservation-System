@@ -89,6 +89,19 @@ public class AirlineHttpServer {
                 authorizationService
         ));
 
+        RouteService routeService = new RouteService(new RouteDAO(), DatabaseConnection::getConnection);
+        server.createContext("/api/routes", new RouteController(
+                routeService,
+                employeeResolver,
+                authorizationService
+        ));
+        EmployeeManagementService employeeManagementService =
+                new EmployeeManagementService(new EmployeeDAO(), DatabaseConnection::getConnection);
+        server.createContext("/api/employees", new EmployeeController(
+                employeeManagementService,
+                employeeResolver,
+                authorizationService
+        ));
 
         ObjectMapper objectMapper = new ObjectMapper();
         server.createContext(
@@ -196,11 +209,15 @@ public class AirlineHttpServer {
         );
         System.out.println(
                 "Flight page: http://localhost:" + PORT
-                        + "/index.html"
+                        + "/pages/flights.html"
         );
         System.out.println(
-                "Flights API: http://localhost:" + PORT
-                        + "/api/flights"
+                "Login page: http://localhost:" + PORT
+                        + "/pages/login.html"
+        );
+        System.out.println(
+                "Register page: http://localhost:" + PORT
+                        + "/pages/register.html"
         );
     }
 
