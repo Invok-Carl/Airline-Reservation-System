@@ -1,0 +1,411 @@
+/* ==================================================
+   Passengers page
+   Standalone stylesheet: covers every class used in
+   passengers.html, so reservation.css is not needed here.
+   ================================================== */
+
+:root {
+    --navy: #14213d;
+    --navy-dark: #0d1629;
+    --accent: #fca311;
+    --accent-dark: #e08f00;
+    --bg: #f4f6fa;
+    --surface: #ffffff;
+    --text: #1f2933;
+    --muted: #64748b;
+    --border: #d9dfe8;
+
+    --success-bg: #e7f6ec;
+    --success-text: #166534;
+    --error-bg: #fdecec;
+    --error-text: #991b1b;
+    --info-bg: #e8f0fe;
+    --info-text: #1e3a8a;
+
+    --radius: 10px;
+    --shadow: 0 1px 3px rgba(20, 33, 61, 0.08), 0 4px 12px rgba(20, 33, 61, 0.06);
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    -webkit-text-size-adjust: 100%;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: var(--bg);
+    color: var(--text);
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.5;
+}
+
+h1, h2, h3, h4 {
+    margin: 0 0 0.5rem;
+    line-height: 1.25;
+    color: var(--navy);
+}
+
+p {
+    margin: 0 0 0.75rem;
+}
+
+/* Utility ------------------------------------------------ */
+
+.hidden,
+[hidden] {
+    display: none !important;
+}
+
+/* Header ------------------------------------------------- */
+
+.site-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    padding: 0.9rem 1.5rem;
+    background: var(--navy);
+    color: #fff;
+}
+
+.brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    color: #fff;
+    font-weight: 700;
+    font-size: 1.1rem;
+    text-decoration: none;
+}
+
+.brand-icon {
+    display: inline-grid;
+    place-items: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    background: var(--accent);
+    color: var(--navy);
+    font-weight: 800;
+}
+
+.site-header nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.25rem;
+}
+
+.site-header nav a {
+    color: #dbe3f1;
+    text-decoration: none;
+    font-size: 0.95rem;
+}
+
+.site-header nav a:hover,
+.site-header nav a:focus-visible {
+    color: #fff;
+    text-decoration: underline;
+}
+
+/* Layout ------------------------------------------------- */
+
+.page-container {
+    flex: 1;
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 1.5rem 1rem 3rem;
+}
+
+.hero {
+    padding: 1.5rem 0 1rem;
+}
+
+.hero h1 {
+    font-size: 2rem;
+}
+
+.hero p:last-child {
+    color: var(--muted);
+}
+
+.eyebrow {
+    margin: 0 0 0.25rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent-dark);
+}
+
+/* Sections ----------------------------------------------- */
+
+.reservation-section {
+    margin-top: 1.5rem;
+    padding: 1.5rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+}
+
+.section-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.section-header h2 {
+    margin: 0;
+    font-size: 1.35rem;
+}
+
+.results-count {
+    padding: 0.25rem 0.75rem;
+    border-radius: 999px;
+    background: var(--bg);
+    color: var(--muted);
+    font-size: 0.85rem;
+    white-space: nowrap;
+}
+
+/* Form --------------------------------------------------- */
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.form-group label {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--navy);
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 0.6rem 0.75rem;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: #fff;
+    color: var(--text);
+    font: inherit;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    outline: 2px solid var(--accent);
+    outline-offset: 1px;
+    border-color: var(--accent);
+}
+
+.form-group input:disabled,
+.form-group select:disabled {
+    background: var(--bg);
+    color: var(--muted);
+    cursor: not-allowed;
+}
+
+.form-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 1.25rem;
+}
+
+/* Buttons ------------------------------------------------ */
+
+.button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.6rem 1.1rem;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.button:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}
+
+.button:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+}
+
+.button-primary {
+    background: var(--navy);
+    color: #fff;
+}
+
+.button-primary:hover:not(:disabled) {
+    background: var(--navy-dark);
+}
+
+.button-secondary {
+    background: #fff;
+    color: var(--navy);
+    border-color: var(--border);
+}
+
+.button-secondary:hover:not(:disabled) {
+    background: var(--bg);
+    border-color: var(--navy);
+}
+
+/* Messages ----------------------------------------------- */
+
+.message {
+    margin: 1rem 0 0;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    font-size: 0.95rem;
+}
+
+.message.info {
+    background: var(--info-bg);
+    color: var(--info-text);
+    border-color: #c7d7fb;
+}
+
+.message.success {
+    background: var(--success-bg);
+    color: var(--success-text);
+    border-color: #bfe6cb;
+}
+
+.message.error {
+    background: var(--error-bg);
+    color: var(--error-text);
+    border-color: #f5c2c2;
+}
+
+#page-message {
+    margin-top: 1rem;
+}
+
+/* Loading and empty states ------------------------------- */
+
+.loading-state {
+    padding: 1rem;
+    text-align: center;
+    color: var(--muted);
+}
+
+.empty-state {
+    padding: 2rem 1rem;
+    text-align: center;
+    color: var(--muted);
+    border: 1px dashed var(--border);
+    border-radius: var(--radius);
+}
+
+.empty-state h3 {
+    color: var(--navy);
+}
+
+/* Table -------------------------------------------------- */
+
+.table-wrapper {
+    overflow-x: auto;
+}
+
+.passenger-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.925rem;
+}
+
+.passenger-table th,
+.passenger-table td {
+    padding: 0.65rem 0.85rem;
+    text-align: left;
+    white-space: nowrap;
+    border-bottom: 1px solid var(--border);
+}
+
+.passenger-table th {
+    background: var(--bg);
+    color: var(--muted);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+.passenger-table tbody tr:hover {
+    background: #f9fafc;
+}
+
+.passenger-table td:last-child {
+    text-align: right;
+}
+
+.passenger-table .button {
+    padding: 0.3rem 0.8rem;
+    font-size: 0.85rem;
+}
+
+/* Footer ------------------------------------------------- */
+
+.site-footer {
+    padding: 1.25rem;
+    text-align: center;
+    background: var(--navy);
+    color: #aab6cc;
+    font-size: 0.875rem;
+}
+
+.site-footer p {
+    margin: 0;
+}
+
+/* Small screens ------------------------------------------ */
+
+@media (max-width: 600px) {
+    .site-header {
+        padding: 0.75rem 1rem;
+    }
+
+    .hero h1 {
+        font-size: 1.6rem;
+    }
+
+    .reservation-section {
+        padding: 1rem;
+    }
+
+    .section-header {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .form-actions .button {
+        flex: 1 1 100%;
+    }
+}

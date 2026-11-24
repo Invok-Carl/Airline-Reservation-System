@@ -278,6 +278,43 @@ public class PassengerDAO {
         }
     }
 
+
+    public List<Passenger> getPassengersByCreatedBy(Connection connection, long createdBy)
+        throws SQLException{
+        String sql = """
+            SELECT
+                PASSENGER_ID,
+                FIRST_NAME,
+                LAST_NAME,
+                DATE_OF_BIRTH,
+                GENDER,
+                NATIONALITY,
+                PHONE,
+                EMAIL,
+                ADDRESS,
+                PASSPORT_NUMBER,
+                PASSPORT_EXPIRY,
+                PASSPORT_COUNTRY,
+                CREATED_BY
+            FROM PASSENGER
+            WHERE CREATED_BY = ?
+            ORDER BY PASSENGER_ID
+                """;
+        List<Passenger> passengers = new ArrayList<>();
+
+        try (PreparedStatement statement =
+                     connection.prepareStatement(sql)) {
+            statement.setLong(1, createdBy);
+            try (ResultSet resultSet = statement.executeQuery()){
+                while (resultSet.next()) {
+                    passengers.add(mapResultSetToPassenger(resultSet));
+                }
+            }
+        }
+
+        return passengers;
+    }
+
     public boolean deletePassenger(
             Connection connection,
             Long passengerId,

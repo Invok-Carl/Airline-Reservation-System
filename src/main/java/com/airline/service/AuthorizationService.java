@@ -53,6 +53,6 @@ public class AuthorizationService {
         return isAdministrator(employee);
     }
     public boolean canSeeAircraft(Employee employee){
-        return isAdministrator(employee);
+        return isAdministrator(employee) || isReservationAgent(employee) || isAirportStaff(employee);
     }
 }

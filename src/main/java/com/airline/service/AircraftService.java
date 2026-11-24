@@ -74,7 +74,7 @@ public class AircraftService {
     public Aircraft getAircraft(Employee employee, long aircraftId)
             throws SQLException, IllegalAccessException {
         if(!authorizationService.canSeeAircraft(employee)){
-            throw new IllegalAccessException("Only admins can see aircraft.");
+            throw new IllegalAccessException("looks like you're not an employee.");
         }
         try (Connection connection = connectionProvider.getConnection()) {
 
@@ -91,7 +91,7 @@ public class AircraftService {
     public List<Aircraft> getAllAircrafts(Employee employee, long aircraftId)
             throws SQLException, IllegalAccessException {
         if(!authorizationService.canSeeAircraft(employee)){
-            throw new IllegalAccessException("Only admins can see aircraft.");
+            throw new IllegalAccessException("looks like you're not an employee.");
         }
         try (Connection connection = connectionProvider.getConnection()) {
             return aircraftDAO.getAllAircraftsList(connection);
