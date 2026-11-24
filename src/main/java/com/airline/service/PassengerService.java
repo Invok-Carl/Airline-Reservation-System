@@ -8,6 +8,7 @@ import com.airline.util.connection.ConnectionProvider;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.SQLInvalidAuthorizationSpecException;
+import java.util.List;
 
 
 public class PassengerService {
@@ -70,6 +71,19 @@ public class PassengerService {
         }
     }
 
+    public List<Passenger> getPassengersByCreatedBy(long accountId) throws SQLException {
+        try(Connection connection = connectionProvider.getConnection()){
+            return passengerDAO.getPassengersByCreatedBy(connection, accountId);
+        }
+    }
+
+    public List<Passenger> getAllPassengers(Employee employee) throws SQLException {
+        try(Connection connection = connectionProvider.getConnection()){
+            return passengerDAO.getAllPassengers(connection);
+        }
+    }
+
+
     private boolean AccountOwnsPassenger(Connection con, Passenger passenger, long createdBy)
     throws SQLException {
         Passenger desired =
@@ -77,4 +91,6 @@ public class PassengerService {
         if(desired != null && desired.getCreatedBy() == createdBy) return true;
         return false;
     }
+
+
 }

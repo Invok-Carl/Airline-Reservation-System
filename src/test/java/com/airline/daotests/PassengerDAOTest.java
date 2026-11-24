@@ -8,6 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
@@ -117,6 +118,14 @@ class PassengerDAOTest {
                         .map(Passenger::getPassengerId)
                         .toList()
         );
+    }
+
+    @Test
+    void testGetPassengerByCreatedBy() throws SQLException {
+        List<Passenger> passengers = passengerDAO.getPassengersByCreatedBy(connection,24L);
+
+        assertTrue(passengers.size() > 0, "No passengers feteched for created_by = 24");
+
     }
 
     @Test

@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.logging.Level;
@@ -30,6 +31,7 @@ public class PassengerController implements HttpHandler {
 
     private static final Pattern  PASSENGER_PATH =
             Pattern.compile("^/api/passengers/(\\d+)$");
+    private static final String PASSENGERS_PATH = "/api/passengers";
 
 
     private final PassengerService passengerService;
@@ -70,6 +72,17 @@ public class PassengerController implements HttpHandler {
         String method = exchange.getRequestMethod();
 
         try {
+            // GET /api/passengers
+            if (PASSENGERS_PATH.equals(path)) {
+
+                if ("GET".equals(method)) {
+                    handleGetPassengers(exchange);
+                } else {
+                    responseUtil.sendMethodNotAllowed(exchange, "GET");
+                }
+
+                return;
+            }
             // POST /api/passengers/{id}
             Matcher matcher = PASSENGER_PATH.matcher(path);
 
@@ -141,6 +154,66 @@ public class PassengerController implements HttpHandler {
                         "An internal server error occurred."
                 );
             }
+        }
+    }
+
+    private void handleGetPassengers(HttpExchange exchange)
+            throws IOException {
+
+        PassengerSessionManager.Session passengerSession =
+                passengerResolver.apply(exchange);
+
+        EmployeeSessionManager.Session employeeSession =
+                employeeResolver.apply(exchange);
+
+        if (passengerSession == null && employeeSession == null) {
+            responseUtil.sendError(
+                    exchange,
+                    401,
+                    "Authentication required."
+            );
+            return;
+        }
+
+        try {
+            if (passengerSession != null) {
+
+                long accountId = passengerSession.accountId();
+
+                System.out.println(accountId);
+
+                List<Passenger> passengers =
+                        passengerService.getPassengersByCreatedBy(accountId);
+
+
+                responseUtil.sendJson(exchange, 200, passengers);
+
+            } else {
+                Employee employee = new Employee();
+                employee.setEmployeeId(employeeSession.employeeId());
+                employee.setUserName(employeeSession.username());
+                employee.setPosition(employeeSession.position());
+
+                List<Passenger> passengers =
+                        passengerService.getAllPassengers(employee);
+
+
+                responseUtil.sendJson(exchange, 200, passengers);
+            }
+
+        } catch (SQLException exception) {
+
+            LOGGER.log(
+                    Level.SEVERE,
+                    "Failed to retrieve passengers.",
+                    exception
+            );
+
+            responseUtil.sendError(
+                    exchange,
+                    500,
+                    "Failed to retrieve passengers."
+            );
         }
     }
 
