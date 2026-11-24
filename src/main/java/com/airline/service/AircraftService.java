@@ -9,7 +9,7 @@ import com.airline.util.connection.ConnectionProvider;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Objects;
+import java.util.Locale;
 
 public class AircraftService {
 
@@ -31,7 +31,9 @@ public class AircraftService {
             throws IllegalAccessException, SQLException {
 
         if (!authorizationService.canAddAircraft(employee)) {
-            throw new IllegalAccessException("Only admins can add aircraft.");
+            throw new IllegalAccessException(
+                    "Only admins can add aircraft."
+            );
         }
 
         validateAircraft(aircraft);
@@ -48,7 +50,9 @@ public class AircraftService {
     ) throws SQLException, IllegalAccessException {
 
         if (!authorizationService.canUpdateAircraft(employee)) {
-            throw new IllegalAccessException("Only admins can update aircraft.");
+            throw new IllegalAccessException(
+                    "Only admins can update aircraft."
+            );
         }
 
         if (aircraftId < 1) {
@@ -65,17 +69,25 @@ public class AircraftService {
                 );
             }
 
-            return aircraftDAO.updateAircraft(connection, aircraft, aircraftId);
+            return aircraftDAO.updateAircraft(
+                    connection, aircraft, aircraftId
+            );
         }
     }
 
-
-
     public Aircraft getAircraft(Employee employee, long aircraftId)
             throws SQLException, IllegalAccessException {
-        if(!authorizationService.canSeeAircraft(employee)){
-            throw new IllegalAccessException("looks like you're not an employee.");
+
+        if (!authorizationService.canSeeAircraft(employee)) {
+            throw new IllegalAccessException(
+                    "Only admins can see aircraft."
+            );
         }
+
+        if (aircraftId < 1) {
+            throw new IllegalArgumentException("Invalid aircraft ID.");
+        }
+
         try (Connection connection = connectionProvider.getConnection()) {
 
             if (!checkAircraftExists(connection, aircraftId)) {
@@ -88,16 +100,19 @@ public class AircraftService {
         }
     }
 
-    public List<Aircraft> getAllAircrafts(Employee employee, long aircraftId)
+    public List<Aircraft> getAllAircrafts(Employee employee)
             throws SQLException, IllegalAccessException {
-        if(!authorizationService.canSeeAircraft(employee)){
-            throw new IllegalAccessException("looks like you're not an employee.");
+
+        if (!authorizationService.canSeeAircraft(employee)) {
+            throw new IllegalAccessException(
+                    "Only admins can see aircraft."
+            );
         }
+
         try (Connection connection = connectionProvider.getConnection()) {
             return aircraftDAO.getAllAircraftsList(connection);
         }
     }
-
 
     private boolean checkAircraftExists(
             Connection connection,
@@ -113,37 +128,58 @@ public class AircraftService {
     private void validateAircraft(Aircraft aircraft) {
 
         if (aircraft == null) {
-            throw new IllegalArgumentException("Aircraft cannot be null.");
+            throw new IllegalArgumentException(
+                    "Aircraft cannot be null."
+            );
         }
 
         if (aircraft.getAircraftModel() == null ||
                 aircraft.getAircraftModel().isBlank()) {
-            throw new IllegalArgumentException("Aircraft model is required.");
+            throw new IllegalArgumentException(
+                    "Aircraft model is required."
+            );
         }
 
         if (aircraft.getRegistrationNumber() == null ||
                 aircraft.getRegistrationNumber().isBlank()) {
-            throw new IllegalArgumentException("Registration number is required.");
+            throw new IllegalArgumentException(
+                    "Registration number is required."
+            );
         }
 
         if (aircraft.getManufacturer() == null ||
                 aircraft.getManufacturer().isBlank()) {
-            throw new IllegalArgumentException("Manufacturer is required.");
+            throw new IllegalArgumentException(
+                    "Manufacturer is required."
+            );
         }
 
         if (aircraft.getCapacity() < 1) {
-            throw new IllegalArgumentException("Aircraft capacity must be positive.");
+            throw new IllegalArgumentException(
+                    "Aircraft capacity must be positive."
+            );
         }
 
         if (aircraft.getStatus() == null ||
                 aircraft.getStatus().isBlank()) {
-            throw new IllegalArgumentException("Aircraft status is required.");
+            throw new IllegalArgumentException(
+                    "Aircraft status is required."
+            );
         }
-        if(!aircraft.getStatus().equals("ACTIVE") &&
-                !aircraft.getStatus().equals("MAINTENANCE") &&
-                !aircraft.getStatus().equals("RETIRED")){
-            throw new IllegalArgumentException("Aircraft status" +
-                    " must be in (ACTIVE, MAINTENANCE, RETIRED).");
+
+        String status = aircraft.getStatus()
+                .trim()
+                .toUpperCase(Locale.ROOT);
+
+        if (!status.equals("ACTIVE") &&
+                !status.equals("MAINTENANCE") &&
+                !status.equals("RETIRED")) {
+
+            throw new IllegalArgumentException(
+                    "Aircraft status must be ACTIVE, MAINTENANCE, or RETIRED."
+            );
         }
+
+        aircraft.setStatus(status);
     }
 }
