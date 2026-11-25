@@ -266,8 +266,8 @@ public class EmployeeDAO {
 
 
 
-    private Employee mapResultSetToEmployee(ResultSet resultSet) throws SQLException{
-        return new Employee(
+    private Employee mapResultSetToEmployee(ResultSet resultSet) throws SQLException {
+        Employee employee = new Employee(
                 resultSet.getLong("EMPLOYEE_ID"),
                 resultSet.getString("FIRST_NAME"),
                 resultSet.getString("LAST_NAME"),
@@ -278,5 +278,16 @@ public class EmployeeDAO {
                 resultSet.getString("USERNAME"),
                 resultSet.getString("PASSWORD_HASH")
         );
+
+        try {
+            String role = resultSet.getString("ROLE");
+            if (role != null) {
+                employee.setRole(role);
+            }
+        } catch (SQLException e) {
+
+        }
+
+        return employee;
     }
 }

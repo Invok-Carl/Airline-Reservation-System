@@ -77,6 +77,15 @@ public class EmployeeAuthenticationController implements HttpHandler {
                 logout(exchange);
                 return;
             }
+            if ((CONTEXT_PATH + "/register").equals(path)) {
+                if (!"POST".equals(method)) {
+                    sendMethodNotAllowed(exchange, "POST");
+                    return;
+                }
+
+                register(exchange);
+                return;
+            }
 
             if ((CONTEXT_PATH + "/me").equals(path)) {
                 if (!"GET".equals(method)) {
@@ -129,6 +138,48 @@ public class EmployeeAuthenticationController implements HttpHandler {
             }
         }
     }
+    private void register(HttpExchange exchange) throws IOException {
+        Map<String, Object> body;
+
+        try {
+            body = objectMapper.readValue(
+                    exchange.getRequestBody(),
+                    new com.fasterxml.jackson.core.type.TypeReference<Map<String, Object>>() {}
+            );
+        } catch (JsonProcessingException exception) {
+            sendError(exchange, 400, "Invalid JSON request.");
+            return;
+        }
+
+        String username = body.get("username") == null ? "" : body.get("username").toString().trim();
+        String password = body.get("password") == null ? "" : body.get("password").toString();
+        String firstName = body.get("firstName") == null ? "" : body.get("firstName").toString().trim();
+        String lastName = body.get("lastName") == null ? "" : body.get("lastName").toString().trim();
+
+        if (username.isBlank() || password.length() < 8
+                || firstName.isBlank() || lastName.isBlank()) {
+            sendError(exchange, 400,
+                    "First name, last name, username and a password of at least 8 characters are required.");
+            return;
+        }
+
+        try {
+            Employee employee = authenticationService.register(
+                    firstName, lastName, username, password);
+
+            if (employee == null) {
+                sendError(exchange, 409, "Username already exists.");
+                return;
+            }
+
+            sendJson(exchange, 201, Map.of("message", "Registration successful."));
+
+        } catch (SQLException exception) {
+            LOGGER.log(Level.SEVERE, "Database error during employee registration.", exception);
+            sendError(exchange, 500, "Registration service unavailable.");
+        }
+    }
+
 
     private void login(HttpExchange exchange) throws IOException {
 

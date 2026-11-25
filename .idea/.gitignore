@@ -8,3 +8,6 @@
 /dataSources.local.xml
 # Editor-based HTTP Client requests
 /httpRequests/
+
+# Ignore local database configuration
+../src/main/java/com/airline/util/connection/config/DatabaseConfig.java

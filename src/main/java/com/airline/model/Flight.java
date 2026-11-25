@@ -52,7 +52,7 @@ public class Flight {
         this.actualDeparture = actualDeparture;
         this.actualArrival = actualArrival;
         this.flightStatus = flightStatus;
-        this.scheduleId = scheduleId;
+        this.scheduleId = schedule_id;
     }
 
     public long getFlightId() {

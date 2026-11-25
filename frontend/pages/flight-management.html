@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Manage Flights</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #eef1f6; margin: 0; padding: 20px; }
+        .box { max-width: 600px; margin: 0 auto; background: #fff; padding: 24px;
+               border-radius: 10px; box-shadow: 0 2px 12px rgba(0,0,0,.15); }
+        h1 { margin-top: 0; }
+        form { display: grid; gap: 12px; }
+        label { display: block; font-size: 14px; }
+        input, select { width: 100%; padding: 8px; box-sizing: border-box; margin-top: 4px; }
+        button { padding: 12px; cursor: pointer; font-size: 16px; }
+        #msg { margin-top: 12px; text-align: center; color: #c00; }
+        a { display: inline-block; margin-bottom: 12px; }
+    </style>
+</head>
+<body>
+<div class="box">
+    <a href="employee-dashboard.html">&larr; Back to dashboard</a>
+    <h1>Add a flight</h1>
+
+    <form id="flightForm">
+        <div><label>Flight date</label><input type="date" id="date" required></div>
+        <div><label>Aircraft ID</label><input type="number" id="aircraft" min="1" required></div>
+        <div><label>Schedule ID</label><input type="number" id="schedule" min="1" required></div>
+        <div>
+            <label>Status</label>
+            <select id="status">
+                <option value="SCHEDULED">SCHEDULED</option>
+            </select>
+        </div>
+        <button type="submit">Add flight</button>
+    </form>
+    <div id="msg"></div>
+</div>
+
+<script>
+    const msg = document.getElementById("msg");
+
+    document.getElementById("flightForm").addEventListener("submit", async function (e) {
+      e.preventDefault();
+      msg.style.color = "#c00";
+      msg.textContent = "";
+
+      const body = {
+        flight_date: document.getElementById("date").value,
+        aircraft_id: Number(document.getElementById("aircraft").value),
+        schedule_id: Number(document.getElementById("schedule").value),
+        flight_status: document.getElementById("status").value
+      };
+
+      const res = await fetch("/api/flights", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body)
+      });
+
+      if (res.status === 401) { window.location.href = "employee-Login.html"; return; }
+
+      const data = await res.json().catch(function () { return {}; });
+      if (res.ok) {
+        msg.style.color = "green";
+        msg.textContent = "Flight added. ID: " + data.flightId;
+        e.target.reset();
+      } else {
+        msg.textContent = data.error || "Could not add flight.";
+      }
+    });
+</script>
+</body>
+</html>
