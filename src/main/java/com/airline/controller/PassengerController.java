@@ -90,7 +90,7 @@ public class PassengerController implements HttpHandler {
 
             if (matcher.matches()) {
 
-                if (!"PUT".equals(method)) {
+                if (!"PUT".equals(method) && !"GET".equals(method))  {
                     responseUtil.sendMethodNotAllowed(
                             exchange,
                             "PUT"
@@ -121,7 +121,11 @@ public class PassengerController implements HttpHandler {
                     return;
                 }
 
-                handleUpdatePassenger(exchange, passengerId);
+                if ("GET".equals(method)) {
+                    handleGetPassenger(exchange, passengerId);
+                } else {
+                    handleUpdatePassenger(exchange, passengerId);
+                }
                 return;
             }
 
@@ -299,7 +303,54 @@ public class PassengerController implements HttpHandler {
         }
     }
 
+    private void handleGetPassenger(
+            HttpExchange exchange,
+            long passengerId
+    ) throws IOException {
 
+        AccountContext account = resolveAccount(exchange);
+
+        if (account == null) {
+            responseUtil.sendError(exchange, 401, "Authentication required.");
+            return;
+        }
+
+        try {
+            Passenger p = passengerService.getPassengerById(passengerId);
+
+            if (p == null) {
+                responseUtil.sendError(exchange, 404, "Passenger not found.");
+                return;
+            }
+
+            if (account.passengerAccount()
+                    && p.getCreatedBy() != account.accountId()) {
+                responseUtil.sendError(exchange, 403,
+                        "You are not authorized to view this passenger.");
+                return;
+            }
+
+            Map<String, Object> data = new java.util.LinkedHashMap<>();
+            data.put("passengerId", p.getPassengerId());
+            data.put("firstName", p.getFirstName());
+            data.put("lastName", p.getLastName());
+            data.put("dateOfBirth", p.getDateOfBirth() == null ? null : p.getDateOfBirth().toString());
+            data.put("gender", p.getGender());
+            data.put("nationality", p.getNationality());
+            data.put("phone", p.getPhone());
+            data.put("email", p.getEmail());
+            data.put("address", p.getAddress());
+            data.put("passportNumber", p.getPassportNumber());
+            data.put("passportExpiry", p.getPassportExpiry() == null ? null : p.getPassportExpiry().toString());
+            data.put("passportCountry", p.getPassportCountry());
+
+            responseUtil.sendJson(exchange, 200, data);
+
+        } catch (SQLException exception) {
+            LOGGER.log(Level.SEVERE, "Failed to load passenger " + passengerId, exception);
+            responseUtil.sendError(exchange, 500, "Failed to load passenger.");
+        }
+    }
     private AccountContext resolveAccount(
             HttpExchange exchange
     ) {

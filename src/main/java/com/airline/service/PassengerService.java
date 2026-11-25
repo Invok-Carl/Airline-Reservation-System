@@ -42,4 +42,8 @@ public class PassengerService {
         if(desired != null && desired.getCreatedBy() == createdBy) return true;
         return false;
     }
+
+    public Passenger getPassengerById(long passengerId) throws SQLException {
+        return passengerDAO.getPassengerById(connection, passengerId);
+    }
 }

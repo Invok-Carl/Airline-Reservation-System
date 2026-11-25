@@ -22,11 +22,9 @@ public class AuthorizationService {
     public boolean canAddEmployee(Employee employee) {
         return isAdministrator(employee);
     }
-
     public boolean canManageEmployees(Employee employee) {
         return isAdministrator(employee);
     }
-
     public boolean canCreateReservation(Employee employee) {
         return isAdministrator(employee)
                 || isReservationAgent(employee);

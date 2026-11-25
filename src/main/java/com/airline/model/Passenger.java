@@ -37,6 +37,7 @@ public class Passenger {
         this.passportNumber = passportNumber;
         this.passportExpiry = passportExpiry;
         this.passportCountry = passportCountry;
+        this.createdBy = createdBy;
     }
 
     // Getters
