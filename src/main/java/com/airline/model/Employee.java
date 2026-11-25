@@ -10,12 +10,12 @@ public class Employee {
     private String employmentStatus;
     private String userName;
     private String passwordHash;
-    private String role = "EMPLOYEE";
 
+    public Employee(){};
     public Employee(
             long employeeId, String firstName, String lastName, String position,
             String phone, String email, String employmentStatus, String userName, String passwordHash
-    ) {
+            ) {
         this.employeeId = employeeId;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -26,9 +26,8 @@ public class Employee {
         this.userName = userName;
         this.passwordHash = passwordHash;
     }
-
     public Employee(String firstName, String lastName, String position,
-                    String phone, String email, String employmentStatus, String userName, String passwordHash
+            String phone, String email, String employmentStatus, String userName, String passwordHash
     ) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -111,9 +110,4 @@ public class Employee {
     public void setPasswordHash(String passwordHash) {
         this.passwordHash = passwordHash;
     }
-
-    public String getRole() {  return role;}
-    public void setRole(String role){ this.role=role;}
-
 }
-

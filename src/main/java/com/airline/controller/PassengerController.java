@@ -1,5 +1,6 @@
 package com.airline.controller;
 
+import com.airline.model.Employee;
 import com.airline.model.Passenger;
 import com.airline.service.PassengerService;
 import com.airline.util.http.HttpResponseUtil;
@@ -15,6 +16,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.logging.Level;
@@ -27,10 +29,10 @@ public class PassengerController implements HttpHandler {
     private static final Logger LOGGER =
             Logger.getLogger(PassengerController.class.getName());
 
-    private static final String BASE_PATH = "/api/passengers";
-
-    private static final Pattern UPDATE_PASSENGER_PATH =
+    private static final Pattern  PASSENGER_PATH =
             Pattern.compile("^/api/passengers/(\\d+)$");
+    private static final String PASSENGERS_PATH = "/api/passengers";
+
 
     private final PassengerService passengerService;
     private final ObjectMapper objectMapper;
@@ -70,33 +72,21 @@ public class PassengerController implements HttpHandler {
         String method = exchange.getRequestMethod();
 
         try {
-            // POST /api/passengers
-            if (BASE_PATH.equals(path)) {
+            // GET /api/passengers
+            if (PASSENGERS_PATH.equals(path)) {
 
-                if (!"POST".equals(method)) {
-                    responseUtil.sendMethodNotAllowed(
-                            exchange,
-                            "POST"
-                    );
-                    return;
+                if ("GET".equals(method)) {
+                    handleGetPassengers(exchange);
+                } else {
+                    responseUtil.sendMethodNotAllowed(exchange, "GET");
                 }
 
-                handleCreatePassenger(exchange);
                 return;
             }
-
-            // PUT /api/passengers/{id}
-            Matcher matcher = UPDATE_PASSENGER_PATH.matcher(path);
+            // POST /api/passengers/{id}
+            Matcher matcher = PASSENGER_PATH.matcher(path);
 
             if (matcher.matches()) {
-
-                if (!"PUT".equals(method) && !"GET".equals(method))  {
-                    responseUtil.sendMethodNotAllowed(
-                            exchange,
-                            "PUT"
-                    );
-                    return;
-                }
 
                 long passengerId;
 
@@ -121,14 +111,22 @@ public class PassengerController implements HttpHandler {
                     return;
                 }
 
-                if ("GET".equals(method)) {
-                    handleGetPassenger(exchange, passengerId);
-                } else {
-                    handleUpdatePassenger(exchange, passengerId);
+                switch (method) {
+                    case "POST" ->
+                            handleCreatePassenger(exchange, passengerId);
+
+                    case "PUT" ->
+                            handleUpdatePassenger(exchange, passengerId);
+
+                    default ->
+                            responseUtil.sendMethodNotAllowed(
+                                    exchange,
+                                    "POST, PUT"
+                            );
                 }
+
                 return;
             }
-
             responseUtil.sendError(
                     exchange,
                     404,
@@ -159,14 +157,16 @@ public class PassengerController implements HttpHandler {
         }
     }
 
+    private void handleGetPassengers(HttpExchange exchange)
+            throws IOException {
 
-    private void handleCreatePassenger(
-            HttpExchange exchange
-    ) throws IOException {
+        PassengerSessionManager.Session passengerSession =
+                passengerResolver.apply(exchange);
 
-        AccountContext account = resolveAccount(exchange);
+        EmployeeSessionManager.Session employeeSession =
+                employeeResolver.apply(exchange);
 
-        if (account == null) {
+        if (passengerSession == null && employeeSession == null) {
             responseUtil.sendError(
                     exchange,
                     401,
@@ -176,18 +176,78 @@ public class PassengerController implements HttpHandler {
         }
 
         try {
-            Passenger passenger = readPassenger(exchange, 0L);
+            if (passengerSession != null) {
 
-            // Passenger accounts use their authenticated account ID.
-            // Staff use 0, so the passenger profile is not attributed
-            // to a passenger account.
-            long createdBy = account.passengerAccount()
-                    ? account.accountId()
-                    : 0L;
+                long accountId = passengerSession.accountId();
 
-            long passengerId =
-                    passengerService.addPassenger(passenger, createdBy);
+                System.out.println(accountId);
 
+                List<Passenger> passengers =
+                        passengerService.getPassengersByCreatedBy(accountId);
+
+
+                responseUtil.sendJson(exchange, 200, passengers);
+
+            } else {
+                Employee employee = new Employee();
+                employee.setEmployeeId(employeeSession.employeeId());
+                employee.setUserName(employeeSession.username());
+                employee.setPosition(employeeSession.position());
+
+                List<Passenger> passengers =
+                        passengerService.getAllPassengers(employee);
+
+
+                responseUtil.sendJson(exchange, 200, passengers);
+            }
+
+        } catch (SQLException exception) {
+
+            LOGGER.log(
+                    Level.SEVERE,
+                    "Failed to retrieve passengers.",
+                    exception
+            );
+
+            responseUtil.sendError(
+                    exchange,
+                    500,
+                    "Failed to retrieve passengers."
+            );
+        }
+    }
+
+
+    private void handleCreatePassenger(
+            HttpExchange exchange, long passengerId
+    ) throws IOException {
+
+        PassengerSessionManager.Session passengerSession = passengerResolver.apply(exchange);
+
+        EmployeeSessionManager.Session employeeSession = employeeResolver.apply(exchange);
+
+        if (passengerSession == null && employeeSession == null) {
+            responseUtil.sendError(
+                    exchange,
+                    401,
+                    "Authentication required."
+            );
+            return;
+        }
+
+        try {
+            Passenger passenger = readPassenger(exchange, passengerId);
+            if(passengerSession != null){
+                long createdBy =  passengerSession.accountId();
+                passengerService.addPassenger(passenger, createdBy);
+            } else{
+                Employee employee = new Employee();
+                employee.setEmployeeId(employeeSession.employeeId());
+                employee.setUserName(employeeSession.username());
+                employee.setPosition(employeeSession.position());
+
+                passengerService.addPassengerByEmployee(passenger, employee);
+            }
             responseUtil.sendJson(
                     exchange,
                     201,
@@ -196,7 +256,6 @@ public class PassengerController implements HttpHandler {
                             "passenger_id", passengerId
                     )
             );
-
         } catch (JsonProcessingException exception) {
             responseUtil.sendError(
                     exchange,
@@ -225,6 +284,10 @@ public class PassengerController implements HttpHandler {
                     500,
                     "Failed to create passenger."
             );
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -234,9 +297,13 @@ public class PassengerController implements HttpHandler {
             long passengerId
     ) throws IOException {
 
-        AccountContext account = resolveAccount(exchange);
 
-        if (account == null) {
+
+        PassengerSessionManager.Session passengerSession = passengerResolver.apply(exchange);
+
+        EmployeeSessionManager.Session employeeSession = employeeResolver.apply(exchange);
+
+        if (passengerSession == null && employeeSession == null) {
             responseUtil.sendError(
                     exchange,
                     401,
@@ -245,16 +312,22 @@ public class PassengerController implements HttpHandler {
             return;
         }
 
+
+
         try {
             Passenger passenger = readPassenger(exchange, passengerId);
+            if(passengerSession != null){
+                long createdBy =  passengerSession.accountId();
+                passengerService.updatePassenger(passenger, createdBy);
+            } else{
+                Employee employee = new Employee();
+                employee.setEmployeeId(employeeSession.employeeId());
+                employee.setUserName(employeeSession.username());
+                employee.setPosition(employeeSession.position());
 
-            // Passenger accounts must own the profile.
-            // Staff bypass the passenger-account ownership check.
-            long createdBy = account.passengerAccount()
-                    ? account.accountId()
-                    : 0L;
+                passengerService.updatePassengerByEmployee(passenger, employee);
+            }
 
-            passengerService.updatePassenger(passenger, createdBy);
 
             responseUtil.sendJson(
                     exchange,
@@ -281,13 +354,6 @@ public class PassengerController implements HttpHandler {
                             : exception.getMessage()
             );
 
-        } catch (IllegalAccessException exception) {
-            responseUtil.sendError(
-                    exchange,
-                    403,
-                    "You are not authorized to update this passenger."
-            );
-
         } catch (SQLException exception) {
             LOGGER.log(
                     Level.SEVERE,
@@ -300,82 +366,9 @@ public class PassengerController implements HttpHandler {
                     500,
                     "Failed to update passenger."
             );
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
         }
-    }
-
-    private void handleGetPassenger(
-            HttpExchange exchange,
-            long passengerId
-    ) throws IOException {
-
-        AccountContext account = resolveAccount(exchange);
-
-        if (account == null) {
-            responseUtil.sendError(exchange, 401, "Authentication required.");
-            return;
-        }
-
-        try {
-            Passenger p = passengerService.getPassengerById(passengerId);
-
-            if (p == null) {
-                responseUtil.sendError(exchange, 404, "Passenger not found.");
-                return;
-            }
-
-            if (account.passengerAccount()
-                    && p.getCreatedBy() != account.accountId()) {
-                responseUtil.sendError(exchange, 403,
-                        "You are not authorized to view this passenger.");
-                return;
-            }
-
-            Map<String, Object> data = new java.util.LinkedHashMap<>();
-            data.put("passengerId", p.getPassengerId());
-            data.put("firstName", p.getFirstName());
-            data.put("lastName", p.getLastName());
-            data.put("dateOfBirth", p.getDateOfBirth() == null ? null : p.getDateOfBirth().toString());
-            data.put("gender", p.getGender());
-            data.put("nationality", p.getNationality());
-            data.put("phone", p.getPhone());
-            data.put("email", p.getEmail());
-            data.put("address", p.getAddress());
-            data.put("passportNumber", p.getPassportNumber());
-            data.put("passportExpiry", p.getPassportExpiry() == null ? null : p.getPassportExpiry().toString());
-            data.put("passportCountry", p.getPassportCountry());
-
-            responseUtil.sendJson(exchange, 200, data);
-
-        } catch (SQLException exception) {
-            LOGGER.log(Level.SEVERE, "Failed to load passenger " + passengerId, exception);
-            responseUtil.sendError(exchange, 500, "Failed to load passenger.");
-        }
-    }
-    private AccountContext resolveAccount(
-            HttpExchange exchange
-    ) {
-
-        PassengerSessionManager.Session passengerSession =
-                passengerResolver.apply(exchange);
-
-        if (passengerSession != null) {
-            return new AccountContext(
-                    true,
-                    passengerSession.accountId()
-            );
-        }
-
-        EmployeeSessionManager.Session employeeSession =
-                employeeResolver.apply(exchange);
-
-        if (employeeSession != null) {
-            return new AccountContext(
-                    false,
-                    0L
-            );
-        }
-
-        return null;
     }
 
 
@@ -467,9 +460,4 @@ public class PassengerController implements HttpHandler {
         }
     }
 
-
-    private record AccountContext(
-            boolean passengerAccount,
-            long accountId
-    ) {}
 }

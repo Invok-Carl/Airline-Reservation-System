@@ -1,0 +1,395 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#14213d">
+    <meta name="description" content="Review passengers, flights, and seats for your reservation">
+
+    <title>Create Reservation | Airline Reservation System</title>
+
+    <link rel="stylesheet" href="../css/reservation.css">
+
+    <script src="../js/api.js" defer></script>
+    <script src="../js/reservation-storage.js" defer></script>
+    <script src="../js/reservation.js" defer></script>
+</head>
+
+<body>
+
+<header class="site-header">
+
+    <a class="brand" href="../index.html">
+        <span class="brand-icon" aria-hidden="true">A</span>
+        <span>Airline System</span>
+    </a>
+
+    <nav aria-label="Main navigation">
+        <a href="/pages/flights.html">Flights</a>
+        <a href="/pages/passenger-dashboard.html">Dashboard</a>
+        <a href="/pages/login.html">Sign in</a>
+    </nav>
+
+</header>
+
+
+<main class="page-container">
+
+    <!-- Page introduction -->
+
+    <section class="hero">
+
+        <p class="eyebrow">YOUR JOURNEY</p>
+
+        <h1>Create your reservation</h1>
+
+        <p>
+            Select passengers, assign seats, and review your reservation
+            before confirming.
+        </p>
+
+    </section>
+
+
+    <!-- General messages -->
+
+    <div
+            id="page-message"
+            class="message hidden"
+            role="status"
+            aria-live="polite"
+    ></div>
+
+
+    <!-- STEP 1: SELECTED FLIGHTS -->
+
+    <section class="reservation-section"
+             aria-labelledby="flights-heading">
+
+        <div class="section-header">
+
+            <div>
+                <p class="eyebrow">STEP 1</p>
+                <h2 id="flights-heading">Selected flights</h2>
+            </div>
+
+            <a href="/pages/flights.html" class="text-button">
+                Add more flights
+            </a>
+
+        </div>
+
+        <div id="selected-flight-list" class="flight-list">
+
+            <!-- Flights rendered by JavaScript -->
+
+        </div>
+
+    </section>
+
+
+    <!-- STEP 2: PASSENGER SELECTION -->
+
+    <section class="reservation-section"
+             aria-labelledby="passengers-heading">
+
+        <div class="section-header">
+
+            <div>
+                <p class="eyebrow">STEP 2</p>
+                <h2 id="passengers-heading">Passengers</h2>
+            </div>
+
+            <span id="passenger-count" class="results-count">
+                0 passengers
+            </span>
+
+        </div>
+
+
+        <!-- Passenger selection -->
+
+        <div class="form-group">
+
+            <label for="passenger-select">
+                Select a passenger
+            </label>
+
+            <select id="passenger-select" name="passengerId">
+
+                <option value="">Loading passengers...</option>
+
+            </select>
+
+        </div>
+
+
+        <button
+                id="add-passenger-button"
+                class="button button-primary"
+                type="button"
+                disabled
+        >
+            Add passenger
+        </button>
+
+
+        <!-- Selected passengers -->
+
+        <div id="selected-passenger-list" class="passenger-list">
+
+            <!-- Passengers rendered by JavaScript -->
+
+        </div>
+
+
+        <div
+                id="passenger-message"
+                class="message hidden"
+                role="status"
+                aria-live="polite"
+        ></div>
+
+    </section>
+
+
+    <!-- STEP 3: SEAT ASSIGNMENT -->
+
+    <section class="reservation-section"
+             aria-labelledby="seats-heading">
+
+        <div class="section-header">
+
+            <div>
+                <p class="eyebrow">STEP 3</p>
+                <h2 id="seats-heading">Seat assignment</h2>
+            </div>
+
+        </div>
+
+
+        <p class="section-description">
+            Assign one available seat to each passenger on every selected flight.
+        </p>
+
+
+        <div
+                id="seat-message"
+                class="message hidden"
+                role="status"
+                aria-live="polite"
+        ></div>
+
+
+        <!-- Flight selector for seat assignment -->
+
+        <div class="form-group">
+
+            <label for="seat-flight-select">
+                Select flight
+            </label>
+
+            <select id="seat-flight-select">
+
+                <option value="">
+                    Select a flight
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <!-- Passenger selector for seat assignment -->
+
+        <div class="form-group">
+
+            <label for="seat-passenger-select">
+                Select passenger
+            </label>
+
+            <select id="seat-passenger-select">
+
+                <option value="">
+                    Select a passenger
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <button
+                id="load-seats-button"
+                class="button button-primary"
+                type="button"
+                disabled
+        >
+            View available seats
+        </button>
+
+
+        <!-- Seat loading -->
+
+        <div id="seat-loading" class="loading-state hidden">
+            Loading available seats...
+        </div>
+
+
+        <!-- Seat selection -->
+
+        <div id="seat-selection-panel" class="hidden">
+
+            <h3>Available seats</h3>
+
+            <div class="seat-legend">
+
+                <span>
+                    <span class="seat-indicator available"></span>
+                    Available
+                </span>
+
+                <span>
+                    <span class="seat-indicator selected"></span>
+                    Selected
+                </span>
+
+                <span>
+                    <span class="seat-indicator occupied"></span>
+                    Occupied
+                </span>
+
+            </div>
+
+
+            <div id="seat-list" class="seat-list">
+
+                <!-- Seats rendered by JavaScript -->
+
+            </div>
+
+
+            <div class="booking-summary">
+
+                <p>
+                    Selected seat:
+                    <strong id="selected-seat-label">None</strong>
+                </p>
+
+                <button
+                        id="confirm-seat-button"
+                        class="button button-primary"
+                        type="button"
+                        disabled
+                >
+                    Assign seat
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <div
+                id="seat-empty-state"
+                class="empty-state hidden"
+        >
+
+            <h3>No available seats</h3>
+
+            <p>
+                This flight currently has no available seats.
+            </p>
+
+        </div>
+
+
+        <!-- Assignment overview -->
+
+        <div class="assignment-section">
+
+            <h3>Seat assignments</h3>
+
+            <div id="seat-assignment-list">
+
+                <!-- Assignments rendered by JavaScript -->
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- STEP 4: RESERVATION REVIEW -->
+
+    <section class="reservation-section"
+             aria-labelledby="review-heading">
+
+        <div class="section-header">
+
+            <div>
+                <p class="eyebrow">STEP 4</p>
+                <h2 id="review-heading">Review reservation</h2>
+            </div>
+
+        </div>
+
+
+        <div id="reservation-review">
+
+            <!-- Reservation summary rendered by JavaScript -->
+
+        </div>
+
+
+        <div
+                id="review-message"
+                class="message hidden"
+                role="status"
+                aria-live="polite"
+        ></div>
+
+
+        <div class="booking-summary">
+
+            <button
+                    id="cancel-reservation-button"
+                    class="button button-secondary"
+                    type="button"
+            >
+                Cancel
+            </button>
+
+            <button
+                    id="create-reservation-button"
+                    class="button button-primary"
+                    type="button"
+                    disabled
+            >
+                Confirm reservation
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- Loading state -->
+
+    <div id="reservation-loading" class="loading-state hidden">
+        Processing reservation...
+    </div>
+
+</main>
+
+
+<footer class="site-footer">
+
+    <p>Airline Reservation System</p>
+
+</footer>
+
+</body>
+</html>

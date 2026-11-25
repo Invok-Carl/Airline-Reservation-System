@@ -32,10 +32,25 @@ public class AuthorizationService {
     public boolean canAddFlight(Employee employee){ return isAdministrator(employee); }
     public boolean canDeleteFlight(Employee employee){ return  isAdministrator(employee); }
     public boolean canAddFlightSeg(Employee employee){ return  isAdministrator(employee);}
-
+    public boolean canAddPassenger(Employee employee) {
+        return isAdministrator(employee) || isReservationAgent(employee);
+    }
+    public boolean canUpdatePassenger(Employee employee) {
+        return isAdministrator(employee) || isReservationAgent(employee);
+    }
 
     public boolean canCheckInPassenger(Employee employee) {
         return isAdministrator(employee)
                 || isAirportStaff(employee);
+    }
+
+    public boolean canAddAircraft(Employee employee){
+        return isAdministrator(employee);
+    }
+    public boolean canUpdateAircraft(Employee employee){
+        return isAdministrator(employee);
+    }
+    public boolean canSeeAircraft(Employee employee){
+        return isAdministrator(employee) || isReservationAgent(employee) || isAirportStaff(employee);
     }
 }

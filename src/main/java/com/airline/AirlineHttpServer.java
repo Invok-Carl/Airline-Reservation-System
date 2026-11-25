@@ -36,6 +36,13 @@ public class AirlineHttpServer {
         );
 
         FlightService flightService = new FlightService();
+AircraftDAO aircraftDAO = new AircraftDAO();
+
+AircraftService aircraftService = new AircraftService(
+        aircraftDAO,
+        DatabaseConnection::getConnection,
+        new AuthorizationService()
+);
 
 
         PassengerDAO passengerDAO = new PassengerDAO();
@@ -104,6 +111,14 @@ public class AirlineHttpServer {
         ));
 
         ObjectMapper objectMapper = new ObjectMapper();
+server.createContext(
+        "/api/aircraft",
+        new AircraftController(
+                aircraftService,
+                employeeResolver,
+                objectMapper
+        )
+);
         server.createContext(
                 "/api/employee-auth",
                 new EmployeeAuthenticationController(
