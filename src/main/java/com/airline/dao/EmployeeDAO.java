@@ -279,14 +279,6 @@ public class EmployeeDAO {
                 resultSet.getString("PASSWORD_HASH")
         );
 
-        try {
-            String role = resultSet.getString("ROLE");
-            if (role != null) {
-                employee.setRole(role);
-            }
-        } catch (SQLException e) {
-
-        }
 
         return employee;
     }

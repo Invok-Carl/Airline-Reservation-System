@@ -1,0 +1,95 @@
+:root {
+  --primary: #1a56db;
+  --primary-dark: #1342a8;
+  --bg: #f3f5f9;
+  --card: #ffffff;
+  --text: #1f2937;
+  --muted: #6b7280;
+  --border: #e5e7eb;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.topbar {
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: #fff;
+  padding: 18px 24px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.topbar h1 { margin: 0; font-size: 22px; margin-right: auto; }
+
+.topbar a {
+  color: #fff;
+  text-decoration: none;
+  border: 1px solid rgba(255, 255, 255, .6);
+  padding: 8px 14px;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.topbar a:hover { background: rgba(255, 255, 255, .15); }
+
+.container { max-width: 960px; margin: 28px auto; padding: 0 16px; }
+
+.page-title { margin: 0 0 4px; font-size: 24px; }
+.page-sub { margin: 0 0 22px; color: var(--muted); }
+
+.card-list { display: grid; gap: 16px; }
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 18px 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, .05);
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px 16px;
+  align-items: center;
+}
+
+.card h3 { margin: 0; font-size: 18px; letter-spacing: .5px; }
+.card .meta { color: var(--muted); font-size: 14px; margin-top: 4px; }
+.card .amount { font-size: 20px; font-weight: 600; text-align: right; }
+
+.badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  background: #e5e7eb;
+  color: #374151;
+}
+
+.badge.confirmed, .badge.issued, .badge.active { background: #d1fae5; color: #065f46; }
+.badge.pending { background: #fef3c7; color: #92400e; }
+.badge.cancelled, .badge.canceled, .badge.void { background: #fee2e2; color: #991b1b; }
+
+.state {
+  background: var(--card);
+  border: 1px dashed var(--border);
+  border-radius: 12px;
+  padding: 36px 20px;
+  text-align: center;
+  color: var(--muted);
+}
+
+.state a { color: var(--primary); font-weight: 600; text-decoration: none; }
+
+@media (max-width: 560px) {
+  .card { grid-template-columns: 1fr; }
+  .card .amount { text-align: left; }
+}

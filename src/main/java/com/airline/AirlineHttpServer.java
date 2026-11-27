@@ -88,7 +88,10 @@ AircraftService aircraftService = new AircraftService(
                 "/api/reservations",
                 new ReservationController(reservationService, passengerSessionManager)
         );
-
+        server.createContext(
+                "/api/tickets",
+                new TicketController(passengerSessionManager)
+        );
         server.createContext("/api/flights", new FlightController(
                 flightService,
                 seatService,

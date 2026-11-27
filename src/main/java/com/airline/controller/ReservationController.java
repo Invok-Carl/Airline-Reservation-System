@@ -69,7 +69,13 @@ public class ReservationController implements HttpHandler {
             }
 
             long accountId = session.accountId();
+            // GET /api/reservations
+            if (BASE_PATH.equals(path)
+                    && "GET".equals(method)) {
 
+                listReservations(exchange, accountId);
+                return;
+            }
             // POST /api/reservations
             if (BASE_PATH.equals(path)
                     && "POST".equals(method)) {
@@ -394,6 +400,36 @@ public class ReservationController implements HttpHandler {
         }
     }
 
+    private void listReservations(
+            HttpExchange exchange,
+            long accountId
+    ) throws IOException, SQLException {
+
+        List<com.airline.model.Reservation> reservations =
+                reservationService.getReservationsByAccount(accountId);
+
+        com.fasterxml.jackson.databind.node.ArrayNode response =
+                objectMapper.createArrayNode();
+
+        for (com.airline.model.Reservation reservation : reservations) {
+            ObjectNode item = objectMapper.createObjectNode();
+
+            item.put("reservationId", reservation.getReservationId());
+            item.put("bookingReference", reservation.getBookingReference());
+            item.put(
+                    "reservationDate",
+                    reservation.getReservationDate() == null
+                            ? null
+                            : reservation.getReservationDate().toString()
+            );
+            item.put("status", reservation.getStatus());
+            item.put("totalAmount", reservation.getTotalAmount());
+
+            response.add(item);
+        }
+
+        sendJson(exchange, 200, response);
+    }
     private String allowedMethods(String path) {
         if (BASE_PATH.equals(path)) {
             return "POST";
